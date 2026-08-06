@@ -338,6 +338,16 @@
             border-top: 1px solid rgba(108, 0, 255, 0.3);
         }
 
+        .offline-badge {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 8px;
+        }
+
         /* скроллбар */
         .table-wrapper::-webkit-scrollbar {
             width: 4px;
@@ -408,307 +418,382 @@
         </table>
     </div>
     <div class="footer-note">
-        💾 Автосохранение • 💖 нажимайте на ячейки 1-4
+        📱 Офлайн-режим <span class="offline-badge" id="offlineStatus">ОНЛАЙН</span>
     </div>
 </div>
 
 <script>
-    (function() {
-        if (!window.indexedDB) {
+// ========== SERVICE WORKER ДЛЯ ОФЛАЙН ==========
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        // Создаём service worker из кода
+        const swCode = `
+            const CACHE_NAME = 'dostavka-v1';
+            const ASSETS = [
+                '/dostavka/',
+                '/dostavka/index.html'
+            ];
+
+            self.addEventListener('install', (event) => {
+                event.waitUntil(
+                    caches.open(CACHE_NAME).then((cache) => {
+                        return cache.addAll(ASSETS);
+                    })
+                );
+            });
+
+            self.addEventListener('fetch', (event) => {
+                event.respondWith(
+                    caches.match(event.request).then((cachedResponse) => {
+                        return cachedResponse || fetch(event.request).then((response) => {
+                            return caches.open(CACHE_NAME).then((cache) => {
+                                cache.put(event.request, response.clone());
+                                return response;
+                            });
+                        });
+                    })
+                );
+            });
+
+            self.addEventListener('activate', (event) => {
+                event.waitUntil(
+                    caches.keys().then((cacheNames) => {
+                        return Promise.all(
+                            cacheNames.map((cacheName) => {
+                                if (cacheName !== CACHE_NAME) {
+                                    return caches.delete(cacheName);
+                                }
+                            })
+                        );
+                    })
+                );
+            });
+        `;
+
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        
+        navigator.serviceWorker.register(swUrl).then(() => {
+            console.log('Service Worker зарегистрирован');
+        }).catch((error) => {
+            console.log('Service Worker не поддерживается в этом режиме');
+        });
+    });
+}
+
+// ========== ОСНОВНОЙ КОД ==========
+(function() {
+    if (!window.indexedDB) {
+        document.getElementById('rowsBody').innerHTML = 
+            '<tr><td colspan="7"><div style="padding:30px;color:#ff4444;">❌ Браузер не поддерживает IndexedDB</div></td></tr>';
+        return;
+    }
+
+    let currentDateStr = '';
+    let db = null;
+
+    // Определяем онлайн/офлайн статус
+    function updateOnlineStatus() {
+        const statusEl = document.getElementById('offlineStatus');
+        if (navigator.onLine) {
+            statusEl.textContent = 'ОНЛАЙН';
+            statusEl.style.background = '#4CAF50';
+        } else {
+            statusEl.textContent = 'ОФЛАЙН';
+            statusEl.style.background = '#ff9800';
+        }
+    }
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
+
+    function formatDateRU(date) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+    }
+
+    function parseDateFromRU(str) {
+        const parts = str.split('.');
+        if (parts.length !== 3) return null;
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const year = parseInt(parts[2], 10);
+        const date = new Date(year, month, day);
+        if (date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
+            return date;
+        }
+        return null;
+    }
+
+    function getTodayString() {
+        return formatDateRU(new Date());
+    }
+
+    function shiftDate(dateStr, offsetDays) {
+        const date = parseDateFromRU(dateStr);
+        if (!date) return dateStr;
+        date.setDate(date.getDate() + offsetDays);
+        return formatDateRU(date);
+    }
+
+    function openDatabase() {
+        return new Promise((resolve, reject) => {
+            try {
+                const request = indexedDB.open('DiaryDB_v2', 1);
+                
+                request.onupgradeneeded = function(event) {
+                    const database = event.target.result;
+                    if (!database.objectStoreNames.contains('cells')) {
+                        database.createObjectStore('cells', { keyPath: 'id' });
+                    }
+                };
+                
+                request.onsuccess = function(event) {
+                    resolve(event.target.result);
+                };
+                
+                request.onerror = function(event) {
+                    reject(event.target.error);
+                };
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    function saveCellToDB(id, value) {
+        if (!db) return;
+        try {
+            const transaction = db.transaction('cells', 'readwrite');
+            const store = transaction.objectStore('cells');
+            store.put({ id: id, value: value });
+        } catch (error) {
+            console.warn('Ошибка сохранения:', error);
+        }
+    }
+
+    function loadCellsForDate(dateStr) {
+        return new Promise((resolve) => {
+            if (!db) {
+                resolve({});
+                return;
+            }
+            try {
+                const transaction = db.transaction('cells', 'readonly');
+                const store = transaction.objectStore('cells');
+                const dataMap = {};
+                
+                const request = store.openCursor();
+                
+                request.onsuccess = function(event) {
+                    const cursor = event.target.result;
+                    if (cursor) {
+                        const record = cursor.value;
+                        if (record.id && record.id.startsWith(dateStr + '_')) {
+                            dataMap[record.id] = record.value;
+                        }
+                        cursor.continue();
+                    } else {
+                        resolve(dataMap);
+                    }
+                };
+                
+                request.onerror = function() {
+                    resolve({});
+                };
+            } catch (error) {
+                resolve({});
+            }
+        });
+    }
+
+    function updateAllTotals() {
+        let totalMain = 0;
+        let totalCol5 = 0;
+        let totalCol6 = 0;
+
+        const hearts = document.querySelectorAll('.heart-cell');
+        hearts.forEach(cell => {
+            const col = parseInt(cell.dataset.col);
+            const isFilled = cell.classList.contains('active');
+            
+            if (isFilled) {
+                if (col === 1) {
+                    totalMain += 155;
+                } else if (col >= 2 && col <= 4) {
+                    totalMain += 85;
+                }
+            }
+        });
+
+        const inputs = document.querySelectorAll('#rowsBody input[data-col]');
+        inputs.forEach(input => {
+            const col = parseInt(input.dataset.col);
+            const rawValue = input.value.trim();
+            let num = parseFloat(rawValue.replace(',', '.'));
+            if (isNaN(num)) num = 0;
+
+            if (col === 5) {
+                totalCol5 += num;
+                totalMain += num * 13;
+            } else if (col === 6) {
+                totalCol6 += num;
+                totalMain += num * 2;
+            } else if (col === 7) {
+                totalMain += num;
+            }
+        });
+
+        document.getElementById('totalMain').textContent = totalMain;
+        document.getElementById('totalCol5').textContent = totalCol5;
+        document.getElementById('totalCol6').textContent = totalCol6;
+    }
+
+    async function renderTableForDate(dateStr) {
+        const tbody = document.getElementById('rowsBody');
+        if (!tbody) return;
+
+        document.getElementById('currentDateDisplay').textContent = dateStr;
+        
+        let savedData = {};
+        try {
+            savedData = await loadCellsForDate(dateStr);
+        } catch (error) {
+            console.warn('Ошибка загрузки данных:', error);
+        }
+
+        let html = '';
+        for (let i = 1; i <= 100; i++) {
+            const heart1 = savedData[`${dateStr}_${i}_1`] || '0';
+            const heart2 = savedData[`${dateStr}_${i}_2`] || '0';
+            const heart3 = savedData[`${dateStr}_${i}_3`] || '0';
+            const heart4 = savedData[`${dateStr}_${i}_4`] || '0';
+            
+            const val5 = (savedData[`${dateStr}_${i}_5`] || '').replace(/"/g, '&quot;');
+            const val6 = (savedData[`${dateStr}_${i}_6`] || '').replace(/"/g, '&quot;');
+            const val7 = (savedData[`${dateStr}_${i}_7`] || '').replace(/"/g, '&quot;');
+
+            html += `
+                <tr>
+                    <td class="row-number">${i}</td>
+                    <td>
+                        <div class="heart-cell ${heart1 === '1' ? 'active' : ''}" 
+                             data-row="${i}" data-col="1">
+                            💵
+                        </div>
+                    </td>
+                    <td>
+                        <div class="heart-cell ${heart2 === '1' ? 'active' : ''}" 
+                             data-row="${i}" data-col="2">
+                            💷
+                        </div>
+                    </td>
+                    <td>
+                        <div class="heart-cell ${heart3 === '1' ? 'active' : ''}" 
+                             data-row="${i}" data-col="3">
+                            💴
+                        </div>
+                    </td>
+                    <td>
+                        <div class="heart-cell ${heart4 === '1' ? 'active' : ''}" 
+                             data-row="${i}" data-col="4">
+                            💶
+                        </div>
+                    </td>
+                    <td><input type="text" data-row="${i}" data-col="5" value="${val5}" placeholder="0"></td>
+                    <td><input type="text" data-row="${i}" data-col="6" value="${val6}" placeholder="0"></td>
+                    <td><input type="text" data-row="${i}" data-col="7" value="${val7}" placeholder="0"></td>
+                </tr>
+            `;
+        }
+
+        tbody.innerHTML = html;
+
+        document.querySelectorAll('.heart-cell').forEach(cell => {
+            cell.addEventListener('click', function() {
+                const row = this.dataset.row;
+                const col = this.dataset.col;
+                const id = `${dateStr}_${row}_${col}`;
+                
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    saveCellToDB(id, '0');
+                } else {
+                    this.classList.add('active');
+                    saveCellToDB(id, '1');
+                }
+                
+                updateAllTotals();
+            });
+        });
+
+        document.querySelectorAll('#rowsBody input[data-col]').forEach(input => {
+            input.addEventListener('input', function() {
+                const row = this.dataset.row;
+                const col = this.dataset.col;
+                const id = `${dateStr}_${row}_${col}`;
+                
+                saveCellToDB(id, this.value);
+                updateAllTotals();
+            });
+        });
+
+        updateAllTotals();
+    }
+
+    async function goToDate(dateStr) {
+        if (!parseDateFromRU(dateStr)) {
+            alert('Неверный формат даты. Используйте дд.мм.гггг');
+            return;
+        }
+        currentDateStr = dateStr;
+        await renderTableForDate(dateStr);
+        document.getElementById('searchDateInput').value = dateStr;
+    }
+
+    async function initApp() {
+        try {
+            db = await openDatabase();
+        } catch (error) {
+            console.error('Ошибка открытия БД:', error);
             document.getElementById('rowsBody').innerHTML = 
-                '<tr><td colspan="7"><div style="padding:30px;color:#ff4444;">❌ Браузер не поддерживает IndexedDB</div></td></tr>';
+                '<tr><td colspan="7"><div style="padding:30px;color:#ff4444;">❌ Ошибка базы данных</div></td></tr>';
             return;
         }
 
-        let currentDateStr = '';
-        let db = null;
+        const todayStr = getTodayString();
+        currentDateStr = todayStr;
+        await renderTableForDate(todayStr);
+        document.getElementById('searchDateInput').value = todayStr;
 
-        function formatDateRU(date) {
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}.${month}.${year}`;
-        }
+        document.getElementById('prevDayBtn').onclick = () => goToDate(shiftDate(currentDateStr, -1));
+        document.getElementById('nextDayBtn').onclick = () => goToDate(shiftDate(currentDateStr, 1));
+        document.getElementById('todayBtn').onclick = () => goToDate(getTodayString());
+        
+        document.getElementById('searchDateBtn').onclick = () => {
+            const input = document.getElementById('searchDateInput').value.trim();
+            if (input) goToDate(input);
+            else alert('Введите дату');
+        };
 
-        function parseDateFromRU(str) {
-            const parts = str.split('.');
-            if (parts.length !== 3) return null;
-            const day = parseInt(parts[0], 10);
-            const month = parseInt(parts[1], 10) - 1;
-            const year = parseInt(parts[2], 10);
-            const date = new Date(year, month, day);
-            if (date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
-                return date;
-            }
-            return null;
-        }
+        document.getElementById('searchDateInput').onkeypress = (e) => {
+            if (e.key === 'Enter') document.getElementById('searchDateBtn').click();
+        };
 
-        function getTodayString() {
-            return formatDateRU(new Date());
-        }
+        document.getElementById('currentDateDisplay').onclick = () => {
+            document.getElementById('searchDateInput').focus();
+        };
+    }
 
-        function shiftDate(dateStr, offsetDays) {
-            const date = parseDateFromRU(dateStr);
-            if (!date) return dateStr;
-            date.setDate(date.getDate() + offsetDays);
-            return formatDateRU(date);
-        }
-
-        function openDatabase() {
-            return new Promise((resolve, reject) => {
-                try {
-                    const request = indexedDB.open('DiaryDB_v2', 1);
-                    
-                    request.onupgradeneeded = function(event) {
-                        const database = event.target.result;
-                        if (!database.objectStoreNames.contains('cells')) {
-                            database.createObjectStore('cells', { keyPath: 'id' });
-                        }
-                    };
-                    
-                    request.onsuccess = function(event) {
-                        resolve(event.target.result);
-                    };
-                    
-                    request.onerror = function(event) {
-                        reject(event.target.error);
-                    };
-                } catch (error) {
-                    reject(error);
-                }
-            });
-        }
-
-        function saveCellToDB(id, value) {
-            if (!db) return;
-            try {
-                const transaction = db.transaction('cells', 'readwrite');
-                const store = transaction.objectStore('cells');
-                store.put({ id: id, value: value });
-            } catch (error) {
-                console.warn('Ошибка сохранения:', error);
-            }
-        }
-
-        function loadCellsForDate(dateStr) {
-            return new Promise((resolve) => {
-                if (!db) {
-                    resolve({});
-                    return;
-                }
-                try {
-                    const transaction = db.transaction('cells', 'readonly');
-                    const store = transaction.objectStore('cells');
-                    const dataMap = {};
-                    
-                    const request = store.openCursor();
-                    
-                    request.onsuccess = function(event) {
-                        const cursor = event.target.result;
-                        if (cursor) {
-                            const record = cursor.value;
-                            if (record.id && record.id.startsWith(dateStr + '_')) {
-                                dataMap[record.id] = record.value;
-                            }
-                            cursor.continue();
-                        } else {
-                            resolve(dataMap);
-                        }
-                    };
-                    
-                    request.onerror = function() {
-                        resolve({});
-                    };
-                } catch (error) {
-                    resolve({});
-                }
-            });
-        }
-
-        function updateAllTotals() {
-            let totalMain = 0;
-            let totalCol5 = 0;
-            let totalCol6 = 0;
-
-            const hearts = document.querySelectorAll('.heart-cell');
-            hearts.forEach(cell => {
-                const col = parseInt(cell.dataset.col);
-                const isFilled = cell.classList.contains('active');
-                
-                if (isFilled) {
-                    if (col === 1) {
-                        totalMain += 155;
-                    } else if (col >= 2 && col <= 4) {
-                        totalMain += 85;
-                    }
-                }
-            });
-
-            const inputs = document.querySelectorAll('#rowsBody input[data-col]');
-            inputs.forEach(input => {
-                const col = parseInt(input.dataset.col);
-                const rawValue = input.value.trim();
-                let num = parseFloat(rawValue.replace(',', '.'));
-                if (isNaN(num)) num = 0;
-
-                if (col === 5) {
-                    totalCol5 += num;
-                    totalMain += num * 13;
-                } else if (col === 6) {
-                    totalCol6 += num;
-                    totalMain += num * 2;
-                } else if (col === 7) {
-                    totalMain += num;
-                }
-            });
-
-            document.getElementById('totalMain').textContent = totalMain;
-            document.getElementById('totalCol5').textContent = totalCol5;
-            document.getElementById('totalCol6').textContent = totalCol6;
-        }
-
-        async function renderTableForDate(dateStr) {
-            const tbody = document.getElementById('rowsBody');
-            if (!tbody) return;
-
-            document.getElementById('currentDateDisplay').textContent = dateStr;
-            
-            let savedData = {};
-            try {
-                savedData = await loadCellsForDate(dateStr);
-            } catch (error) {
-                console.warn('Ошибка загрузки данных:', error);
-            }
-
-            let html = '';
-            for (let i = 1; i <= 100; i++) {
-                const heart1 = savedData[`${dateStr}_${i}_1`] || '0';
-                const heart2 = savedData[`${dateStr}_${i}_2`] || '0';
-                const heart3 = savedData[`${dateStr}_${i}_3`] || '0';
-                const heart4 = savedData[`${dateStr}_${i}_4`] || '0';
-                
-                const val5 = (savedData[`${dateStr}_${i}_5`] || '').replace(/"/g, '&quot;');
-                const val6 = (savedData[`${dateStr}_${i}_6`] || '').replace(/"/g, '&quot;');
-                const val7 = (savedData[`${dateStr}_${i}_7`] || '').replace(/"/g, '&quot;');
-
-                html += `
-                    <tr>
-                        <td class="row-number">${i}</td>
-                        <td>
-                            <div class="heart-cell ${heart1 === '1' ? 'active' : ''}" 
-                                 data-row="${i}" data-col="1">
-                                💵
-                            </div>
-                        </td>
-                        <td>
-                            <div class="heart-cell ${heart2 === '1' ? 'active' : ''}" 
-                                 data-row="${i}" data-col="2">
-                                💷
-                            </div>
-                        </td>
-                        <td>
-                            <div class="heart-cell ${heart3 === '1' ? 'active' : ''}" 
-                                 data-row="${i}" data-col="3">
-                                💴
-                            </div>
-                        </td>
-                        <td>
-                            <div class="heart-cell ${heart4 === '1' ? 'active' : ''}" 
-                                 data-row="${i}" data-col="4">
-                                💶
-                            </div>
-                        </td>
-                        <td><input type="text" data-row="${i}" data-col="5" value="${val5}" placeholder="0"></td>
-                        <td><input type="text" data-row="${i}" data-col="6" value="${val6}" placeholder="0"></td>
-                        <td><input type="text" data-row="${i}" data-col="7" value="${val7}" placeholder="0"></td>
-                    </tr>
-                `;
-            }
-
-            tbody.innerHTML = html;
-
-            document.querySelectorAll('.heart-cell').forEach(cell => {
-                cell.addEventListener('click', function() {
-                    const row = this.dataset.row;
-                    const col = this.dataset.col;
-                    const id = `${dateStr}_${row}_${col}`;
-                    
-                    if (this.classList.contains('active')) {
-                        this.classList.remove('active');
-                        saveCellToDB(id, '0');
-                    } else {
-                        this.classList.add('active');
-                        saveCellToDB(id, '1');
-                    }
-                    
-                    updateAllTotals();
-                });
-            });
-
-            document.querySelectorAll('#rowsBody input[data-col]').forEach(input => {
-                input.addEventListener('input', function() {
-                    const row = this.dataset.row;
-                    const col = this.dataset.col;
-                    const id = `${dateStr}_${row}_${col}`;
-                    
-                    saveCellToDB(id, this.value);
-                    updateAllTotals();
-                });
-            });
-
-            updateAllTotals();
-        }
-
-        async function goToDate(dateStr) {
-            if (!parseDateFromRU(dateStr)) {
-                alert('Неверный формат даты. Используйте дд.мм.гггг');
-                return;
-            }
-            currentDateStr = dateStr;
-            await renderTableForDate(dateStr);
-            document.getElementById('searchDateInput').value = dateStr;
-        }
-
-        async function initApp() {
-            try {
-                db = await openDatabase();
-            } catch (error) {
-                console.error('Ошибка открытия БД:', error);
-                document.getElementById('rowsBody').innerHTML = 
-                    '<tr><td colspan="7"><div style="padding:30px;color:#ff4444;">❌ Ошибка базы данных</div></td></tr>';
-                return;
-            }
-
-            const todayStr = getTodayString();
-            currentDateStr = todayStr;
-            await renderTableForDate(todayStr);
-            document.getElementById('searchDateInput').value = todayStr;
-
-            document.getElementById('prevDayBtn').onclick = () => goToDate(shiftDate(currentDateStr, -1));
-            document.getElementById('nextDayBtn').onclick = () => goToDate(shiftDate(currentDateStr, 1));
-            document.getElementById('todayBtn').onclick = () => goToDate(getTodayString());
-            
-            document.getElementById('searchDateBtn').onclick = () => {
-                const input = document.getElementById('searchDateInput').value.trim();
-                if (input) goToDate(input);
-                else alert('Введите дату');
-            };
-
-            document.getElementById('searchDateInput').onkeypress = (e) => {
-                if (e.key === 'Enter') document.getElementById('searchDateBtn').click();
-            };
-
-            document.getElementById('currentDateDisplay').onclick = () => {
-                document.getElementById('searchDateInput').focus();
-            };
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initApp);
-        } else {
-            initApp();
-        }
-    })();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+        initApp();
+    }
+})();
 </script>
 </body>
 </html>
