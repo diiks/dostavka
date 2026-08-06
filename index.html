@@ -270,6 +270,22 @@
             font-size: 0.8rem;
             background: #0f0f1a;
             border-top: 1px solid rgba(108, 0, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+        }
+
+        .sync-now-btn {
+            background: linear-gradient(135deg, #6c00ff, #00ffff);
+            border: none;
+            color: white;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
         }
 
         .sync-indicator {
@@ -350,7 +366,8 @@
         </table>
     </div>
     <div class="footer-note">
-        ☁️ Синхронизация работает
+        <span>🔄 Каждые 5 мин</span>
+        <button class="sync-now-btn" onclick="syncNow()">Синхр. сейчас</button>
     </div>
 </div>
 
@@ -367,7 +384,7 @@ function showSync(message, isError = false) {
     el.textContent = message;
     el.className = 'sync-indicator ' + (isError ? 'error' : '');
     el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 2000);
+    setTimeout(() => el.classList.remove('show'), 2500);
 }
 
 async function loadFromCloud() {
@@ -388,6 +405,7 @@ async function loadFromCloud() {
 }
 
 async function saveToCloud() {
+    if (!localChanges) return;
     try {
         await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
             method: 'PUT',
@@ -402,18 +420,16 @@ async function saveToCloud() {
         showSync('☁️ Синхронизировано');
     } catch (e) {
         localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
-        localChanges = true;
-        showSync('📱 Сохранено локально', true);
+        showSync('📱 Офлайн — сохранено локально', true);
     }
 }
 
-async function saveCell(dateStr, row, col, value) {
+function saveCellLocal(dateStr, row, col, value) {
     if (!allData[dateStr]) allData[dateStr] = {};
     if (!allData[dateStr][row]) allData[dateStr][row] = {};
     allData[dateStr][row][col] = value;
     localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
     localChanges = true;
-    await saveToCloud();
 }
 
 function getCell(dateStr, row, col) {
@@ -499,7 +515,7 @@ function renderTable(dateStr) {
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.onclick = () => {
             cell.classList.toggle('active');
-            saveCell(dateStr, cell.dataset.row, cell.dataset.col, 
+            saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, 
                      cell.classList.contains('active') ? '1' : '0');
             updateTotals();
         };
@@ -507,7 +523,7 @@ function renderTable(dateStr) {
 
     document.querySelectorAll('input').forEach(inp => {
         inp.oninput = () => {
-            saveCell(dateStr, inp.dataset.row, inp.dataset.col, inp.value);
+            saveCellLocal(dateStr, inp.dataset.row, inp.dataset.col, inp.value);
             updateTotals();
         };
     });
@@ -516,9 +532,17 @@ function renderTable(dateStr) {
 }
 
 async function goToDate(ds) {
+    await saveToCloud();
     currentDateStr = ds;
     await loadFromCloud();
     renderTable(ds);
+}
+
+async function syncNow() {
+    showSync('🔄 Синхронизация...');
+    await saveToCloud();
+    await loadFromCloud();
+    if (currentDateStr) renderTable(currentDateStr);
 }
 
 (async function init() {
@@ -528,11 +552,12 @@ async function goToDate(ds) {
     currentDateStr = today;
     renderTable(today);
     
+    // Автосинхронизация раз в 5 минут (300 000 мс)
     setInterval(async () => {
-        if (localChanges) await saveToCloud();
+        await saveToCloud();
         await loadFromCloud();
         if (currentDateStr) renderTable(currentDateStr);
-    }, 15000);
+    }, 300000);
     
     document.getElementById('prevDayBtn').onclick = prevDay;
     document.getElementById('nextDayBtn').onclick = nextDay;
@@ -544,6 +569,10 @@ async function goToDate(ds) {
     document.getElementById('currentDateDisplay').onclick = () => {
         document.getElementById('searchDateInput').focus();
     };
+    
+    window.addEventListener('beforeunload', () => {
+        saveToCloud();
+    });
     
     window.addEventListener('online', async () => {
         showSync('🌐 Онлайн — синхронизируем...');
