@@ -59,7 +59,6 @@
             background: rgba(108, 0, 255, 0.15);
             border-radius: 40px;
             padding: 6px 10px;
-            backdrop-filter: blur(10px);
             flex-wrap: wrap;
             border: 1px solid rgba(108, 0, 255, 0.3);
         }
@@ -79,13 +78,6 @@
             transition: 0.3s;
             font-weight: bold;
             box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
-            line-height: 1;
-        }
-
-        .nav-btn:hover {
-            background: rgba(108, 0, 255, 0.5);
-            box-shadow: 0 0 25px rgba(108, 0, 255, 0.6);
-            transform: scale(1.05);
         }
 
         .nav-btn:active {
@@ -101,17 +93,8 @@
             font-size: 1rem;
             min-width: 130px;
             text-align: center;
-            box-shadow: 0 0 15px rgba(108, 0, 255, 0.3), inset 0 1px 4px rgba(0,0,0,0.5);
             border: 1px solid rgba(108, 0, 255, 0.4);
-            outline: none;
             cursor: pointer;
-            font-family: inherit;
-            letter-spacing: 0.3px;
-        }
-
-        .date-display:focus {
-            outline: 2px solid #00ffff;
-            outline-offset: 2px;
         }
 
         .search-date-row {
@@ -130,8 +113,6 @@
             background: #1a1a2e;
             color: #e0b0ff;
             text-align: center;
-            font-weight: 500;
-            box-shadow: 0 0 10px rgba(108, 0, 255, 0.2);
         }
 
         .search-input::placeholder {
@@ -146,16 +127,7 @@
             padding: 10px 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .search-btn:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-            transform: scale(1.05);
         }
 
         .today-btn {
@@ -166,15 +138,8 @@
             font-weight: 600;
             cursor: pointer;
             color: #e0b0ff;
-            transition: 0.3s;
         }
 
-        .today-btn:hover {
-            background: rgba(108, 0, 255, 0.5);
-            box-shadow: 0 0 15px rgba(108, 0, 255, 0.5);
-        }
-
-        /* итоги */
         .totals-container {
             display: flex;
             justify-content: space-around;
@@ -183,7 +148,6 @@
             margin: 8px 12px 0;
             border-radius: 20px;
             gap: 5px;
-            flex-wrap: wrap;
             border: 1px solid rgba(108, 0, 255, 0.2);
         }
 
@@ -200,20 +164,16 @@
 
         .total-label {
             font-size: 0.65rem;
-            text-transform: uppercase;
             letter-spacing: 1px;
             color: #00ffff;
             margin-bottom: 4px;
             font-weight: 600;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .total-value {
             font-size: 1.5rem;
             font-weight: 700;
             color: #ffffff;
-            line-height: 1.2;
-            word-break: break-word;
             text-shadow: 0 0 15px rgba(108, 0, 255, 0.6);
         }
 
@@ -229,8 +189,6 @@
             border-collapse: collapse;
             background: #1a1a2e;
             border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(108, 0, 255, 0.2);
             table-layout: fixed;
         }
 
@@ -241,22 +199,14 @@
             padding: 14px 2px;
             font-size: 0.7rem;
             border-bottom: 2px solid rgba(108, 0, 255, 0.4);
-            text-align: center;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            letter-spacing: 0.5px;
         }
 
         td {
             border-bottom: 1px solid rgba(108, 0, 255, 0.2);
             height: 42px;
             text-align: center;
-            vertical-align: middle;
             background: #1a1a2e;
             padding: 2px;
-        }
-
-        tr:hover td {
-            background: rgba(108, 0, 255, 0.05);
         }
 
         .row-number {
@@ -264,29 +214,20 @@
             color: #6c00ff;
             background: #0f0f1a;
             font-size: 0.8rem;
-            width: 30px;
-            text-shadow: 0 0 5px rgba(108, 0, 255, 0.5);
         }
 
-        /* квадратные ячейки для колонок 1-4 */
         .heart-cell {
             cursor: pointer;
-            user-select: none;
             font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 42px;
-            transition: 0.3s;
             border-radius: 8px;
             margin: 2px;
             opacity: 0.25;
             filter: grayscale(30%);
-        }
-
-        .heart-cell:hover {
-            opacity: 0.5;
-            background: rgba(108, 0, 255, 0.15);
+            transition: 0.3s;
         }
 
         .heart-cell:active {
@@ -300,11 +241,10 @@
         }
 
         @keyframes neonPulse {
-            0%, 100% { filter: grayscale(0%) drop-shadow(0 0 8px rgba(108, 0, 255, 0.8)); }
-            50% { filter: grayscale(0%) drop-shadow(0 0 15px rgba(0, 255, 255, 0.9)); }
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(108, 0, 255, 0.8)); }
+            50% { filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.9)); }
         }
 
-        /* поля ввода */
         input {
             width: 100%;
             height: 36px;
@@ -313,20 +253,14 @@
             text-align: center;
             font-size: 13px;
             background: #0f0f1a;
-            transition: all 0.3s;
-            padding: 2px;
             color: #ffffff;
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            padding: 2px;
         }
 
         input:focus {
             outline: none;
             border-color: #00ffff;
-            background: #1a1a2e;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
         }
 
         .footer-note {
@@ -338,52 +272,51 @@
             border-top: 1px solid rgba(108, 0, 255, 0.3);
         }
 
-        .offline-badge {
-            display: inline-block;
+        .sync-indicator {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             background: #4CAF50;
             color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            margin-left: 8px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
         }
 
-        /* скроллбар */
-        .table-wrapper::-webkit-scrollbar {
-            width: 4px;
+        .sync-indicator.show {
+            opacity: 1;
         }
 
-        .table-wrapper::-webkit-scrollbar-track {
-            background: #0f0f1a;
-        }
-
-        .table-wrapper::-webkit-scrollbar-thumb {
-            background: #6c00ff;
-            border-radius: 4px;
-        }
-
-        .table-wrapper::-webkit-scrollbar-thumb:hover {
-            background: #00ffff;
+        .sync-indicator.error {
+            background: #ff9800;
+            box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
         }
     </style>
 </head>
 <body>
+
+<div class="sync-indicator" id="syncStatus">☁️ Синхронизировано</div>
+
 <div class="app-container">
     <div class="app-header">
         <h2>😊💰💲💵❤️</h2>
         <div class="date-navigator">
-            <button class="nav-btn" id="prevDayBtn" title="Предыдущий день">←</button>
+            <button class="nav-btn" id="prevDayBtn">←</button>
             <span class="date-display" id="currentDateDisplay">---</span>
-            <button class="nav-btn" id="nextDayBtn" title="Следующий день">→</button>
+            <button class="nav-btn" id="nextDayBtn">→</button>
         </div>
         <div class="search-date-row">
             <input type="text" class="search-input" id="searchDateInput" placeholder="дд.мм.гггг" />
-            <button class="search-btn" id="searchDateBtn">🔍 Найти</button>
+            <button class="search-btn" id="searchDateBtn">🔍</button>
             <button class="today-btn" id="todayBtn">Сегодня</button>
         </div>
     </div>
 
-    <!-- 3 итоговых окна -->
     <div class="totals-container">
         <div class="total-box">
             <div class="total-label">💰 Итог</div>
@@ -399,7 +332,7 @@
         </div>
     </div>
 
-    <div class="table-wrapper" id="tableContainer">
+    <div class="table-wrapper">
         <table>
             <thead>
             <tr>
@@ -413,386 +346,215 @@
                 <th>🫧</th>
             </tr>
             </thead>
-            <tbody id="rowsBody">
-            </tbody>
+            <tbody id="rowsBody"></tbody>
         </table>
     </div>
     <div class="footer-note">
-        📱 Офлайн-режим <span class="offline-badge" id="offlineStatus">ОНЛАЙН</span>
+        ☁️ Синхронизация работает
     </div>
 </div>
 
 <script>
-// ========== SERVICE WORKER ДЛЯ ОФЛАЙН ==========
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        // Создаём service worker из кода
-        const swCode = `
-            const CACHE_NAME = 'dostavka-v1';
-            const ASSETS = [
-                '/dostavka/',
-                '/dostavka/index.html'
-            ];
+const JSONBIN_BIN_ID = '6a750d49da38895dfec37959';
+const JSONBIN_API_KEY = '$2a$10$Aaqly4jYya2FH7JO0vhA9OsX0D1ufyWm1QZCTAQty6OQzyvdDcPfO';
 
-            self.addEventListener('install', (event) => {
-                event.waitUntil(
-                    caches.open(CACHE_NAME).then((cache) => {
-                        return cache.addAll(ASSETS);
-                    })
-                );
-            });
+let currentDateStr = '';
+let allData = {};
+let localChanges = false;
 
-            self.addEventListener('fetch', (event) => {
-                event.respondWith(
-                    caches.match(event.request).then((cachedResponse) => {
-                        return cachedResponse || fetch(event.request).then((response) => {
-                            return caches.open(CACHE_NAME).then((cache) => {
-                                cache.put(event.request, response.clone());
-                                return response;
-                            });
-                        });
-                    })
-                );
-            });
-
-            self.addEventListener('activate', (event) => {
-                event.waitUntil(
-                    caches.keys().then((cacheNames) => {
-                        return Promise.all(
-                            cacheNames.map((cacheName) => {
-                                if (cacheName !== CACHE_NAME) {
-                                    return caches.delete(cacheName);
-                                }
-                            })
-                        );
-                    })
-                );
-            });
-        `;
-
-        const blob = new Blob([swCode], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(blob);
-        
-        navigator.serviceWorker.register(swUrl).then(() => {
-            console.log('Service Worker зарегистрирован');
-        }).catch((error) => {
-            console.log('Service Worker не поддерживается в этом режиме');
-        });
-    });
+function showSync(message, isError = false) {
+    const el = document.getElementById('syncStatus');
+    el.textContent = message;
+    el.className = 'sync-indicator ' + (isError ? 'error' : '');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2000);
 }
 
-// ========== ОСНОВНОЙ КОД ==========
-(function() {
-    if (!window.indexedDB) {
-        document.getElementById('rowsBody').innerHTML = 
-            '<tr><td colspan="7"><div style="padding:30px;color:#ff4444;">❌ Браузер не поддерживает IndexedDB</div></td></tr>';
-        return;
-    }
-
-    let currentDateStr = '';
-    let db = null;
-
-    // Определяем онлайн/офлайн статус
-    function updateOnlineStatus() {
-        const statusEl = document.getElementById('offlineStatus');
-        if (navigator.onLine) {
-            statusEl.textContent = 'ОНЛАЙН';
-            statusEl.style.background = '#4CAF50';
-        } else {
-            statusEl.textContent = 'ОФЛАЙН';
-            statusEl.style.background = '#ff9800';
-        }
-    }
-
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    updateOnlineStatus();
-
-    function formatDateRU(date) {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}.${month}.${year}`;
-    }
-
-    function parseDateFromRU(str) {
-        const parts = str.split('.');
-        if (parts.length !== 3) return null;
-        const day = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10) - 1;
-        const year = parseInt(parts[2], 10);
-        const date = new Date(year, month, day);
-        if (date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
-            return date;
-        }
-        return null;
-    }
-
-    function getTodayString() {
-        return formatDateRU(new Date());
-    }
-
-    function shiftDate(dateStr, offsetDays) {
-        const date = parseDateFromRU(dateStr);
-        if (!date) return dateStr;
-        date.setDate(date.getDate() + offsetDays);
-        return formatDateRU(date);
-    }
-
-    function openDatabase() {
-        return new Promise((resolve, reject) => {
-            try {
-                const request = indexedDB.open('DiaryDB_v2', 1);
-                
-                request.onupgradeneeded = function(event) {
-                    const database = event.target.result;
-                    if (!database.objectStoreNames.contains('cells')) {
-                        database.createObjectStore('cells', { keyPath: 'id' });
-                    }
-                };
-                
-                request.onsuccess = function(event) {
-                    resolve(event.target.result);
-                };
-                
-                request.onerror = function(event) {
-                    reject(event.target.error);
-                };
-            } catch (error) {
-                reject(error);
-            }
+async function loadFromCloud() {
+    try {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+            headers: { 'X-Master-Key': JSONBIN_API_KEY }
         });
+        const result = await response.json();
+        allData = result.record || {};
+        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+        localChanges = false;
+        return allData;
+    } catch (e) {
+        const local = localStorage.getItem('deliveryCloudData');
+        if (local) allData = JSON.parse(local);
+        return allData;
     }
+}
 
-    function saveCellToDB(id, value) {
-        if (!db) return;
-        try {
-            const transaction = db.transaction('cells', 'readwrite');
-            const store = transaction.objectStore('cells');
-            store.put({ id: id, value: value });
-        } catch (error) {
-            console.warn('Ошибка сохранения:', error);
-        }
-    }
-
-    function loadCellsForDate(dateStr) {
-        return new Promise((resolve) => {
-            if (!db) {
-                resolve({});
-                return;
-            }
-            try {
-                const transaction = db.transaction('cells', 'readonly');
-                const store = transaction.objectStore('cells');
-                const dataMap = {};
-                
-                const request = store.openCursor();
-                
-                request.onsuccess = function(event) {
-                    const cursor = event.target.result;
-                    if (cursor) {
-                        const record = cursor.value;
-                        if (record.id && record.id.startsWith(dateStr + '_')) {
-                            dataMap[record.id] = record.value;
-                        }
-                        cursor.continue();
-                    } else {
-                        resolve(dataMap);
-                    }
-                };
-                
-                request.onerror = function() {
-                    resolve({});
-                };
-            } catch (error) {
-                resolve({});
-            }
+async function saveToCloud() {
+    try {
+        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': JSONBIN_API_KEY
+            },
+            body: JSON.stringify(allData)
         });
+        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+        localChanges = false;
+        showSync('☁️ Синхронизировано');
+    } catch (e) {
+        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+        localChanges = true;
+        showSync('📱 Сохранено локально', true);
+    }
+}
+
+async function saveCell(dateStr, row, col, value) {
+    if (!allData[dateStr]) allData[dateStr] = {};
+    if (!allData[dateStr][row]) allData[dateStr][row] = {};
+    allData[dateStr][row][col] = value;
+    localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+    localChanges = true;
+    await saveToCloud();
+}
+
+function getCell(dateStr, row, col) {
+    if (allData[dateStr] && allData[dateStr][row]) {
+        return allData[dateStr][row][col] || '';
+    }
+    return '';
+}
+
+function formatDate(date) {
+    return `${String(date.getDate()).padStart(2,'0')}.${String(date.getMonth()+1).padStart(2,'0')}.${date.getFullYear()}`;
+}
+
+function getToday() { return formatDate(new Date()); }
+
+function shiftDate(ds, off) {
+    const p = ds.split('.');
+    const d = new Date(+p[2], +p[1]-1, +p[0]);
+    d.setDate(d.getDate() + off);
+    return formatDate(d);
+}
+
+function prevDay() { goToDate(shiftDate(currentDateStr, -1)); }
+function nextDay() { goToDate(shiftDate(currentDateStr, 1)); }
+function goToday() { goToDate(getToday()); }
+
+function searchDate() {
+    const v = document.getElementById('searchDateInput').value.trim();
+    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) goToDate(v);
+    else alert('Формат: дд.мм.гггг');
+}
+
+function updateTotals() {
+    let main = 0, c5 = 0, c6 = 0;
+    
+    document.querySelectorAll('.heart-cell').forEach(cell => {
+        if (cell.classList.contains('active')) {
+            main += +cell.dataset.col === 1 ? 155 : 85;
+        }
+    });
+
+    document.querySelectorAll('input[data-col]').forEach(inp => {
+        const col = +inp.dataset.col;
+        const v = parseFloat(inp.value.replace(',','.')) || 0;
+        if (col === 5) { c5 += v; main += v * 13; }
+        else if (col === 6) { c6 += v; main += v * 2; }
+        else if (col === 7) { main += v; }
+    });
+
+    document.getElementById('totalMain').textContent = main;
+    document.getElementById('totalCol5').textContent = c5;
+    document.getElementById('totalCol6').textContent = c6;
+}
+
+function renderTable(dateStr) {
+    document.getElementById('currentDateDisplay').textContent = dateStr;
+    document.getElementById('searchDateInput').value = dateStr;
+    
+    let h = '';
+    for (let i = 1; i <= 100; i++) {
+        const a1 = getCell(dateStr, i, 1) === '1';
+        const a2 = getCell(dateStr, i, 2) === '1';
+        const a3 = getCell(dateStr, i, 3) === '1';
+        const a4 = getCell(dateStr, i, 4) === '1';
+        const v5 = getCell(dateStr, i, 5).replace(/"/g,'&quot;');
+        const v6 = getCell(dateStr, i, 6).replace(/"/g,'&quot;');
+        const v7 = getCell(dateStr, i, 7).replace(/"/g,'&quot;');
+
+        h += `<tr>
+            <td class="row-number">${i}</td>
+            <td><div class="heart-cell${a1?' active':''}" data-row="${i}" data-col="1">💵</div></td>
+            <td><div class="heart-cell${a2?' active':''}" data-row="${i}" data-col="2">💷</div></td>
+            <td><div class="heart-cell${a3?' active':''}" data-row="${i}" data-col="3">💴</div></td>
+            <td><div class="heart-cell${a4?' active':''}" data-row="${i}" data-col="4">💶</div></td>
+            <td><input data-row="${i}" data-col="5" value="${v5}" placeholder="0"></td>
+            <td><input data-row="${i}" data-col="6" value="${v6}" placeholder="0"></td>
+            <td><input data-row="${i}" data-col="7" value="${v7}" placeholder="0"></td>
+        </tr>`;
     }
 
-    function updateAllTotals() {
-        let totalMain = 0;
-        let totalCol5 = 0;
-        let totalCol6 = 0;
+    document.getElementById('rowsBody').innerHTML = h;
 
-        const hearts = document.querySelectorAll('.heart-cell');
-        hearts.forEach(cell => {
-            const col = parseInt(cell.dataset.col);
-            const isFilled = cell.classList.contains('active');
-            
-            if (isFilled) {
-                if (col === 1) {
-                    totalMain += 155;
-                } else if (col >= 2 && col <= 4) {
-                    totalMain += 85;
-                }
-            }
-        });
-
-        const inputs = document.querySelectorAll('#rowsBody input[data-col]');
-        inputs.forEach(input => {
-            const col = parseInt(input.dataset.col);
-            const rawValue = input.value.trim();
-            let num = parseFloat(rawValue.replace(',', '.'));
-            if (isNaN(num)) num = 0;
-
-            if (col === 5) {
-                totalCol5 += num;
-                totalMain += num * 13;
-            } else if (col === 6) {
-                totalCol6 += num;
-                totalMain += num * 2;
-            } else if (col === 7) {
-                totalMain += num;
-            }
-        });
-
-        document.getElementById('totalMain').textContent = totalMain;
-        document.getElementById('totalCol5').textContent = totalCol5;
-        document.getElementById('totalCol6').textContent = totalCol6;
-    }
-
-    async function renderTableForDate(dateStr) {
-        const tbody = document.getElementById('rowsBody');
-        if (!tbody) return;
-
-        document.getElementById('currentDateDisplay').textContent = dateStr;
-        
-        let savedData = {};
-        try {
-            savedData = await loadCellsForDate(dateStr);
-        } catch (error) {
-            console.warn('Ошибка загрузки данных:', error);
-        }
-
-        let html = '';
-        for (let i = 1; i <= 100; i++) {
-            const heart1 = savedData[`${dateStr}_${i}_1`] || '0';
-            const heart2 = savedData[`${dateStr}_${i}_2`] || '0';
-            const heart3 = savedData[`${dateStr}_${i}_3`] || '0';
-            const heart4 = savedData[`${dateStr}_${i}_4`] || '0';
-            
-            const val5 = (savedData[`${dateStr}_${i}_5`] || '').replace(/"/g, '&quot;');
-            const val6 = (savedData[`${dateStr}_${i}_6`] || '').replace(/"/g, '&quot;');
-            const val7 = (savedData[`${dateStr}_${i}_7`] || '').replace(/"/g, '&quot;');
-
-            html += `
-                <tr>
-                    <td class="row-number">${i}</td>
-                    <td>
-                        <div class="heart-cell ${heart1 === '1' ? 'active' : ''}" 
-                             data-row="${i}" data-col="1">
-                            💵
-                        </div>
-                    </td>
-                    <td>
-                        <div class="heart-cell ${heart2 === '1' ? 'active' : ''}" 
-                             data-row="${i}" data-col="2">
-                            💷
-                        </div>
-                    </td>
-                    <td>
-                        <div class="heart-cell ${heart3 === '1' ? 'active' : ''}" 
-                             data-row="${i}" data-col="3">
-                            💴
-                        </div>
-                    </td>
-                    <td>
-                        <div class="heart-cell ${heart4 === '1' ? 'active' : ''}" 
-                             data-row="${i}" data-col="4">
-                            💶
-                        </div>
-                    </td>
-                    <td><input type="text" data-row="${i}" data-col="5" value="${val5}" placeholder="0"></td>
-                    <td><input type="text" data-row="${i}" data-col="6" value="${val6}" placeholder="0"></td>
-                    <td><input type="text" data-row="${i}" data-col="7" value="${val7}" placeholder="0"></td>
-                </tr>
-            `;
-        }
-
-        tbody.innerHTML = html;
-
-        document.querySelectorAll('.heart-cell').forEach(cell => {
-            cell.addEventListener('click', function() {
-                const row = this.dataset.row;
-                const col = this.dataset.col;
-                const id = `${dateStr}_${row}_${col}`;
-                
-                if (this.classList.contains('active')) {
-                    this.classList.remove('active');
-                    saveCellToDB(id, '0');
-                } else {
-                    this.classList.add('active');
-                    saveCellToDB(id, '1');
-                }
-                
-                updateAllTotals();
-            });
-        });
-
-        document.querySelectorAll('#rowsBody input[data-col]').forEach(input => {
-            input.addEventListener('input', function() {
-                const row = this.dataset.row;
-                const col = this.dataset.col;
-                const id = `${dateStr}_${row}_${col}`;
-                
-                saveCellToDB(id, this.value);
-                updateAllTotals();
-            });
-        });
-
-        updateAllTotals();
-    }
-
-    async function goToDate(dateStr) {
-        if (!parseDateFromRU(dateStr)) {
-            alert('Неверный формат даты. Используйте дд.мм.гггг');
-            return;
-        }
-        currentDateStr = dateStr;
-        await renderTableForDate(dateStr);
-        document.getElementById('searchDateInput').value = dateStr;
-    }
-
-    async function initApp() {
-        try {
-            db = await openDatabase();
-        } catch (error) {
-            console.error('Ошибка открытия БД:', error);
-            document.getElementById('rowsBody').innerHTML = 
-                '<tr><td colspan="7"><div style="padding:30px;color:#ff4444;">❌ Ошибка базы данных</div></td></tr>';
-            return;
-        }
-
-        const todayStr = getTodayString();
-        currentDateStr = todayStr;
-        await renderTableForDate(todayStr);
-        document.getElementById('searchDateInput').value = todayStr;
-
-        document.getElementById('prevDayBtn').onclick = () => goToDate(shiftDate(currentDateStr, -1));
-        document.getElementById('nextDayBtn').onclick = () => goToDate(shiftDate(currentDateStr, 1));
-        document.getElementById('todayBtn').onclick = () => goToDate(getTodayString());
-        
-        document.getElementById('searchDateBtn').onclick = () => {
-            const input = document.getElementById('searchDateInput').value.trim();
-            if (input) goToDate(input);
-            else alert('Введите дату');
+    document.querySelectorAll('.heart-cell').forEach(cell => {
+        cell.onclick = () => {
+            cell.classList.toggle('active');
+            saveCell(dateStr, cell.dataset.row, cell.dataset.col, 
+                     cell.classList.contains('active') ? '1' : '0');
+            updateTotals();
         };
+    });
 
-        document.getElementById('searchDateInput').onkeypress = (e) => {
-            if (e.key === 'Enter') document.getElementById('searchDateBtn').click();
+    document.querySelectorAll('input').forEach(inp => {
+        inp.oninput = () => {
+            saveCell(dateStr, inp.dataset.row, inp.dataset.col, inp.value);
+            updateTotals();
         };
+    });
 
-        document.getElementById('currentDateDisplay').onclick = () => {
-            document.getElementById('searchDateInput').focus();
-        };
-    }
+    updateTotals();
+}
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-        initApp();
-    }
+async function goToDate(ds) {
+    currentDateStr = ds;
+    await loadFromCloud();
+    renderTable(ds);
+}
+
+(async function init() {
+    await loadFromCloud();
+    
+    const today = getToday();
+    currentDateStr = today;
+    renderTable(today);
+    
+    setInterval(async () => {
+        if (localChanges) await saveToCloud();
+        await loadFromCloud();
+        if (currentDateStr) renderTable(currentDateStr);
+    }, 15000);
+    
+    document.getElementById('prevDayBtn').onclick = prevDay;
+    document.getElementById('nextDayBtn').onclick = nextDay;
+    document.getElementById('todayBtn').onclick = goToday;
+    document.getElementById('searchDateBtn').onclick = searchDate;
+    document.getElementById('searchDateInput').onkeypress = e => {
+        if (e.key === 'Enter') searchDate();
+    };
+    document.getElementById('currentDateDisplay').onclick = () => {
+        document.getElementById('searchDateInput').focus();
+    };
+    
+    window.addEventListener('online', async () => {
+        showSync('🌐 Онлайн — синхронизируем...');
+        await saveToCloud();
+        await loadFromCloud();
+        if (currentDateStr) renderTable(currentDateStr);
+    });
+    
+    window.addEventListener('offline', () => {
+        showSync('📱 Офлайн-режим', true);
+    });
 })();
 </script>
 </body>
