@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ДОСТАВКА">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    <link rel="manifest" href="data:application/json,{'name':'ДОСТАВКА','short_name':'ДОСТАВКА','display':'standalone','start_url':'.','background_color':'#f0f2f5','theme_color':'#2b2d42'}">
+    <title>ДОСТАВКА</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .app-container {
+            max-width: 520px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #2b2d42 0%, #1d1f2c 100%);
+            color: white;
+            padding: 22px 20px 18px;
+            text-align: center;
+        }
+
+        .app-header h2 {
+            font-weight: 600;
+            font-size: 1.9rem;
+            letter-spacing: -0.3px;
+            margin-bottom: 16px;
+            color: #ffffff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .date-navigator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 40px;
+            padding: 6px 10px;
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: pink;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.94);
+        }
+
+        .date-display {
+            background: white;
+            color: #1d1f2c;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 1rem;
+            min-width: 130px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .search-date-row {
+            display: flex;
+            margin-top: 12px;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .search-input {
+            border: none;
+            border-radius: 30px;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            width: 150px;
+            background: rgba(255,255,255,0.9);
+            text-align: center;
+        }
+
+        .search-btn {
+            background: #2d6a4f;
+            border: none;
+            color: white;
+            border-radius: 30px;
+            padding: 10px 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .today-btn {
+            background: #e9ecef;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .totals-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 8px;
+            background: #f8f9fa;
+            margin: 8px 12px 0;
+            border-radius: 20px;
+            gap: 5px;
+        }
+
+        .total-box {
+            background: white;
+            border-radius: 16px;
+            padding: 8px 6px;
+            flex: 1;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .total-label {
+            font-size: 0.65rem;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .total-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2b2d42;
+        }
+
+        .table-wrapper {
+            padding: 10px 8px 20px;
+            background: #ffffff;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2b2d42;
+            padding: 12px 2px;
+            font-size: 0.7rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        td {
+            border-bottom: 1px solid #f1f3f5;
+            height: 42px;
+            text-align: center;
+            padding: 2px;
+        }
+
+        .row-number {
+            font-weight: 600;
+            color: #6c757d;
+            background: #f8f9fa;
+            font-size: 0.8rem;
+        }
+
+        .heart-cell {
+            cursor: pointer;
+            user-select: none;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 42px;
+            transition: 0.2s;
+            border-radius: 8px;
+            opacity: 0.3;
+        }
+
+        .heart-cell:active {
+            transform: scale(0.9);
+        }
+
+        .heart-cell.active {
+            opacity: 1;
+        }
+
+        input {
+            width: 100%;
+            height: 36px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+            background: #fafbfc;
+            padding: 2px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 12px;
+            color: #6c757d;
+            font-size: 0.8rem;
+            background: #f8f9fa;
+        }
+
+        .save-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .save-status.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="save-status" id="saveStatus">💾 Сохранено</div>
+
+<div class="app-container">
+    <div class="app-header">
+        <h2>😊💰💲💵❤️</h2>
+        <div class="date-navigator">
+            <button class="nav-btn" id="prevDayBtn">←</button>
+            <span class="date-display" id="currentDateDisplay">---</span>
+            <button class="nav-btn" id="nextDayBtn">→</button>
+        </div>
+        <div class="search-date-row">
+            <input type="text" class="search-input" id="searchDateInput" placeholder="дд.мм.гггг" />
+            <button class="search-btn" id="searchDateBtn">🔍</button>
+            <button class="today-btn" id="todayBtn">Сегодня</button>
+        </div>
+    </div>
+
+    <div class="totals-container">
+        <div class="total-box">
+            <div class="total-label">💰 Итог</div>
+            <div class="total-value" id="totalMain">0</div>
+        </div>
+        <div class="total-box">
+            <div class="total-label">KM🛣️</div>
+            <div class="total-value" id="totalCol5">0</div>
+        </div>
+        <div class="total-box">
+            <div class="total-label">КГ🛍</div>
+            <div class="total-value" id="totalCol6">0</div>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>💸1</th>
+                <th>🪙2</th>
+                <th>💲3</th>
+                <th>💰4</th>
+                <th>🚘</th>
+                <th>🗿</th>
+                <th>🫧</th>
+            </tr>
+            </thead>
+            <tbody id="rowsBody">
+            <tr><td colspan="7" style="padding:30px;">Загрузка...</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="footer-note">
+        💾 Автосохранение • Нажимайте 💸🪙💲💰
+    </div>
+</div>
+
+<script>
+(function() {
+    if (!window.indexedDB) {
+        document.getElementById('rowsBody').innerHTML = 
+            '<tr><td colspan="7"><div style="padding:30px;">❌ Нет поддержки IndexedDB</div></td></tr>';
+        return;
+    }
+
+    let currentDateStr = '';
+    let db = null;
+
+    const EMOJIS = {
+        1: '💵',
+        2: '💷',
+        3: '💴',
+        4: '💶'
+    };
+
+    function showSaveStatus() {
+        const el = document.getElementById('saveStatus');
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 1500);
+    }
+
+    function formatDateRU(date) {
+        return `${String(date.getDate()).padStart(2,'0')}.${String(date.getMonth()+1).padStart(2,'0')}.${date.getFullYear()}`;
+    }
+
+    function parseDateFromRU(str) {
+        const p = str.split('.');
+        if (p.length !== 3) return null;
+        const d = new Date(+p[2], +p[1]-1, +p[0]);
+        return (d.getFullYear() === +p[2] && d.getMonth() === +p[1]-1 && d.getDate() === +p[0]) ? d : null;
+    }
+
+    function getTodayString() { return formatDateRU(new Date()); }
+
+    function shiftDate(ds, off) {
+        const d = parseDateFromRU(ds);
+        if (!d) return ds;
+        d.setDate(d.getDate() + off);
+        return formatDateRU(d);
+    }
+
+    function openDB() {
+        return new Promise((ok, err) => {
+            const r = indexedDB.open('DeliveryDB', 1);
+            r.onupgradeneeded = e => {
+                if (!e.target.result.objectStoreNames.contains('cells'))
+                    e.target.result.createObjectStore('cells', {keyPath:'id'});
+            };
+            r.onsuccess = e => ok(e.target.result);
+            r.onerror = e => err(e.target.error);
+        });
+    }
+
+    function saveCell(id, val) {
+        if (!db) return;
+        const t = db.transaction('cells','readwrite');
+        t.objectStore('cells').put({id, value: val});
+        showSaveStatus();
+    }
+
+    function loadCells(dateStr) {
+        return new Promise(ok => {
+            if (!db) return ok({});
+            const t = db.transaction('cells','readonly');
+            const s = t.objectStore('cells');
+            const map = {};
+            s.openCursor().onsuccess = e => {
+                const c = e.target.result;
+                if (c) {
+                    if (c.value.id.startsWith(dateStr+'_')) map[c.value.id] = c.value.value;
+                    c.continue();
+                } else ok(map);
+            };
+            s.openCursor().onerror = () => ok({});
+        });
+    }
+
+    function updateTotals() {
+        let main = 0, c5 = 0, c6 = 0;
+        
+        document.querySelectorAll('.heart-cell').forEach(cell => {
+            if (cell.classList.contains('active')) {
+                main += +cell.dataset.col === 1 ? 155 : 85;
+            }
+        });
+
+        document.querySelectorAll('input[data-col]').forEach(inp => {
+            const col = +inp.dataset.col;
+            const v = parseFloat(inp.value.replace(',','.')) || 0;
+            if (col === 5) { c5 += v; main += v * 13; }
+            else if (col === 6) { c6 += v; main += v * 2; }
+            else if (col === 7) { main += v; }
+        });
+
+        document.getElementById('totalMain').textContent = main;
+        document.getElementById('totalCol5').textContent = c5;
+        document.getElementById('totalCol6').textContent = c6;
+    }
+
+    async function renderTable(dateStr) {
+        const tbody = document.getElementById('rowsBody');
+        document.getElementById('currentDateDisplay').textContent = dateStr;
+        
+        const data = await loadCells(dateStr);
+        let h = '';
+        
+        for (let i = 1; i <= 100; i++) {
+            const a1 = data[`${dateStr}_${i}_1`] === '1';
+            const a2 = data[`${dateStr}_${i}_2`] === '1';
+            const a3 = data[`${dateStr}_${i}_3`] === '1';
+            const a4 = data[`${dateStr}_${i}_4`] === '1';
+            const v5 = (data[`${dateStr}_${i}_5`]||'').replace(/"/g,'&quot;');
+            const v6 = (data[`${dateStr}_${i}_6`]||'').replace(/"/g,'&quot;');
+            const v7 = (data[`${dateStr}_${i}_7`]||'').replace(/"/g,'&quot;');
+
+            h += `<tr>
+                <td class="row-number">${i}</td>
+                <td><div class="heart-cell${a1?' active':''}" data-row="${i}" data-col="1">${EMOJIS[1]}</div></td>
+                <td><div class="heart-cell${a2?' active':''}" data-row="${i}" data-col="2">${EMOJIS[2]}</div></td>
+                <td><div class="heart-cell${a3?' active':''}" data-row="${i}" data-col="3">${EMOJIS[3]}</div></td>
+                <td><div class="heart-cell${a4?' active':''}" data-row="${i}" data-col="4">${EMOJIS[4]}</div></td>
+                <td><input data-row="${i}" data-col="5" value="${v5}" placeholder="0"></td>
+                <td><input data-row="${i}" data-col="6" value="${v6}" placeholder="0"></td>
+                <td><input data-row="${i}" data-col="7" value="${v7}" placeholder="0"></td>
+            </tr>`;
+        }
+
+        tbody.innerHTML = h;
+
+        tbody.querySelectorAll('.heart-cell').forEach(cell => {
+            cell.onclick = () => {
+                cell.classList.toggle('active');
+                saveCell(`${dateStr}_${cell.dataset.row}_${cell.dataset.col}`, 
+                         cell.classList.contains('active') ? '1' : '0');
+                updateTotals();
+            };
+        });
+
+        tbody.querySelectorAll('input').forEach(inp => {
+            inp.oninput = () => {
+                saveCell(`${dateStr}_${inp.dataset.row}_${inp.dataset.col}`, inp.value);
+                updateTotals();
+            };
+        });
+
+        updateTotals();
+    }
+
+    async function goToDate(ds) {
+        if (!parseDateFromRU(ds)) { alert('Формат: дд.мм.гггг'); return; }
+        currentDateStr = ds;
+        await renderTable(ds);
+        document.getElementById('searchDateInput').value = ds;
+    }
+
+    (async function init() {
+        try { db = await openDB(); } catch(e) {
+            document.getElementById('rowsBody').innerHTML = 
+                '<tr><td colspan="7"><div style="padding:30px;">❌ Ошибка БД</div></td></tr>';
+            return;
+        }
+
+        const today = getTodayString();
+        currentDateStr = today;
+        await renderTable(today);
+        document.getElementById('searchDateInput').value = today;
+
+        document.getElementById('prevDayBtn').onclick = () => goToDate(shiftDate(currentDateStr, -1));
+        document.getElementById('nextDayBtn').onclick = () => goToDate(shiftDate(currentDateStr, 1));
+        document.getElementById('todayBtn').onclick = () => goToDate(getTodayString());
+        document.getElementById('searchDateBtn').onclick = () => goToDate(document.getElementById('searchDateInput').value.trim());
+        document.getElementById('searchDateInput').onkeypress = e => { if (e.key==='Enter') document.getElementById('searchDateBtn').click(); };
+        document.getElementById('currentDateDisplay').onclick = () => document.getElementById('searchDateInput').focus();
+    })();
+})();
+</script>
+</body>
+</html>
