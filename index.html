@@ -40,15 +40,56 @@
             padding: 22px 20px 18px;
             text-align: center;
             border-bottom: 1px solid rgba(108, 0, 255, 0.3);
+            position: relative;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            position: relative;
         }
 
         .app-header h2 {
             font-weight: 600;
             font-size: 1.9rem;
             letter-spacing: -0.3px;
-            margin-bottom: 16px;
             color: #ffffff;
             text-shadow: 0 0 20px rgba(108, 0, 255, 0.5);
+            margin: 0 auto;
+            padding-left: 50px;
+        }
+
+        .sync-btn-round {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(108, 0, 255, 0.3);
+            border: 1px solid rgba(108, 0, 255, 0.5);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .sync-btn-round:active {
+            transform: translateY(-50%) scale(0.9);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+        }
+
+        .sync-btn-round:hover {
+            background: rgba(108, 0, 255, 0.5);
+            box-shadow: 0 0 25px rgba(108, 0, 255, 0.6);
         }
 
         .date-navigator {
@@ -276,18 +317,6 @@
             padding: 14px 20px;
         }
 
-        .sync-now-btn {
-            background: linear-gradient(135deg, #6c00ff, #00ffff);
-            border: none;
-            color: white;
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-        }
-
         .sync-indicator {
             position: fixed;
             top: 10px;
@@ -330,7 +359,10 @@
 
 <div class="app-container">
     <div class="app-header">
-        <h2>😊💰💲💵❤️</h2>
+        <div class="header-row">
+            <h2>💲💲💲</h2>
+            <button class="sync-btn-round" onclick="syncNow()" title="Синхронизировать">💾</button>
+        </div>
         <div class="date-navigator">
             <button class="nav-btn" id="prevDayBtn">←</button>
             <span class="date-display" id="currentDateDisplay">---</span>
@@ -376,11 +408,8 @@
         </table>
     </div>
     <div class="footer-note">
-        <span>🔄 Каждые 5 мин</span>
-        <div style="display:flex;gap:8px;">
-            <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔊</button>
-            <button class="sync-now-btn" onclick="syncNow()">Синхр. сейчас</button>
-        </div>
+        <span>🔄 Каждые 5 часов</span>
+        <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔊</button>
     </div>
 </div>
 
@@ -393,7 +422,6 @@ let allData = {};
 let localChanges = false;
 let soundEnabled = true;
 
-// Создаём аудио-контекст для звуков
 let audioContext = null;
 
 function getAudioContext() {
@@ -415,17 +443,15 @@ function playActivateSound() {
         gainNode.connect(ctx.destination);
         
         oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(880, ctx.currentTime); // Ля 2-й октавы
-        oscillator.frequency.setValueAtTime(1100, ctx.currentTime + 0.1); // До-диез
+        oscillator.frequency.setValueAtTime(880, ctx.currentTime);
+        oscillator.frequency.setValueAtTime(1100, ctx.currentTime + 0.1);
         
         gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
         
         oscillator.start(ctx.currentTime);
         oscillator.stop(ctx.currentTime + 0.3);
-    } catch(e) {
-        // Без звука если ошибка
-    }
+    } catch(e) {}
 }
 
 // Звук деактивации (низкий "тук")
@@ -448,9 +474,48 @@ function playDeactivateSound() {
         
         oscillator.start(ctx.currentTime);
         oscillator.stop(ctx.currentTime + 0.3);
-    } catch(e) {
-        // Без звука если ошибка
-    }
+    } catch(e) {}
+}
+
+// Новый звук для кнопки синхронизации
+function playSyncSound() {
+    if (!soundEnabled) return;
+    try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(600, now);
+        osc1.frequency.setValueAtTime(900, now + 0.08);
+        osc1.frequency.setValueAtTime(1200, now + 0.16);
+        
+        gain1.gain.setValueAtTime(0.3, now);
+        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        
+        osc1.start(now);
+        osc1.stop(now + 0.25);
+        
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(800, now + 0.1);
+        osc2.frequency.setValueAtTime(1200, now + 0.2);
+        
+        gain2.gain.setValueAtTime(0.2, now + 0.1);
+        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        
+        osc2.start(now + 0.1);
+        osc2.stop(now + 0.3);
+        
+    } catch(e) {}
 }
 
 function toggleSound() {
@@ -597,12 +662,10 @@ function renderTable(dateStr) {
             const isActive = cell.classList.contains('active');
             
             if (isActive) {
-                // Деактивация
                 cell.classList.remove('active');
                 saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '0');
                 playDeactivateSound();
             } else {
-                // Активация
                 cell.classList.add('active');
                 saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '1');
                 playActivateSound();
@@ -630,6 +693,7 @@ async function goToDate(ds) {
 }
 
 async function syncNow() {
+    playSyncSound();
     showSync('🔄 Синхронизация...');
     await saveToCloud();
     await loadFromCloud();
@@ -643,12 +707,12 @@ async function syncNow() {
     currentDateStr = today;
     renderTable(today);
     
-    // Автосинхронизация раз в 5 минут (300 000 мс)
+    // Автосинхронизация каждые 5 часов (18 000 000 мс)
     setInterval(async () => {
         await saveToCloud();
         await loadFromCloud();
         if (currentDateStr) renderTable(currentDateStr);
-    }, 300000);
+    }, 18000000);
     
     document.getElementById('prevDayBtn').onclick = prevDay;
     document.getElementById('nextDayBtn').onclick = nextDay;
