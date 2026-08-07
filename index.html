@@ -22,7 +22,6 @@
             margin: 0;
         }
 
-        /* Splash Screen */
         #splashScreen {
             position: fixed;
             top: 0; left: 0;
@@ -35,32 +34,22 @@
             z-index: 9999;
             transition: opacity 0.4s ease, visibility 0.4s ease;
         }
-        #splashScreen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-        .splash-icon {
-            font-size: 5rem;
-            animation: splashBounce 1s ease infinite alternate;
-        }
+        #splashScreen.hidden { opacity: 0; visibility: hidden; }
+        .splash-icon { font-size: 5rem; animation: splashBounce 1s ease infinite alternate; }
         @keyframes splashBounce {
             0% { transform: scale(1); }
             100% { transform: scale(1.2); }
         }
         .splash-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
+            font-size: 1.8rem; font-weight: 700; color: #fff;
             margin-top: 20px;
             text-shadow: 0 0 20px #6c00ff, 0 0 40px #00ffff;
         }
         .splash-loader {
-            width: 60px;
-            height: 4px;
+            width: 60px; height: 4px;
             background: rgba(108,0,255,0.3);
             border-radius: 4px;
-            margin-top: 20px;
-            overflow: hidden;
+            margin-top: 20px; overflow: hidden;
         }
         .splash-loader-bar {
             height: 100%;
@@ -69,9 +58,7 @@
             animation: splashLoad 1.5s ease infinite;
         }
         @keyframes splashLoad {
-            0% { width: 0; }
-            50% { width: 70%; }
-            100% { width: 100%; }
+            0% { width: 0; } 50% { width: 70%; } 100% { width: 100%; }
         }
 
         .app-container {
@@ -120,13 +107,9 @@
             100% { text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 60px #00ffff, 0 0 100px #6c00ff, 0 0 140px #6c00ff; }
         }
 
-        .header-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        .header-buttons { display: flex; gap: 8px; align-items: center; }
 
-        .stats-btn-round {
+        .stats-btn-round, .sync-btn-round {
             width: 40px; height: 40px; min-width: 40px;
             border-radius: 50%;
             background: rgba(108, 0, 255, 0.3);
@@ -141,28 +124,8 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
-        .stats-btn-round:active {
-            transform: scale(0.85);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-            background: rgba(108, 0, 255, 0.6);
-        }
-
-        .sync-btn-round {
-            width: 40px; height: 40px; min-width: 40px;
-            border-radius: 50%;
-            background: rgba(108, 0, 255, 0.3);
-            border: 1px solid rgba(108, 0, 255, 0.5);
-            color: white;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-            box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
-            display: flex; align-items: center; justify-content: center;
-            line-height: 1;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-        }
-        .sync-btn-round:active {
+        .sync-btn-round { font-size: 1.3rem; }
+        .stats-btn-round:active, .sync-btn-round:active {
             transform: scale(0.85);
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
             background: rgba(108, 0, 255, 0.6);
@@ -219,9 +182,7 @@
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
             color: #fff;
         }
-        .date-display:active {
-            background: rgba(0, 255, 255, 0.1);
-        }
+        .date-display:active { background: rgba(0, 255, 255, 0.1); }
 
         .search-date-row {
             display: flex;
@@ -243,10 +204,7 @@
             outline: none;
         }
         .search-input::placeholder { color: rgba(224, 176, 255, 0.5); }
-        .search-input:focus {
-            border-color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-        }
+        .search-input:focus { border-color: #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); }
 
         .search-btn {
             background: linear-gradient(135deg, #6c00ff, #00ffff);
@@ -260,10 +218,7 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
-        .search-btn:active {
-            transform: scale(0.9);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-        }
+        .search-btn:active { transform: scale(0.9); box-shadow: 0 0 30px rgba(0, 255, 255, 0.8); }
 
         .today-btn {
             background: rgba(108, 0, 255, 0.3);
@@ -277,11 +232,7 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
-        .today-btn:active {
-            transform: scale(0.9);
-            background: rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
+        .today-btn:active { transform: scale(0.9); background: rgba(0, 255, 255, 0.2); box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
 
         .totals-container {
             display: flex;
@@ -320,9 +271,7 @@
             text-shadow: 0 0 15px rgba(108, 0, 255, 0.6);
             transition: all 0.3s ease;
         }
-        .total-value.changed {
-            animation: valuePop 0.4s ease;
-        }
+        .total-value.changed { animation: valuePop 0.4s ease; }
         @keyframes valuePop {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); color: #00ffff; }
@@ -348,9 +297,10 @@
             background: #0f0f1a;
             font-weight: 600;
             color: #00ffff;
-            padding: 14px 2px;
-            font-size: 0.7rem;
+            padding: 14px 1px;
+            font-size: 0.65rem;
             border-bottom: 2px solid rgba(108, 0, 255, 0.4);
+            text-align: center;
         }
 
         td {
@@ -358,36 +308,38 @@
             height: 42px;
             text-align: center;
             background: #1a1a2e;
-            padding: 2px;
+            padding: 1px;
         }
 
         .row-time {
             font-weight: 400;
-            color: rgba(0, 255, 255, 0.5);
+            color: #00ffff;
             background: #0f0f1a;
-            font-size: 0.55rem;
-            width: 40px;
-            text-align: right;
-            padding-right: 6px;
+            font-size: 0.7rem;
+            width: 28px;
+            line-height: 1.1;
+            text-align: center;
+            padding: 0 2px;
+            opacity: 0.7;
         }
 
         .row-number {
             font-weight: 600;
             color: #6c00ff;
             background: #0f0f1a;
-            font-size: 0.8rem;
-            width: 25px;
+            font-size: 0.75rem;
+            width: 22px;
         }
 
         .heart-cell {
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 42px;
+            height: 38px;
             border-radius: 8px;
-            margin: 2px;
+            margin: 1px;
             opacity: 0.25;
             filter: grayscale(30%);
             transition: opacity 0.12s ease, filter 0.12s ease, transform 0.08s ease;
@@ -402,25 +354,21 @@
 
         input {
             width: 100%;
-            height: 36px;
+            height: 32px;
             border: 1px solid rgba(108, 0, 255, 0.3);
-            border-radius: 8px;
+            border-radius: 6px;
             text-align: center;
-            font-size: 13px;
+            font-size: 12px;
             background: #0f0f1a;
             color: #ffffff;
-            padding: 2px;
+            padding: 1px;
             transition: border-color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
             outline: none;
         }
-        input:focus {
-            border-color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-            background: #1a1a2e;
-        }
+        input:focus { border-color: #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); background: #1a1a2e; }
 
         .footer-note {
-            padding: 8px 15px;
+            padding: 10px 15px;
             color: rgba(224, 176, 255, 0.6);
             font-size: 0.7rem;
             background: #0f0f1a;
@@ -428,21 +376,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        
-        .footer-stats {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-            font-size: 0.65rem;
-            color: #ffd700;
-        }
-        
-        .footer-stats span {
-            white-space: nowrap;
         }
 
         .sound-toggle {
@@ -475,21 +408,27 @@
             pointer-events: none;
         }
         .sync-indicator.show { opacity: 1; }
-        .sync-indicator.error {
-            background: #ff9800;
-            box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
+        .sync-indicator.error { background: #ff9800; box-shadow: 0 0 20px rgba(255, 152, 0, 0.5); }
+
+        /* Статистика — скрыта по умолчанию */
+        #footerStats {
+            display: none;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.65rem;
+            color: #00ffff;
         }
+        #footerStats.show { display: flex; }
+        #footerStats span { white-space: nowrap; }
     </style>
 </head>
 <body>
 
-<!-- Splash Screen -->
 <div id="splashScreen">
     <div class="splash-icon">🪙</div>
     <div class="splash-title">DOST DIX</div>
-    <div class="splash-loader">
-        <div class="splash-loader-bar"></div>
-    </div>
+    <div class="splash-loader"><div class="splash-loader-bar"></div></div>
 </div>
 
 <div class="sync-indicator" id="syncStatus">☁️ Синхронизировано</div>
@@ -534,8 +473,8 @@
         <table>
             <thead>
             <tr>
-                <th>Время</th>
-                <th>№</th>
+                <th style="width:28px"></th>
+                <th style="width:22px">№</th>
                 <th>💸1</th>
                 <th>🪙2</th>
                 <th>💲3</th>
@@ -550,8 +489,9 @@
     </div>
     <div class="footer-note">
         <div class="footer-stats" id="footerStats">
-            📊 За месяц: <span id="statTotal">0</span> 💰 | <span id="statKM">0</span> 🛣️ | <span id="statKG">0</span> 🛍️ | дней: <span id="statDays">0</span>
+            📊 <span id="statTotal">0</span> 💰 | <span id="statKM">0</span> 🛣️ | <span id="statKG">0</span> 🛍️ | дней: <span id="statDays">0</span>
         </div>
+        <span id="syncInfo">🔄 Каждые 5 часов</span>
         <button class="sound-toggle" id="soundToggle">🔊</button>
     </div>
 </div>
@@ -712,7 +652,6 @@ function saveCellLocal(dateStr, row, col, value) {
     localChanges = true;
 }
 
-// Сохраняем время начала заполнения строки
 function saveRowTime(dateStr, row, time) {
     if (!allData[dateStr]) allData[dateStr] = {};
     if (!allData[dateStr]['_rowTimes']) allData[dateStr]['_rowTimes'] = {};
@@ -752,7 +691,7 @@ function shiftDate(ds, off) {
 
 function getNowTime() {
     const d = new Date();
-    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    return `${String(d.getHours()).padStart(2,'0')}<br>${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
 async function prevDay() {
@@ -762,7 +701,6 @@ async function prevDay() {
     await goToDate(shiftDate(currentDateStr, -1));
     setTimeout(() => isSwitching = false, 120);
 }
-
 async function nextDay() {
     if (isSwitching) return;
     isSwitching = true;
@@ -770,31 +708,18 @@ async function nextDay() {
     await goToDate(shiftDate(currentDateStr, 1));
     setTimeout(() => isSwitching = false, 120);
 }
-
-async function goToday() {
-    playTodaySound();
-    await goToDate(getToday());
-}
-
+async function goToday() { playTodaySound(); await goToDate(getToday()); }
 async function searchDate() {
     const v = document.getElementById('searchDateInput').value.trim();
-    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) {
-        playSearchSound();
-        await goToDate(v);
-    } else {
-        alert('Формат: дд.мм.гггг');
-    }
+    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) { playSearchSound(); await goToDate(v); }
+    else { alert('Формат: дд.мм.гггг'); }
 }
 
 function updateTotals() {
     let main = 0, c5 = 0, c6 = 0;
-    
     document.querySelectorAll('.heart-cell').forEach(cell => {
-        if (cell.classList.contains('active')) {
-            main += +cell.dataset.col === 1 ? 155 : 85;
-        }
+        if (cell.classList.contains('active')) main += +cell.dataset.col === 1 ? 155 : 85;
     });
-
     document.querySelectorAll('input[data-col]').forEach(inp => {
         const col = +inp.dataset.col;
         const v = parseFloat(inp.value.replace(',','.')) || 0;
@@ -802,42 +727,21 @@ function updateTotals() {
         else if (col === 6) { c6 += v; main += v * 2; }
         else if (col === 7) { main += v; }
     });
-
     const mainEl = document.getElementById('totalMain');
     const c5El = document.getElementById('totalCol5');
     const c6El = document.getElementById('totalCol6');
-    
-    if (previousTotals.main !== main) {
-        mainEl.classList.remove('changed');
-        void mainEl.offsetWidth;
-        mainEl.classList.add('changed');
-    }
-    if (previousTotals.col5 !== c5) {
-        c5El.classList.remove('changed');
-        void c5El.offsetWidth;
-        c5El.classList.add('changed');
-    }
-    if (previousTotals.col6 !== c6) {
-        c6El.classList.remove('changed');
-        void c6El.offsetWidth;
-        c6El.classList.add('changed');
-    }
-
-    mainEl.textContent = main;
-    c5El.textContent = c5;
-    c6El.textContent = c6;
-    
+    if (previousTotals.main !== main) { mainEl.classList.remove('changed'); void mainEl.offsetWidth; mainEl.classList.add('changed'); }
+    if (previousTotals.col5 !== c5) { c5El.classList.remove('changed'); void c5El.offsetWidth; c5El.classList.add('changed'); }
+    if (previousTotals.col6 !== c6) { c6El.classList.remove('changed'); void c6El.offsetWidth; c6El.classList.add('changed'); }
+    mainEl.textContent = main; c5El.textContent = c5; c6El.textContent = c6;
     previousTotals = { main, col5: c5, col6: c6 };
 }
 
 function updateStats() {
     if (!currentDateStr) return;
     const parts = currentDateStr.split('.');
-    const month = parts[1];
-    const year = parts[2];
-    
+    const month = parts[1]; const year = parts[2];
     let totalMain = 0, totalKM = 0, totalKG = 0, filledDays = 0;
-    
     for (const dateKey in allData) {
         if (dateKey.startsWith('_')) continue;
         const dp = dateKey.split('.');
@@ -845,7 +749,6 @@ function updateStats() {
             const dayData = allData[dateKey];
             let dayMain = 0, dayKM = 0, dayKG = 0;
             let hasData = false;
-            
             for (const row in dayData) {
                 if (row.startsWith('_')) continue;
                 for (const col in dayData[row]) {
@@ -857,16 +760,9 @@ function updateStats() {
                     else if (col === '7') { const v = parseFloat(val) || 0; dayMain += v; if (v) hasData = true; }
                 }
             }
-            
-            if (hasData) {
-                totalMain += dayMain;
-                totalKM += dayKM;
-                totalKG += dayKG;
-                filledDays++;
-            }
+            if (hasData) { totalMain += dayMain; totalKM += dayKM; totalKG += dayKG; filledDays++; }
         }
     }
-    
     document.getElementById('statTotal').textContent = totalMain;
     document.getElementById('statKM').textContent = totalKM;
     document.getElementById('statKG').textContent = totalKG;
@@ -876,13 +772,9 @@ function updateStats() {
 function renderTable(dateStr) {
     document.getElementById('currentDateDisplay').textContent = dateStr;
     document.getElementById('searchDateInput').value = dateStr;
-    
     const display = document.getElementById('currentDateDisplay');
-    if (dateStr === getToday()) {
-        display.classList.add('today-highlight');
-    } else {
-        display.classList.remove('today-highlight');
-    }
+    if (dateStr === getToday()) { display.classList.add('today-highlight'); }
+    else { display.classList.remove('today-highlight'); }
     
     let h = '';
     for (let i = 1; i <= 100; i++) {
@@ -907,7 +799,6 @@ function renderTable(dateStr) {
             <td><input type="text" inputmode="decimal" data-row="${i}" data-col="7" value="${v7}" placeholder="0"></td>
         </tr>`;
     }
-
     document.getElementById('rowsBody').innerHTML = h;
 
     document.querySelectorAll('.heart-cell').forEach(cell => {
@@ -923,13 +814,11 @@ function renderTable(dateStr) {
                 const time = getNowTime();
                 saveRowTime(dateStr, row, time);
                 saveCellLocal(dateStr, row, cell.dataset.col, '1');
-                // Обновляем время в строке
-                const rowTimeCell = document.querySelector(`tr:nth-child(${row}) .row-time`);
-                if (rowTimeCell) rowTimeCell.textContent = time;
+                document.querySelector(`tr:nth-child(${row}) .row-time`).innerHTML = time;
                 playActivateSound();
             }
             updateTotals();
-            updateStats();
+            if (statsVisible) updateStats();
         };
     });
 
@@ -939,21 +828,18 @@ function renderTable(dateStr) {
             const time = getNowTime();
             saveRowTime(dateStr, row, time);
             saveCellLocal(dateStr, row, inp.dataset.col, inp.value);
-            const rowTimeCell = document.querySelector(`tr:nth-child(${row}) .row-time`);
-            if (rowTimeCell && !rowTimeCell.textContent) rowTimeCell.textContent = time;
+            const timeCell = document.querySelector(`tr:nth-child(${row}) .row-time`);
+            if (!timeCell.textContent.trim()) timeCell.innerHTML = time;
             updateTotals();
-            updateStats();
+            if (statsVisible) updateStats();
         };
     });
 
     updateTotals();
-    updateStats();
+    if (statsVisible) updateStats();
 }
 
-async function goToDate(ds) {
-    currentDateStr = ds;
-    renderTable(ds);
-}
+async function goToDate(ds) { currentDateStr = ds; renderTable(ds); }
 
 async function syncNow() {
     playSyncSound();
@@ -965,29 +851,25 @@ async function syncNow() {
 
 function toggleStats() {
     const statsEl = document.getElementById('footerStats');
+    const syncInfo = document.getElementById('syncInfo');
     statsVisible = !statsVisible;
     if (statsVisible) {
-        statsEl.style.display = 'flex';
+        statsEl.classList.add('show');
+        syncInfo.style.display = 'none';
         updateStats();
     } else {
-        statsEl.style.display = 'none';
+        statsEl.classList.remove('show');
+        syncInfo.style.display = '';
     }
 }
 
 (async function init() {
     await loadFromCloud();
-    
-    setTimeout(() => {
-        document.getElementById('splashScreen').classList.add('hidden');
-    }, 1500);
+    setTimeout(() => { document.getElementById('splashScreen').classList.add('hidden'); }, 1500);
     
     const today = getToday();
     currentDateStr = today;
     renderTable(today);
-    
-    // Показываем статистику по умолчанию
-    document.getElementById('footerStats').style.display = 'flex';
-    statsVisible = true;
     
     setInterval(async () => {
         await saveToCloud();
@@ -1002,13 +884,8 @@ function toggleStats() {
     document.getElementById('syncBtn').onclick = syncNow;
     document.getElementById('soundToggle').onclick = toggleSound;
     document.getElementById('statsBtn').onclick = toggleStats;
-    
-    document.getElementById('searchDateInput').onkeypress = e => {
-        if (e.key === 'Enter') searchDate();
-    };
-    document.getElementById('currentDateDisplay').onclick = () => {
-        document.getElementById('searchDateInput').focus();
-    };
+    document.getElementById('searchDateInput').onkeypress = e => { if (e.key === 'Enter') searchDate(); };
+    document.getElementById('currentDateDisplay').onclick = () => { document.getElementById('searchDateInput').focus(); };
     
     window.addEventListener('beforeunload', () => { saveToCloud(); });
     window.addEventListener('online', async () => {
