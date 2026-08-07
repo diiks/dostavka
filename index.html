@@ -22,6 +22,58 @@
             margin: 0;
         }
 
+        /* Splash Screen */
+        #splashScreen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        #splashScreen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .splash-icon {
+            font-size: 5rem;
+            animation: splashBounce 1s ease infinite alternate;
+        }
+        @keyframes splashBounce {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+        .splash-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 20px;
+            text-shadow: 0 0 20px #6c00ff, 0 0 40px #00ffff;
+        }
+        .splash-loader {
+            width: 60px;
+            height: 4px;
+            background: rgba(108,0,255,0.3);
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        .splash-loader-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6c00ff, #00ffff);
+            border-radius: 4px;
+            animation: splashLoad 1.5s ease infinite;
+        }
+        @keyframes splashLoad {
+            0% { width: 0; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
         .app-container {
             max-width: 520px;
             width: 100%;
@@ -47,7 +99,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
             gap: 8px;
         }
 
@@ -56,12 +108,7 @@
             font-size: 1rem;
             letter-spacing: 1px;
             color: #ffffff;
-            text-shadow: 
-                0 0 10px #6c00ff,
-                0 0 20px #6c00ff,
-                0 0 40px #6c00ff,
-                0 0 80px #00ffff,
-                0 0 120px #00ffff;
+            text-shadow: 0 0 10px #6c00ff, 0 0 20px #6c00ff, 0 0 40px #6c00ff, 0 0 80px #00ffff, 0 0 120px #00ffff;
             animation: titleGlow 1.5s ease-in-out infinite alternate;
             white-space: nowrap;
             text-align: left;
@@ -69,27 +116,12 @@
         }
 
         @keyframes titleGlow {
-            0% {
-                text-shadow: 
-                    0 0 10px #6c00ff,
-                    0 0 20px #6c00ff,
-                    0 0 40px #6c00ff,
-                    0 0 80px #00ffff;
-            }
-            100% {
-                text-shadow: 
-                    0 0 15px #00ffff,
-                    0 0 30px #00ffff,
-                    0 0 60px #00ffff,
-                    0 0 100px #6c00ff,
-                    0 0 140px #6c00ff;
-            }
+            0% { text-shadow: 0 0 10px #6c00ff, 0 0 20px #6c00ff, 0 0 40px #6c00ff, 0 0 80px #00ffff; }
+            100% { text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 60px #00ffff, 0 0 100px #6c00ff, 0 0 140px #6c00ff; }
         }
 
         .sync-btn-round {
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
+            width: 40px; height: 40px; min-width: 40px;
             border-radius: 50%;
             background: rgba(108, 0, 255, 0.3);
             border: 1px solid rgba(108, 0, 255, 0.5);
@@ -98,18 +130,31 @@
             cursor: pointer;
             transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
             box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             line-height: 1;
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
-
         .sync-btn-round:active {
             transform: scale(0.85);
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
             background: rgba(108, 0, 255, 0.6);
+        }
+
+        /* Прогресс-бар месяца */
+        .month-progress {
+            height: 3px;
+            background: rgba(108, 0, 255, 0.2);
+            margin: 0 0 8px 0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .month-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6c00ff, #00ffff);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .date-navigator {
@@ -128,13 +173,10 @@
             background: rgba(108, 0, 255, 0.3);
             border: none;
             color: #e0b0ff;
-            width: 38px;
-            height: 38px;
+            width: 38px; height: 38px;
             border-radius: 50%;
             font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             cursor: pointer;
             transition: transform 0.08s ease, background 0.08s ease, box-shadow 0.08s ease;
             font-weight: bold;
@@ -142,7 +184,6 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
-
         .nav-btn:active {
             transform: scale(0.85);
             background: rgba(0, 255, 255, 0.4);
@@ -160,9 +201,13 @@
             text-align: center;
             border: 1px solid rgba(108, 0, 255, 0.4);
             cursor: pointer;
-            transition: background 0.08s ease;
+            transition: background 0.08s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-
+        .date-display.today-highlight {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            color: #fff;
+        }
         .date-display:active {
             background: rgba(0, 255, 255, 0.1);
         }
@@ -186,11 +231,7 @@
             transition: border-color 0.1s ease, box-shadow 0.1s ease;
             outline: none;
         }
-
-        .search-input::placeholder {
-            color: rgba(224, 176, 255, 0.5);
-        }
-
+        .search-input::placeholder { color: rgba(224, 176, 255, 0.5); }
         .search-input:focus {
             border-color: #00ffff;
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
@@ -198,8 +239,7 @@
 
         .search-btn {
             background: linear-gradient(135deg, #6c00ff, #00ffff);
-            border: none;
-            color: white;
+            border: none; color: white;
             border-radius: 30px;
             padding: 10px 18px;
             font-weight: 600;
@@ -209,7 +249,6 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
-
         .search-btn:active {
             transform: scale(0.9);
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
@@ -227,12 +266,26 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
-
         .today-btn:active {
             transform: scale(0.9);
             background: rgba(0, 255, 255, 0.2);
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
+
+        .stats-btn {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 30px;
+            padding: 10px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #ffd700;
+            font-size: 0.85rem;
+            transition: transform 0.08s ease;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        .stats-btn:active { transform: scale(0.9); }
 
         .totals-container {
             display: flex;
@@ -269,12 +322,21 @@
             font-weight: 700;
             color: #ffffff;
             text-shadow: 0 0 15px rgba(108, 0, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+        .total-value.changed {
+            animation: valuePop 0.4s ease;
+        }
+        @keyframes valuePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: #00ffff; }
+            100% { transform: scale(1); }
         }
 
         .table-wrapper {
             padding: 10px 8px 20px;
             background: #0f0f1a;
-            max-height: 450px;
+            max-height: 380px;
             overflow-y: auto;
         }
 
@@ -290,65 +352,77 @@
             background: #0f0f1a;
             font-weight: 600;
             color: #00ffff;
-            padding: 14px 2px;
-            font-size: 0.7rem;
+            padding: 10px 2px;
+            font-size: 0.65rem;
             border-bottom: 2px solid rgba(108, 0, 255, 0.4);
+            text-align: center;
+            vertical-align: middle;
+        }
+        th small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.5rem;
+            color: rgba(0,255,255,0.6);
+            margin-top: 1px;
         }
 
         td {
             border-bottom: 1px solid rgba(108, 0, 255, 0.2);
-            height: 42px;
+            height: 38px;
             text-align: center;
             background: #1a1a2e;
-            padding: 2px;
+            padding: 1px;
         }
 
         .row-number {
             font-weight: 600;
             color: #6c00ff;
             background: #0f0f1a;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .heart-cell {
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 42px;
+            height: 38px;
             border-radius: 8px;
-            margin: 2px;
+            margin: 1px;
             opacity: 0.25;
             filter: grayscale(30%);
             transition: opacity 0.12s ease, filter 0.12s ease, transform 0.08s ease;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
-
-        .heart-cell:active {
-            transform: scale(0.82);
-        }
-
+        .heart-cell:active { transform: scale(0.82); }
         .heart-cell.active {
             opacity: 1;
             filter: grayscale(0%) drop-shadow(0 0 10px rgba(108, 0, 255, 0.9));
         }
 
+        .time-stamp {
+            font-size: 0.45rem;
+            color: rgba(255,255,255,0.3);
+            display: block;
+            margin-top: -2px;
+            min-height: 8px;
+        }
+
         input {
             width: 100%;
-            height: 36px;
+            height: 32px;
             border: 1px solid rgba(108, 0, 255, 0.3);
-            border-radius: 8px;
+            border-radius: 6px;
             text-align: center;
-            font-size: 13px;
+            font-size: 12px;
             background: #0f0f1a;
             color: #ffffff;
-            padding: 2px;
+            padding: 1px;
             transition: border-color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
             outline: none;
         }
-
         input:focus {
             border-color: #00ffff;
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
@@ -357,21 +431,19 @@
 
         .footer-note {
             text-align: center;
-            padding: 14px;
+            padding: 10px 20px;
             color: rgba(224, 176, 255, 0.6);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             background: #0f0f1a;
             border-top: 1px solid rgba(108, 0, 255, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 20px;
         }
 
         .sync-indicator {
             position: fixed;
-            top: 10px;
-            left: 50%;
+            top: 10px; left: 50%;
             transform: translateX(-50%);
             background: #4CAF50;
             color: white;
@@ -384,11 +456,7 @@
             box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
             pointer-events: none;
         }
-
-        .sync-indicator.show {
-            opacity: 1;
-        }
-
+        .sync-indicator.show { opacity: 1; }
         .sync-indicator.error {
             background: #ff9800;
             box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
@@ -406,13 +474,39 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
+        .sound-toggle:active { transform: scale(0.85); }
 
-        .sound-toggle:active {
-            transform: scale(0.85);
+        /* Статистика */
+        .stats-panel {
+            display: none;
+            padding: 12px;
+            background: rgba(15, 15, 26, 0.95);
+            margin: 0 12px 8px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
+        .stats-panel.show { display: block; }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            color: #ffd700;
+            font-size: 0.8rem;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+        }
+        .stats-row:last-child { border-bottom: none; }
     </style>
 </head>
 <body>
+
+<!-- Splash Screen -->
+<div id="splashScreen">
+    <div class="splash-icon">🪙</div>
+    <div class="splash-title">DOST DIX</div>
+    <div class="splash-loader">
+        <div class="splash-loader-bar"></div>
+    </div>
+</div>
 
 <div class="sync-indicator" id="syncStatus">☁️ Синхронизировано</div>
 
@@ -421,6 +515,9 @@
         <div class="header-row">
             <div class="header-title">💲🪙✨DOST DIX✨🪙💲</div>
             <button class="sync-btn-round" id="syncBtn" title="Синхронизировать">💾</button>
+        </div>
+        <div class="month-progress">
+            <div class="month-progress-bar" id="monthProgress" style="width: 0%"></div>
         </div>
         <div class="date-navigator">
             <button class="nav-btn" id="prevDayBtn">←</button>
@@ -431,6 +528,13 @@
             <input type="text" class="search-input" id="searchDateInput" placeholder="дд.мм.гггг" inputmode="numeric" />
             <button class="search-btn" id="searchDateBtn">🔍</button>
             <button class="today-btn" id="todayBtn">Сегодня</button>
+            <button class="stats-btn" id="statsBtn">📊</button>
+        </div>
+        <div class="stats-panel" id="statsPanel">
+            <div class="stats-row"><span>💰 Общий итог:</span><span id="statTotal">0</span></div>
+            <div class="stats-row"><span>🛣️ Всего KM:</span><span id="statKM">0</span></div>
+            <div class="stats-row"><span>🛍️ Всего КГ:</span><span id="statKG">0</span></div>
+            <div class="stats-row"><span>📅 Дней заполнено:</span><span id="statDays">0</span></div>
         </div>
     </div>
 
@@ -454,10 +558,10 @@
             <thead>
             <tr>
                 <th>№</th>
-                <th>💸1</th>
-                <th>🪙2</th>
-                <th>💲3</th>
-                <th>💰4</th>
+                <th>💸1<small>время</small></th>
+                <th>🪙2<small>время</small></th>
+                <th>💲3<small>время</small></th>
+                <th>💰4<small>время</small></th>
                 <th>🚘</th>
                 <th>🗿</th>
                 <th>🫧</th>
@@ -481,145 +585,101 @@ let allData = {};
 let localChanges = false;
 let soundEnabled = true;
 let isSwitching = false;
+let previousTotals = { main: 0, col5: 0, col6: 0 };
 
 let audioContext = null;
-
 function getAudioContext() {
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    }
+    if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
     return audioContext;
 }
 
+// Звуки (без изменений)
 function playActivateSound() {
     if (!soundEnabled) return;
     try {
         const ctx = getAudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(880, ctx.currentTime);
         osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.06);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
     } catch(e) {}
 }
-
 function playDeactivateSound() {
     if (!soundEnabled) return;
     try {
         const ctx = getAudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(440, ctx.currentTime);
         osc.frequency.setValueAtTime(330, ctx.currentTime + 0.06);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
     } catch(e) {}
 }
-
 function playSyncSound() {
     if (!soundEnabled) return;
     try {
-        const ctx = getAudioContext();
-        const now = ctx.currentTime;
-        
-        const osc1 = ctx.createOscillator();
-        const gain1 = ctx.createGain();
-        osc1.connect(gain1);
-        gain1.connect(ctx.destination);
+        const ctx = getAudioContext(); const now = ctx.currentTime;
+        const osc1 = ctx.createOscillator(); const gain1 = ctx.createGain();
+        osc1.connect(gain1); gain1.connect(ctx.destination);
         osc1.type = 'triangle';
-        osc1.frequency.setValueAtTime(600, now);
-        osc1.frequency.setValueAtTime(900, now + 0.05);
-        osc1.frequency.setValueAtTime(1200, now + 0.1);
-        gain1.gain.setValueAtTime(0.3, now);
-        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-        osc1.start(now);
-        osc1.stop(now + 0.15);
-        
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.connect(gain2);
-        gain2.connect(ctx.destination);
+        osc1.frequency.setValueAtTime(600, now); osc1.frequency.setValueAtTime(900, now + 0.05); osc1.frequency.setValueAtTime(1200, now + 0.1);
+        gain1.gain.setValueAtTime(0.3, now); gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc1.start(now); osc1.stop(now + 0.15);
+        const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain();
+        osc2.connect(gain2); gain2.connect(ctx.destination);
         osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(800, now + 0.06);
-        osc2.frequency.setValueAtTime(1200, now + 0.12);
-        gain2.gain.setValueAtTime(0.2, now + 0.06);
-        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-        osc2.start(now + 0.06);
-        osc2.stop(now + 0.18);
+        osc2.frequency.setValueAtTime(800, now + 0.06); osc2.frequency.setValueAtTime(1200, now + 0.12);
+        gain2.gain.setValueAtTime(0.2, now + 0.06); gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        osc2.start(now + 0.06); osc2.stop(now + 0.18);
     } catch(e) {}
 }
-
 function playNavSound() {
     if (!soundEnabled) return;
     try {
         const ctx = getAudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(500, ctx.currentTime);
-        osc.frequency.setValueAtTime(700, ctx.currentTime + 0.05);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.12);
+        osc.frequency.setValueAtTime(500, ctx.currentTime); osc.frequency.setValueAtTime(700, ctx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
     } catch(e) {}
 }
-
 function playSearchSound() {
     if (!soundEnabled) return;
     try {
         const ctx = getAudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(400, ctx.currentTime);
-        osc.frequency.setValueAtTime(800, ctx.currentTime + 0.06);
-        osc.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.25, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.06); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
     } catch(e) {}
 }
-
 function playTodaySound() {
     if (!soundEnabled) return;
     try {
         const ctx = getAudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(300, ctx.currentTime);
-        osc.frequency.setValueAtTime(600, ctx.currentTime + 0.05);
-        osc.frequency.setValueAtTime(900, ctx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.05); osc.frequency.setValueAtTime(900, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
     } catch(e) {}
 }
 
 function toggleSound() {
     soundEnabled = !soundEnabled;
-    const btn = document.getElementById('soundToggle');
-    btn.textContent = soundEnabled ? '🔊' : '🔇';
+    document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
 }
 
 function showSync(message, isError = false) {
@@ -652,10 +712,7 @@ async function saveToCloud() {
     try {
         await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': JSONBIN_API_KEY
-            },
+            headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
             body: JSON.stringify(allData)
         });
         localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
@@ -667,10 +724,13 @@ async function saveToCloud() {
     }
 }
 
-function saveCellLocal(dateStr, row, col, value) {
+function saveCellLocal(dateStr, row, col, value, time = null) {
     if (!allData[dateStr]) allData[dateStr] = {};
     if (!allData[dateStr][row]) allData[dateStr][row] = {};
     allData[dateStr][row][col] = value;
+    if (time && col >= 1 && col <= 4) {
+        allData[dateStr][row][col + '_time'] = time;
+    }
     localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
     localChanges = true;
 }
@@ -678,6 +738,13 @@ function saveCellLocal(dateStr, row, col, value) {
 function getCell(dateStr, row, col) {
     if (allData[dateStr] && allData[dateStr][row]) {
         return allData[dateStr][row][col] || '';
+    }
+    return '';
+}
+
+function getCellTime(dateStr, row, col) {
+    if (allData[dateStr] && allData[dateStr][row]) {
+        return allData[dateStr][row][col + '_time'] || '';
     }
     return '';
 }
@@ -695,24 +762,37 @@ function shiftDate(ds, off) {
     return formatDate(d);
 }
 
+function getNowTime() {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+// Вибрация
+function vibrate() {
+    if (navigator.vibrate) navigator.vibrate(10);
+}
+
 async function prevDay() {
     if (isSwitching) return;
     isSwitching = true;
     playNavSound();
+    vibrate();
     await goToDate(shiftDate(currentDateStr, -1));
-    setTimeout(() => isSwitching = false, 150);
+    setTimeout(() => isSwitching = false, 120);
 }
 
 async function nextDay() {
     if (isSwitching) return;
     isSwitching = true;
     playNavSound();
+    vibrate();
     await goToDate(shiftDate(currentDateStr, 1));
-    setTimeout(() => isSwitching = false, 150);
+    setTimeout(() => isSwitching = false, 120);
 }
 
 async function goToday() {
     playTodaySound();
+    vibrate();
     await goToDate(getToday());
 }
 
@@ -720,6 +800,7 @@ async function searchDate() {
     const v = document.getElementById('searchDateInput').value.trim();
     if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) {
         playSearchSound();
+        vibrate();
         await goToDate(v);
     } else {
         alert('Формат: дд.мм.гггг');
@@ -743,14 +824,115 @@ function updateTotals() {
         else if (col === 7) { main += v; }
     });
 
-    document.getElementById('totalMain').textContent = main;
-    document.getElementById('totalCol5').textContent = c5;
-    document.getElementById('totalCol6').textContent = c6;
+    // Анимация изменения
+    const mainEl = document.getElementById('totalMain');
+    const c5El = document.getElementById('totalCol5');
+    const c6El = document.getElementById('totalCol6');
+    
+    if (previousTotals.main !== main) {
+        mainEl.classList.remove('changed');
+        void mainEl.offsetWidth;
+        mainEl.classList.add('changed');
+    }
+    if (previousTotals.col5 !== c5) {
+        c5El.classList.remove('changed');
+        void c5El.offsetWidth;
+        c5El.classList.add('changed');
+    }
+    if (previousTotals.col6 !== c6) {
+        c6El.classList.remove('changed');
+        void c6El.offsetWidth;
+        c6El.classList.add('changed');
+    }
+
+    mainEl.textContent = main;
+    c5El.textContent = c5;
+    c6El.textContent = c6;
+    
+    previousTotals = { main, col5: c5, col6: c6 };
+}
+
+function updateMonthProgress() {
+    if (!currentDateStr) return;
+    const parts = currentDateStr.split('.');
+    const month = parts[1];
+    const year = parts[2];
+    let filledDays = 0;
+    
+    for (const dateKey in allData) {
+        const dp = dateKey.split('.');
+        if (dp[1] === month && dp[2] === year) {
+            const dayData = allData[dateKey];
+            let hasData = false;
+            for (const row in dayData) {
+                for (const col in dayData[row]) {
+                    const val = dayData[row][col];
+                    if (val && val !== '0' && val !== '') { hasData = true; break; }
+                }
+                if (hasData) break;
+            }
+            if (hasData) filledDays++;
+        }
+    }
+    
+    const totalDays = new Date(+year, +month, 0).getDate();
+    const percent = Math.round((filledDays / totalDays) * 100);
+    document.getElementById('monthProgress').style.width = percent + '%';
+}
+
+function updateStats() {
+    if (!currentDateStr) return;
+    const parts = currentDateStr.split('.');
+    const month = parts[1];
+    const year = parts[2];
+    
+    let totalMain = 0, totalKM = 0, totalKG = 0, filledDays = 0;
+    
+    for (const dateKey in allData) {
+        const dp = dateKey.split('.');
+        if (dp[1] === month && dp[2] === year) {
+            const dayData = allData[dateKey];
+            let dayMain = 0, dayKM = 0, dayKG = 0;
+            let hasData = false;
+            
+            for (const row in dayData) {
+                for (const col in dayData[row]) {
+                    if (col.includes('_time')) continue;
+                    const val = dayData[row][col];
+                    if (col === '1' && val === '1') { dayMain += 155; hasData = true; }
+                    else if ((col === '2' || col === '3' || col === '4') && val === '1') { dayMain += 85; hasData = true; }
+                    else if (col === '5') { const v = parseFloat(val) || 0; dayKM += v; dayMain += v * 13; if (v) hasData = true; }
+                    else if (col === '6') { const v = parseFloat(val) || 0; dayKG += v; dayMain += v * 2; if (v) hasData = true; }
+                    else if (col === '7') { const v = parseFloat(val) || 0; dayMain += v; if (v) hasData = true; }
+                }
+            }
+            
+            if (hasData) {
+                totalMain += dayMain;
+                totalKM += dayKM;
+                totalKG += dayKG;
+                filledDays++;
+            }
+        }
+    }
+    
+    document.getElementById('statTotal').textContent = totalMain;
+    document.getElementById('statKM').textContent = totalKM;
+    document.getElementById('statKG').textContent = totalKG;
+    document.getElementById('statDays').textContent = filledDays;
 }
 
 function renderTable(dateStr) {
     document.getElementById('currentDateDisplay').textContent = dateStr;
     document.getElementById('searchDateInput').value = dateStr;
+    
+    // Подсветка сегодня
+    const display = document.getElementById('currentDateDisplay');
+    if (dateStr === getToday()) {
+        display.classList.add('today-highlight');
+    } else {
+        display.classList.remove('today-highlight');
+    }
     
     let h = '';
     for (let i = 1; i <= 100; i++) {
@@ -758,16 +940,20 @@ function renderTable(dateStr) {
         const a2 = getCell(dateStr, i, 2) === '1';
         const a3 = getCell(dateStr, i, 3) === '1';
         const a4 = getCell(dateStr, i, 4) === '1';
+        const t1 = getCellTime(dateStr, i, 1);
+        const t2 = getCellTime(dateStr, i, 2);
+        const t3 = getCellTime(dateStr, i, 3);
+        const t4 = getCellTime(dateStr, i, 4);
         const v5 = getCell(dateStr, i, 5).replace(/"/g,'&quot;');
         const v6 = getCell(dateStr, i, 6).replace(/"/g,'&quot;');
         const v7 = getCell(dateStr, i, 7).replace(/"/g,'&quot;');
 
         h += `<tr>
             <td class="row-number">${i}</td>
-            <td><div class="heart-cell${a1?' active':''}" data-row="${i}" data-col="1">💵</div></td>
-            <td><div class="heart-cell${a2?' active':''}" data-row="${i}" data-col="2">💷</div></td>
-            <td><div class="heart-cell${a3?' active':''}" data-row="${i}" data-col="3">💴</div></td>
-            <td><div class="heart-cell${a4?' active':''}" data-row="${i}" data-col="4">💶</div></td>
+            <td><div class="heart-cell${a1?' active':''}" data-row="${i}" data-col="1">💵<span class="time-stamp">${t1}</span></div></td>
+            <td><div class="heart-cell${a2?' active':''}" data-row="${i}" data-col="2">💷<span class="time-stamp">${t2}</span></div></td>
+            <td><div class="heart-cell${a3?' active':''}" data-row="${i}" data-col="3">💴<span class="time-stamp">${t3}</span></div></td>
+            <td><div class="heart-cell${a4?' active':''}" data-row="${i}" data-col="4">💶<span class="time-stamp">${t4}</span></div></td>
             <td><input type="text" inputmode="decimal" data-row="${i}" data-col="5" value="${v5}" placeholder="0"></td>
             <td><input type="text" inputmode="decimal" data-row="${i}" data-col="6" value="${v6}" placeholder="0"></td>
             <td><input type="text" inputmode="decimal" data-row="${i}" data-col="7" value="${v7}" placeholder="0"></td>
@@ -779,16 +965,22 @@ function renderTable(dateStr) {
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.onclick = () => {
             const isActive = cell.classList.contains('active');
+            vibrate();
             if (isActive) {
                 cell.classList.remove('active');
                 saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '0');
+                cell.querySelector('.time-stamp').textContent = '';
                 playDeactivateSound();
             } else {
                 cell.classList.add('active');
-                saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '1');
+                const time = getNowTime();
+                saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '1', time);
+                cell.querySelector('.time-stamp').textContent = time;
                 playActivateSound();
             }
             updateTotals();
+            updateMonthProgress();
+            updateStats();
         };
     });
 
@@ -796,10 +988,14 @@ function renderTable(dateStr) {
         inp.oninput = () => {
             saveCellLocal(dateStr, inp.dataset.row, inp.dataset.col, inp.value);
             updateTotals();
+            updateMonthProgress();
+            updateStats();
         };
     });
 
     updateTotals();
+    updateMonthProgress();
+    updateStats();
 }
 
 async function goToDate(ds) {
@@ -809,6 +1005,7 @@ async function goToDate(ds) {
 
 async function syncNow() {
     playSyncSound();
+    vibrate();
     showSync('🔄 Синхронизация...');
     await saveToCloud();
     await loadFromCloud();
@@ -817,6 +1014,11 @@ async function syncNow() {
 
 (async function init() {
     await loadFromCloud();
+    
+    // Скрываем сплеш-скрин
+    setTimeout(() => {
+        document.getElementById('splashScreen').classList.add('hidden');
+    }, 1500);
     
     const today = getToday();
     currentDateStr = today;
@@ -835,6 +1037,12 @@ async function syncNow() {
     document.getElementById('syncBtn').onclick = syncNow;
     document.getElementById('soundToggle').onclick = toggleSound;
     
+    document.getElementById('statsBtn').onclick = () => {
+        const panel = document.getElementById('statsPanel');
+        panel.classList.toggle('show');
+        if (panel.classList.contains('show')) updateStats();
+    };
+    
     document.getElementById('searchDateInput').onkeypress = e => {
         if (e.key === 'Enter') searchDate();
     };
@@ -842,20 +1050,14 @@ async function syncNow() {
         document.getElementById('searchDateInput').focus();
     };
     
-    window.addEventListener('beforeunload', () => {
-        saveToCloud();
-    });
-    
+    window.addEventListener('beforeunload', () => { saveToCloud(); });
     window.addEventListener('online', async () => {
         showSync('🌐 Онлайн — синхронизируем...');
         await saveToCloud();
         await loadFromCloud();
         if (currentDateStr) renderTable(currentDateStr);
     });
-    
-    window.addEventListener('offline', () => {
-        showSync('📱 Офлайн-режим', true);
-    });
+    window.addEventListener('offline', () => { showSync('📱 Офлайн-режим', true); });
 })();
 </script>
 </body>
