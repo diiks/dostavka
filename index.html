@@ -299,6 +299,20 @@
             text-align: center;
             background: #1a1a2e;
             padding: 2px;
+            transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+
+        /* Подсветка активной строки */
+        tr.row-active td {
+            background: rgba(0, 255, 100, 0.15) !important;
+            box-shadow: inset 0 0 30px rgba(0, 255, 100, 0.2), 0 0 15px rgba(0, 255, 100, 0.1);
+        }
+        
+        tr.row-active td.row-time,
+        tr.row-active td.row-number {
+            background: rgba(0, 255, 100, 0.2) !important;
+            color: #00ff64;
+            text-shadow: 0 0 10px rgba(0, 255, 100, 0.8);
         }
 
         .row-time {
@@ -311,6 +325,7 @@
             padding: 0 1px;
             opacity: 0.8;
             white-space: nowrap;
+            transition: background-color 0.3s ease-out, color 0.3s ease-out, text-shadow 0.3s ease-out;
         }
 
         .row-number {
@@ -319,6 +334,7 @@
             background: #0f0f1a;
             font-size: 0.8rem;
             width: 24px;
+            transition: background-color 0.3s ease-out, color 0.3s ease-out;
         }
 
         .heart-cell {
@@ -741,6 +757,32 @@ function searchDate() {
     }
 }
 
+// Функция проверки активности строки
+function isRowActive(row) {
+    // Проверяем любые данные в строке: сердечки (колонки 1-4) или значения в инпутах (5-7)
+    for (let col = 1; col <= 7; col++) {
+        const val = getCell(currentDateStr, row, String(col));
+        if (col <= 4) {
+            if (val === '1') return true;
+        } else {
+            if (val && val !== '0' && val !== '') return true;
+        }
+    }
+    return false;
+}
+
+// Функция обновления подсветки строки
+function updateRowHighlight(row) {
+    const tr = document.querySelector(`tr:nth-child(${row})`);
+    if (!tr) return;
+    
+    if (isRowActive(row)) {
+        tr.classList.add('row-active');
+    } else {
+        tr.classList.remove('row-active');
+    }
+}
+
 function updateTotals() {
     let main = 0, c5 = 0, c6 = 0;
     document.querySelectorAll('.heart-cell').forEach(cell => {
@@ -810,8 +852,14 @@ function renderTable(dateStr) {
         const v6 = getCell(dateStr, i, 6).replace(/"/g,'&quot;');
         const v7 = getCell(dateStr, i, 7).replace(/"/g,'&quot;');
         const rowTime = getRowTime(dateStr, i);
+        
+        // Определяем, активна ли строка
+        const rowActive = (a1 || a2 || a3 || a4 || 
+                          (v5 && v5 !== '0') || 
+                          (v6 && v6 !== '0') || 
+                          (v7 && v7 !== '0'));
 
-        h += `<tr>
+        h += `<tr class="${rowActive ? 'row-active' : ''}">
             <td class="row-time">${rowTime}</td>
             <td class="row-number">${i}</td>
             <td><div class="heart-cell${a1?' active':''}" data-row="${i}" data-col="1">💵</div></td>
@@ -849,6 +897,7 @@ function renderTable(dateStr) {
             }
             saveRowTime(dateStr, row, time);
             updateRowTimeInTable(row, time);
+            updateRowHighlight(row); // Обновляем подсветку строки
             updateTotals();
             if (statsVisible) updateStats();
         });
@@ -861,6 +910,7 @@ function renderTable(dateStr) {
             saveRowTime(dateStr, row, time);
             saveCellLocal(dateStr, row, this.dataset.col, this.value);
             updateRowTimeInTable(row, time);
+            updateRowHighlight(row); // Обновляем подсветку строки
             updateTotals();
             if (statsVisible) updateStats();
         });
