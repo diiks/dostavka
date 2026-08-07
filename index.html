@@ -6,14 +6,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DOST DIX">
-    <link rel="manifest" href="data:application/json,{'name':'DOST DIX','short_name':'DOST DIX','display':'standalone','start_url':'.','background_color':'#0a0a0a','theme_color':'#6c00ff'}">
+    <link rel="manifest" href="data:application/json,{'name':'DOST DIX','short_name':'DOST DIX','display':'standalone','start_url':'.','background_color':'#e1ff00','theme_color':'#6c00ff'}">
     <title>DOST DIX</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background: #0a0a0a;
+            background: #e1ff00; /* ярко-жёлтый фон */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -87,7 +87,6 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background 0.1s ease-out;
         }
         .sync-btn-round { font-size: 1.4rem; }
 
@@ -115,11 +114,10 @@
             justify-content: center;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 0 15px rgba(225, 255, 0, 0.3);
+            box-shadow: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
-            transition: none;
             line-height: 1;
             padding: 0;
         }
@@ -168,10 +166,9 @@
             text-align: center;
             outline: none;
             height: 42px;
-            transition: border-color 0.1s ease-out, box-shadow 0.1s ease-out;
         }
         .search-input::placeholder { color: rgba(225, 255, 0, 0.5); }
-        .search-input:focus { border-color: #e1ff00; box-shadow: 0 0 20px rgba(225, 255, 0, 0.5); }
+        .search-input:focus { border-color: #6c00ff; box-shadow: 0 0 20px rgba(108, 0, 255, 0.5); }
 
         .search-btn {
             background: linear-gradient(135deg, #6c00ff, #e1ff00);
@@ -187,7 +184,6 @@
             height: 42px;
             display: flex; align-items: center;
             -webkit-touch-callout: none;
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
         }
 
         .today-btn {
@@ -204,7 +200,6 @@
             height: 42px;
             display: flex; align-items: center;
             -webkit-touch-callout: none;
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background 0.1s ease-out, color 0.1s ease-out;
         }
 
         .totals-container {
@@ -223,7 +218,7 @@
             background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
             border-radius: 16px;
             padding: 12px 6px;
-            box-shadow: 0 0 25px rgba(108, 0, 255, 0.2);
+            box-shadow: none;
             flex: 1;
             min-width: 90px;
             text-align: center;
@@ -236,13 +231,14 @@
             color: #e1ff00;
             margin-bottom: 4px;
             font-weight: 600;
+            text-shadow: none;
         }
 
         .total-value {
             font-size: 1.6rem;
             font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(225, 255, 0, 0.6);
+            text-shadow: none;
         }
 
         .table-wrapper {
@@ -295,6 +291,7 @@
             text-align: center;
             position: sticky;
             top: 0;
+            text-shadow: none;
         }
 
         td {
@@ -315,7 +312,7 @@
         tr.row-active td.row-time,
         tr.row-active td.row-number {
             background: rgba(225, 255, 0, 0.2) !important;
-            color: #1a1a2e; /* тёмный цвет для контраста */
+            color: #1a1a2e; /* тёмный для контраста */
             text-shadow: none;
             font-weight: 600;
         }
@@ -330,16 +327,16 @@
             padding: 0 1px;
             opacity: 0.8;
             white-space: nowrap;
-            transition: background-color 0.3s ease-out, color 0.3s ease-out, text-shadow 0.3s ease-out;
+            text-shadow: none;
         }
 
         .row-number {
             font-weight: 600;
-            color: #6c00ff;
+            color: #e1ff00;
             background: #0f0f1a;
             font-size: 0.8rem;
             width: 24px;
-            transition: background-color 0.3s ease-out, color 0.3s ease-out;
+            text-shadow: none;
         }
 
         .heart-cell {
@@ -352,16 +349,17 @@
             border-radius: 12px;
             margin: 2px;
             opacity: 0.3;
-            filter: grayscale(30%);
+            filter: none;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-touch-callout: none;
-            background: rgba(108, 0, 255, 0.05);
-            transition: transform 0.08s ease-out, opacity 0.12s ease-out, filter 0.12s ease-out, background 0.08s ease-out;
+            background: transparent;
+            transition: opacity 0.12s ease-out, filter 0.12s ease-out, background 0.08s ease-out;
+            box-shadow: none;
         }
         .heart-cell.active {
             opacity: 1;
-            filter: grayscale(0%) drop-shadow(0 0 14px rgba(225, 255, 0, 1));
+            filter: drop-shadow(0 0 14px rgba(225, 255, 0, 1));
             background: rgba(225, 255, 0, 0.15);
         }
 
@@ -376,18 +374,19 @@
             color: #e1ff00;
             padding: 2px 4px;
             outline: none;
-            transition: border-color 0.1s ease-out, box-shadow 0.1s ease-out;
+            box-shadow: none;
+            transition: none;
         }
         input:focus { 
-            border-color: #e1ff00; 
-            box-shadow: 0 0 20px rgba(225, 255, 0, 0.5), inset 0 0 10px rgba(225, 255, 0, 0.05); 
+            border-color: #6c00ff; 
+            box-shadow: 0 0 15px rgba(108, 0, 255, 0.6);
             background: #1a1a2e; 
             color: #fff;
         }
 
         .footer-note {
             padding: 10px 15px;
-            color: rgba(225, 255, 0, 0.6);
+            color: #e1ff00;
             font-size: 0.7rem;
             background: #0f0f1a;
             border-top: 1px solid rgba(108, 0, 255, 0.3);
@@ -395,6 +394,7 @@
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
+            text-shadow: none;
         }
 
         .sound-toggle {
@@ -408,7 +408,6 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
-            transition: transform 0.1s ease-out, background 0.1s ease-out;
         }
 
         .sync-indicator {
@@ -446,6 +445,7 @@
             font-size: 0.75rem;
             color: #e1ff00;
             white-space: nowrap;
+            text-shadow: none;
         }
         .stats-popup.show { display: flex; }
         .stats-popup span { display: flex; align-items: center; gap: 5px; }
@@ -453,7 +453,7 @@
             color: #fff;
             font-weight: 700;
             font-size: 0.9rem;
-            text-shadow: 0 0 10px rgba(225, 255, 0, 0.6);
+            text-shadow: none;
         }
     </style>
 </head>
@@ -929,23 +929,29 @@ function renderTable(dateStr) {
     });
 
     document.querySelectorAll('input').forEach(inp => {
-        inp.addEventListener('blur', function() {
-            const col = this.dataset.col;
-            if (col === '5' || col === '6' || col === '7') {
-                const formatted = formatNumber(this.value);
-                if (formatted !== '') {
-                    this.value = formatted;
-                }
-            }
-        });
-        
+        // Убираем blur-форматирование для скорости, форматируем сразу при вводе
         inp.addEventListener('input', function() {
             const row = this.dataset.row;
             const col = this.dataset.col;
             const time = getNowTime();
+            let val = this.value;
+            
+            // Сразу форматируем число, если это числовая колонка
+            if (col === '5' || col === '6' || col === '7') {
+                const formatted = formatNumber(val);
+                if (formatted !== '' && formatted !== val) {
+                    // Обновляем значение в поле без потери курсора (только если изменилось)
+                    const cursorPos = this.selectionStart;
+                    this.value = formatted;
+                    // Восстанавливаем позицию курсора
+                    this.setSelectionRange(cursorPos, cursorPos);
+                }
+                saveCellLocal(dateStr, row, col, formatted !== '' ? formatted : val);
+            } else {
+                saveCellLocal(dateStr, row, col, val);
+            }
             
             saveRowTime(dateStr, row, time);
-            saveCellLocal(dateStr, row, col, this.value);
             updateRowTimeInTable(row, time);
             updateRowHighlight(row);
             updateTotals();
