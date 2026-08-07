@@ -114,7 +114,14 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background 0.1s ease-out, color 0.1s ease-out;
+            transition: none;
+            will-change: transform, box-shadow, background, color;
+        }
+        .nav-btn:active {
+            transform: scale(0.78);
+            background: rgba(0, 255, 255, 0.5) !important;
+            box-shadow: 0 0 35px rgba(0, 255, 255, 1) !important;
+            color: #fff !important;
         }
 
         .date-display {
@@ -299,7 +306,7 @@
             user-select: none;
             -webkit-touch-callout: none;
             background: rgba(108, 0, 255, 0.05);
-            transition: transform 0.1s ease-out, opacity 0.15s ease-out, filter 0.15s ease-out, background 0.1s ease-out;
+            transition: transform 0.08s ease-out, opacity 0.12s ease-out, filter 0.12s ease-out, background 0.08s ease-out;
         }
         .heart-cell.active {
             opacity: 1;
@@ -395,33 +402,6 @@
             font-size: 0.9rem;
             text-shadow: 0 0 10px rgba(108, 0, 255, 0.6);
         }
-
-        /* Активные состояния для всех кнопок */
-        .pressed { 
-            transform: scale(0.82) !important; 
-            box-shadow: 0 0 35px rgba(0, 255, 255, 1) !important; 
-            background: rgba(0, 255, 255, 0.3) !important; 
-            color: #fff !important;
-        }
-        .heart-pressed { 
-            transform: scale(0.75) !important; 
-            background: rgba(0, 255, 255, 0.2) !important; 
-        }
-        .search-pressed, .today-pressed { 
-            transform: scale(0.88) !important; 
-            box-shadow: 0 0 40px rgba(0, 255, 255, 1) !important; 
-        }
-        .today-pressed { 
-            background: rgba(0, 255, 255, 0.3) !important; 
-            color: #fff !important; 
-        }
-        .sound-pressed { 
-            transform: scale(0.85) !important; 
-            background: rgba(0, 255, 255, 0.2) !important; 
-        }
-        .date-pressed { 
-            background: rgba(0, 255, 255, 0.2) !important; 
-        }
     </style>
 </head>
 <body>
@@ -504,7 +484,6 @@ let soundEnabled = true;
 let isSwitching = false;
 let statsVisible = false;
 
-// Разрешаем touchstart на документе для быстрой реакции
 document.addEventListener('touchstart', function(){}, {passive: false});
 
 let audioContext = null;
@@ -521,10 +500,10 @@ function playActivateSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(880, ctx.currentTime);
-        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.05);
+        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.04);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 function playDeactivateSound() {
@@ -535,10 +514,10 @@ function playDeactivateSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(440, ctx.currentTime);
-        osc.frequency.setValueAtTime(330, ctx.currentTime + 0.05);
+        osc.frequency.setValueAtTime(330, ctx.currentTime + 0.04);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 function playSyncSound() {
@@ -566,9 +545,9 @@ function playNavSound() {
         const osc = ctx.createOscillator(); const gain = ctx.createGain();
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(500, ctx.currentTime); osc.frequency.setValueAtTime(700, ctx.currentTime + 0.04);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(500, ctx.currentTime); osc.frequency.setValueAtTime(700, ctx.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.08);
     } catch(e) {}
 }
 function playSearchSound() {
@@ -579,8 +558,8 @@ function playSearchSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.04); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 function playTodaySound() {
@@ -591,15 +570,9 @@ function playTodaySound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.04); osc.frequency.setValueAtTime(900, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
-}
-
-// Функция для добавления визуального эффекта нажатия
-function addPressEffect(el, className, duration = 200) {
-    el.classList.add(className);
-    setTimeout(() => el.classList.remove(className), duration);
 }
 
 function toggleSound() {
@@ -702,33 +675,36 @@ function updateRowTimeInTable(row, time) {
     if (timeCell) timeCell.textContent = time;
 }
 
-async function prevDay() {
+function prevDay() {
     if (isSwitching) return;
     isSwitching = true;
-    addPressEffect(document.getElementById('prevDayBtn'), 'pressed', 150);
     playNavSound();
-    await goToDate(shiftDate(currentDateStr, -1));
-    setTimeout(() => isSwitching = false, 80);
+    currentDateStr = shiftDate(currentDateStr, -1);
+    renderTable(currentDateStr);
+    setTimeout(() => isSwitching = false, 50);
 }
-async function nextDay() {
+
+function nextDay() {
     if (isSwitching) return;
     isSwitching = true;
-    addPressEffect(document.getElementById('nextDayBtn'), 'pressed', 150);
     playNavSound();
-    await goToDate(shiftDate(currentDateStr, 1));
-    setTimeout(() => isSwitching = false, 80);
+    currentDateStr = shiftDate(currentDateStr, 1);
+    renderTable(currentDateStr);
+    setTimeout(() => isSwitching = false, 50);
 }
-async function goToday() {
-    addPressEffect(document.getElementById('todayBtn'), 'today-pressed', 150);
+
+function goToday() {
     playTodaySound();
-    await goToDate(getToday());
+    currentDateStr = getToday();
+    renderTable(currentDateStr);
 }
-async function searchDate() {
+
+function searchDate() {
     const v = document.getElementById('searchDateInput').value.trim();
-    addPressEffect(document.getElementById('searchDateBtn'), 'search-pressed', 150);
     if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) { 
         playSearchSound(); 
-        await goToDate(v); 
+        currentDateStr = v;
+        renderTable(currentDateStr);
     } else { 
         alert('Формат: дд.мм.гггг'); 
     }
@@ -811,11 +787,9 @@ function renderTable(dateStr) {
     }
     document.getElementById('rowsBody').innerHTML = h;
 
-    // Мгновенная реакция на touchstart
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.addEventListener('touchstart', function(e) {
             e.preventDefault();
-            addPressEffect(this, 'heart-pressed', 120);
             const isActive = this.classList.contains('active');
             const row = this.dataset.row;
             const time = getNowTime();
@@ -851,20 +825,16 @@ function renderTable(dateStr) {
     if (statsVisible) updateStats();
 }
 
-async function goToDate(ds) { currentDateStr = ds; renderTable(ds); }
-
-async function syncNow() {
-    addPressEffect(document.getElementById('syncBtn'), 'pressed', 150);
+function syncNow() {
     playSyncSound();
     showSync('🔄 Синхронизация...');
-    await saveToCloud();
-    await loadFromCloud();
-    if (currentDateStr) renderTable(currentDateStr);
+    saveToCloud();
+    loadFromCloud().then(() => {
+        if (currentDateStr) renderTable(currentDateStr);
+    });
 }
 
 function toggleStats() {
-    const btn = document.getElementById('statsBtn');
-    addPressEffect(btn, 'pressed', 150);
     const popup = document.getElementById('statsPopup');
     statsVisible = !statsVisible;
     if (statsVisible) {
@@ -875,18 +845,28 @@ function toggleStats() {
     }
 }
 
-// Добавляем touchstart на все кнопки
-function bindButton(id, handler) {
-    const btn = document.getElementById(id);
-    if (!btn) return;
-    btn.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        handler();
-    });
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-    });
-}
+// Привязка touchstart ко всем кнопкам
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const prevBtn = document.getElementById('prevDayBtn');
+        const nextBtn = document.getElementById('nextDayBtn');
+        const todayBtn = document.getElementById('todayBtn');
+        const searchBtn = document.getElementById('searchDateBtn');
+        const syncBtn = document.getElementById('syncBtn');
+        const statsBtn = document.getElementById('statsBtn');
+        const soundBtn = document.getElementById('soundToggle');
+        const dateDisplay = document.getElementById('currentDateDisplay');
+        
+        if (prevBtn) prevBtn.addEventListener('touchstart', (e) => { e.preventDefault(); prevDay(); });
+        if (nextBtn) nextBtn.addEventListener('touchstart', (e) => { e.preventDefault(); nextDay(); });
+        if (todayBtn) todayBtn.addEventListener('touchstart', (e) => { e.preventDefault(); goToday(); });
+        if (searchBtn) searchBtn.addEventListener('touchstart', (e) => { e.preventDefault(); searchDate(); });
+        if (syncBtn) syncBtn.addEventListener('touchstart', (e) => { e.preventDefault(); syncNow(); });
+        if (statsBtn) statsBtn.addEventListener('touchstart', (e) => { e.preventDefault(); toggleStats(); });
+        if (soundBtn) soundBtn.addEventListener('touchstart', (e) => { e.preventDefault(); toggleSound(); });
+        if (dateDisplay) dateDisplay.addEventListener('touchstart', (e) => { e.preventDefault(); document.getElementById('searchDateInput').focus(); });
+    }, 100);
+});
 
 (async function init() {
     await loadFromCloud();
@@ -901,26 +881,7 @@ function bindButton(id, handler) {
         if (currentDateStr) renderTable(currentDateStr);
     }, 18000000);
     
-    // Все кнопки через touchstart
-    bindButton('prevDayBtn', prevDay);
-    bindButton('nextDayBtn', nextDay);
-    bindButton('todayBtn', goToday);
-    bindButton('searchDateBtn', searchDate);
-    bindButton('syncBtn', syncNow);
-    bindButton('soundToggle', () => {
-        addPressEffect(document.getElementById('soundToggle'), 'sound-pressed', 120);
-        toggleSound();
-    });
-    bindButton('statsBtn', toggleStats);
-    
     document.getElementById('searchDateInput').onkeypress = e => { if (e.key === 'Enter') searchDate(); };
-    
-    // touchstart на дату
-    document.getElementById('currentDateDisplay').addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        addPressEffect(this, 'date-pressed', 150);
-        document.getElementById('searchDateInput').focus();
-    });
     
     window.addEventListener('beforeunload', () => { saveToCloud(); });
     window.addEventListener('online', async () => {
