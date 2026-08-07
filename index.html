@@ -402,68 +402,107 @@ function getAudioContext() {
     return audioContext;
 }
 
-// Звук падающей монетки в копилку
+// Новый звук падающей монетки — звонкий и натуральный
 function playCoinSound() {
     if (!soundEnabled) return;
     try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
         
-        // Первый удар — звон монетки
+        // Удар монетки о поверхность — короткий яркий звон
         const osc1 = ctx.createOscillator();
         const gain1 = ctx.createGain();
-        osc1.connect(gain1);
+        const filter1 = ctx.createBiquadFilter();
+        
+        osc1.connect(filter1);
+        filter1.connect(gain1);
         gain1.connect(ctx.destination);
         
-        osc1.type = 'triangle';
-        osc1.frequency.setValueAtTime(1800, now);
-        osc1.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
-        osc1.frequency.exponentialRampToValueAtTime(800, now + 0.2);
+        osc1.type = 'square';
+        filter1.type = 'bandpass';
+        filter1.frequency.setValueAtTime(3200, now);
+        filter1.frequency.exponentialRampToValueAtTime(1800, now + 0.06);
+        filter1.Q.setValueAtTime(8, now);
         
-        gain1.gain.setValueAtTime(0.4, now);
-        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        osc1.frequency.setValueAtTime(1600, now);
+        osc1.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+        
+        gain1.gain.setValueAtTime(0.5, now);
+        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
         
         osc1.start(now);
-        osc1.stop(now + 0.25);
+        osc1.stop(now + 0.1);
         
-        // Второй удар — отзвук
+        // Резонанс копилки — вибрирующий отзвук
         const osc2 = ctx.createOscillator();
         const gain2 = ctx.createGain();
-        osc2.connect(gain2);
+        const filter2 = ctx.createBiquadFilter();
+        
+        osc2.connect(filter2);
+        filter2.connect(gain2);
         gain2.connect(ctx.destination);
         
-        osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(2400, now + 0.05);
-        osc2.frequency.exponentialRampToValueAtTime(600, now + 0.3);
+        osc2.type = 'triangle';
+        filter2.type = 'bandpass';
+        filter2.frequency.setValueAtTime(2400, now + 0.02);
+        filter2.frequency.exponentialRampToValueAtTime(600, now + 0.35);
+        filter2.Q.setValueAtTime(12, now);
         
-        gain2.gain.setValueAtTime(0.2, now + 0.05);
-        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+        osc2.frequency.setValueAtTime(1200, now + 0.02);
+        osc2.frequency.exponentialRampToValueAtTime(300, now + 0.35);
         
-        osc2.start(now + 0.05);
-        osc2.stop(now + 0.35);
+        gain2.gain.setValueAtTime(0.3, now + 0.02);
+        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
         
-        // Третий — тихий звон (эхо)
+        osc2.start(now + 0.02);
+        osc2.stop(now + 0.4);
+        
+        // Высокий обертон — блеск металла
         const osc3 = ctx.createOscillator();
         const gain3 = ctx.createGain();
-        osc3.connect(gain3);
+        const filter3 = ctx.createBiquadFilter();
+        
+        osc3.connect(filter3);
+        filter3.connect(gain3);
         gain3.connect(ctx.destination);
         
         osc3.type = 'sine';
-        osc3.frequency.setValueAtTime(3000, now + 0.1);
-        osc3.frequency.exponentialRampToValueAtTime(1000, now + 0.4);
+        filter3.type = 'highpass';
+        filter3.frequency.setValueAtTime(5000, now + 0.04);
+        filter3.frequency.exponentialRampToValueAtTime(2000, now + 0.25);
         
-        gain3.gain.setValueAtTime(0.1, now + 0.1);
-        gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+        osc3.frequency.setValueAtTime(4200, now + 0.04);
+        osc3.frequency.exponentialRampToValueAtTime(2800, now + 0.25);
         
-        osc3.start(now + 0.1);
-        osc3.stop(now + 0.45);
+        gain3.gain.setValueAtTime(0.15, now + 0.04);
+        gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        
+        osc3.start(now + 0.04);
+        osc3.stop(now + 0.3);
+        
+        // Глухой удар о дно копилки
+        const osc4 = ctx.createOscillator();
+        const gain4 = ctx.createGain();
+        
+        osc4.connect(gain4);
+        gain4.connect(ctx.destination);
+        
+        osc4.type = 'sine';
+        osc4.frequency.setValueAtTime(200, now + 0.06);
+        osc4.frequency.exponentialRampToValueAtTime(80, now + 0.15);
+        
+        gain4.gain.setValueAtTime(0.2, now + 0.06);
+        gain4.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        
+        osc4.start(now + 0.06);
+        osc4.stop(now + 0.2);
         
     } catch(e) {
         // Без звука если ошибка
     }
 }
 
-// Тихий звук забора монетки
+// Тихий звук забора монетки (без изменений)
 function playRemoveCoinSound() {
     if (!soundEnabled) return;
     try {
@@ -634,12 +673,10 @@ function renderTable(dateStr) {
             const isActive = cell.classList.contains('active');
             
             if (isActive) {
-                // Деактивация
                 cell.classList.remove('active');
                 saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '0');
                 playRemoveCoinSound();
             } else {
-                // Активация
                 cell.classList.add('active');
                 saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '1');
                 playCoinSound();
