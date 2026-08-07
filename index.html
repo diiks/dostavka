@@ -78,20 +78,15 @@
             color: white;
             font-size: 1.3rem;
             cursor: pointer;
-            transition: none;
             box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
             display: flex; align-items: center; justify-content: center;
             line-height: 1;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background 0.1s ease-out;
         }
         .sync-btn-round { font-size: 1.4rem; }
-        .stats-btn-round:active, .sync-btn-round:active {
-            transform: scale(0.82);
-            box-shadow: 0 0 35px rgba(0, 255, 255, 1);
-            background: rgba(0, 255, 255, 0.3);
-        }
 
         .date-navigator {
             display: flex;
@@ -114,18 +109,12 @@
             font-size: 1.5rem;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
-            transition: none;
             font-weight: bold;
             box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
-        }
-        .nav-btn:active {
-            transform: scale(0.78);
-            background: rgba(0, 255, 255, 0.5);
-            box-shadow: 0 0 35px rgba(0, 255, 255, 1);
-            color: #fff;
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background 0.1s ease-out, color 0.1s ease-out;
         }
 
         .date-display {
@@ -139,15 +128,12 @@
             text-align: center;
             border: 1px solid rgba(108, 0, 255, 0.4);
             cursor: pointer;
-            transition: none;
+            transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, background 0.1s ease-out;
         }
         .date-display.today-highlight {
             border-color: #00ffff;
             box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
             color: #fff;
-        }
-        .date-display:active { 
-            background: rgba(0, 255, 255, 0.2); 
         }
 
         .search-date-row {
@@ -167,9 +153,9 @@
             background: #1a1a2e;
             color: #e0b0ff;
             text-align: center;
-            transition: none;
             outline: none;
             height: 42px;
+            transition: border-color 0.1s ease-out, box-shadow 0.1s ease-out;
         }
         .search-input::placeholder { color: rgba(224, 176, 255, 0.5); }
         .search-input:focus { border-color: #00ffff; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
@@ -183,16 +169,12 @@
             font-size: 0.95rem;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-            transition: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
             display: flex; align-items: center;
             -webkit-touch-callout: none;
-        }
-        .search-btn:active { 
-            transform: scale(0.88); 
-            box-shadow: 0 0 40px rgba(0, 255, 255, 1); 
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
         }
 
         .today-btn {
@@ -204,18 +186,12 @@
             font-size: 0.95rem;
             cursor: pointer;
             color: #e0b0ff;
-            transition: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
             display: flex; align-items: center;
             -webkit-touch-callout: none;
-        }
-        .today-btn:active { 
-            transform: scale(0.88); 
-            background: rgba(0, 255, 255, 0.3); 
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-            color: #fff;
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background 0.1s ease-out, color 0.1s ease-out;
         }
 
         .totals-container {
@@ -253,7 +229,6 @@
             font-weight: 700;
             color: #ffffff;
             text-shadow: 0 0 15px rgba(108, 0, 255, 0.6);
-            transition: none;
         }
 
         .table-wrapper {
@@ -320,15 +295,11 @@
             margin: 2px;
             opacity: 0.3;
             filter: grayscale(30%);
-            transition: none;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-touch-callout: none;
             background: rgba(108, 0, 255, 0.05);
-        }
-        .heart-cell:active { 
-            transform: scale(0.75); 
-            background: rgba(0, 255, 255, 0.2);
+            transition: transform 0.1s ease-out, opacity 0.15s ease-out, filter 0.15s ease-out, background 0.1s ease-out;
         }
         .heart-cell.active {
             opacity: 1;
@@ -346,8 +317,8 @@
             background: #0f0f1a;
             color: #ffffff;
             padding: 2px 4px;
-            transition: none;
             outline: none;
+            transition: border-color 0.1s ease-out, box-shadow 0.1s ease-out;
         }
         input:focus { 
             border-color: #00ffff; 
@@ -374,14 +345,10 @@
             padding: 8px 14px;
             font-size: 0.8rem;
             cursor: pointer;
-            transition: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
-        }
-        .sound-toggle:active { 
-            transform: scale(0.85); 
-            background: rgba(0, 255, 255, 0.2);
+            transition: transform 0.1s ease-out, background 0.1s ease-out;
         }
 
         .sync-indicator {
@@ -394,7 +361,7 @@
             border-radius: 20px;
             font-size: 0.8rem;
             opacity: 0;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.15s ease-out;
             z-index: 1000;
             box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
             pointer-events: none;
@@ -427,6 +394,33 @@
             font-weight: 700;
             font-size: 0.9rem;
             text-shadow: 0 0 10px rgba(108, 0, 255, 0.6);
+        }
+
+        /* Активные состояния для всех кнопок */
+        .pressed { 
+            transform: scale(0.82) !important; 
+            box-shadow: 0 0 35px rgba(0, 255, 255, 1) !important; 
+            background: rgba(0, 255, 255, 0.3) !important; 
+            color: #fff !important;
+        }
+        .heart-pressed { 
+            transform: scale(0.75) !important; 
+            background: rgba(0, 255, 255, 0.2) !important; 
+        }
+        .search-pressed, .today-pressed { 
+            transform: scale(0.88) !important; 
+            box-shadow: 0 0 40px rgba(0, 255, 255, 1) !important; 
+        }
+        .today-pressed { 
+            background: rgba(0, 255, 255, 0.3) !important; 
+            color: #fff !important; 
+        }
+        .sound-pressed { 
+            transform: scale(0.85) !important; 
+            background: rgba(0, 255, 255, 0.2) !important; 
+        }
+        .date-pressed { 
+            background: rgba(0, 255, 255, 0.2) !important; 
         }
     </style>
 </head>
@@ -510,8 +504,8 @@ let soundEnabled = true;
 let isSwitching = false;
 let statsVisible = false;
 
-// Используем touchstart для мгновенной реакции
-document.addEventListener('touchstart', function(){}, {passive: true});
+// Разрешаем touchstart на документе для быстрой реакции
+document.addEventListener('touchstart', function(){}, {passive: false});
 
 let audioContext = null;
 function getAudioContext() {
@@ -527,10 +521,10 @@ function playActivateSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(880, ctx.currentTime);
-        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.04);
+        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.05);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
     } catch(e) {}
 }
 function playDeactivateSound() {
@@ -541,10 +535,10 @@ function playDeactivateSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(440, ctx.currentTime);
-        osc.frequency.setValueAtTime(330, ctx.currentTime + 0.04);
+        osc.frequency.setValueAtTime(330, ctx.currentTime + 0.05);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
     } catch(e) {}
 }
 function playSyncSound() {
@@ -573,8 +567,8 @@ function playNavSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(500, ctx.currentTime); osc.frequency.setValueAtTime(700, ctx.currentTime + 0.04);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 function playSearchSound() {
@@ -585,8 +579,8 @@ function playSearchSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.04); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
     } catch(e) {}
 }
 function playTodaySound() {
@@ -597,9 +591,15 @@ function playTodaySound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.04); osc.frequency.setValueAtTime(900, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
     } catch(e) {}
+}
+
+// Функция для добавления визуального эффекта нажатия
+function addPressEffect(el, className, duration = 200) {
+    el.classList.add(className);
+    setTimeout(() => el.classList.remove(className), duration);
 }
 
 function toggleSound() {
@@ -705,6 +705,7 @@ function updateRowTimeInTable(row, time) {
 async function prevDay() {
     if (isSwitching) return;
     isSwitching = true;
+    addPressEffect(document.getElementById('prevDayBtn'), 'pressed', 150);
     playNavSound();
     await goToDate(shiftDate(currentDateStr, -1));
     setTimeout(() => isSwitching = false, 80);
@@ -712,15 +713,25 @@ async function prevDay() {
 async function nextDay() {
     if (isSwitching) return;
     isSwitching = true;
+    addPressEffect(document.getElementById('nextDayBtn'), 'pressed', 150);
     playNavSound();
     await goToDate(shiftDate(currentDateStr, 1));
     setTimeout(() => isSwitching = false, 80);
 }
-async function goToday() { playTodaySound(); await goToDate(getToday()); }
+async function goToday() {
+    addPressEffect(document.getElementById('todayBtn'), 'today-pressed', 150);
+    playTodaySound();
+    await goToDate(getToday());
+}
 async function searchDate() {
     const v = document.getElementById('searchDateInput').value.trim();
-    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) { playSearchSound(); await goToDate(v); }
-    else { alert('Формат: дд.мм.гггг'); }
+    addPressEffect(document.getElementById('searchDateBtn'), 'search-pressed', 150);
+    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) { 
+        playSearchSound(); 
+        await goToDate(v); 
+    } else { 
+        alert('Формат: дд.мм.гггг'); 
+    }
 }
 
 function updateTotals() {
@@ -735,7 +746,6 @@ function updateTotals() {
         else if (col === 6) { c6 += v; main += v * 2; }
         else if (col === 7) { main += v; }
     });
-    // Мгновенное обновление без анимации
     document.getElementById('totalMain').textContent = main;
     document.getElementById('totalCol5').textContent = c5;
     document.getElementById('totalCol6').textContent = c6;
@@ -801,10 +811,11 @@ function renderTable(dateStr) {
     }
     document.getElementById('rowsBody').innerHTML = h;
 
-    // Используем touchstart для мгновенной реакции
+    // Мгновенная реакция на touchstart
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.addEventListener('touchstart', function(e) {
             e.preventDefault();
+            addPressEffect(this, 'heart-pressed', 120);
             const isActive = this.classList.contains('active');
             const row = this.dataset.row;
             const time = getNowTime();
@@ -843,6 +854,7 @@ function renderTable(dateStr) {
 async function goToDate(ds) { currentDateStr = ds; renderTable(ds); }
 
 async function syncNow() {
+    addPressEffect(document.getElementById('syncBtn'), 'pressed', 150);
     playSyncSound();
     showSync('🔄 Синхронизация...');
     await saveToCloud();
@@ -851,6 +863,8 @@ async function syncNow() {
 }
 
 function toggleStats() {
+    const btn = document.getElementById('statsBtn');
+    addPressEffect(btn, 'pressed', 150);
     const popup = document.getElementById('statsPopup');
     statsVisible = !statsVisible;
     if (statsVisible) {
@@ -859,6 +873,19 @@ function toggleStats() {
     } else {
         popup.classList.remove('show');
     }
+}
+
+// Добавляем touchstart на все кнопки
+function bindButton(id, handler) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        handler();
+    });
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+    });
 }
 
 (async function init() {
@@ -874,15 +901,26 @@ function toggleStats() {
         if (currentDateStr) renderTable(currentDateStr);
     }, 18000000);
     
-    document.getElementById('prevDayBtn').onclick = prevDay;
-    document.getElementById('nextDayBtn').onclick = nextDay;
-    document.getElementById('todayBtn').onclick = goToday;
-    document.getElementById('searchDateBtn').onclick = searchDate;
-    document.getElementById('syncBtn').onclick = syncNow;
-    document.getElementById('soundToggle').onclick = toggleSound;
-    document.getElementById('statsBtn').onclick = toggleStats;
+    // Все кнопки через touchstart
+    bindButton('prevDayBtn', prevDay);
+    bindButton('nextDayBtn', nextDay);
+    bindButton('todayBtn', goToday);
+    bindButton('searchDateBtn', searchDate);
+    bindButton('syncBtn', syncNow);
+    bindButton('soundToggle', () => {
+        addPressEffect(document.getElementById('soundToggle'), 'sound-pressed', 120);
+        toggleSound();
+    });
+    bindButton('statsBtn', toggleStats);
+    
     document.getElementById('searchDateInput').onkeypress = e => { if (e.key === 'Enter') searchDate(); };
-    document.getElementById('currentDateDisplay').onclick = () => { document.getElementById('searchDateInput').focus(); };
+    
+    // touchstart на дату
+    document.getElementById('currentDateDisplay').addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        addPressEffect(this, 'date-pressed', 150);
+        document.getElementById('searchDateInput').focus();
+    });
     
     window.addEventListener('beforeunload', () => { saveToCloud(); });
     window.addEventListener('online', async () => {
