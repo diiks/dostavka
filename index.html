@@ -78,18 +78,19 @@
             color: white;
             font-size: 1.3rem;
             cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            transition: none;
             box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
             display: flex; align-items: center; justify-content: center;
             line-height: 1;
             -webkit-tap-highlight-color: transparent;
             outline: none;
+            -webkit-touch-callout: none;
         }
         .sync-btn-round { font-size: 1.4rem; }
         .stats-btn-round:active, .sync-btn-round:active {
-            transform: scale(0.88);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.9);
-            background: rgba(108, 0, 255, 0.6);
+            transform: scale(0.82);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 1);
+            background: rgba(0, 255, 255, 0.3);
         }
 
         .date-navigator {
@@ -113,16 +114,18 @@
             font-size: 1.5rem;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
-            transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: none;
             font-weight: bold;
             box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
             -webkit-tap-highlight-color: transparent;
             outline: none;
+            -webkit-touch-callout: none;
         }
         .nav-btn:active {
-            transform: scale(0.82);
+            transform: scale(0.78);
             background: rgba(0, 255, 255, 0.5);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 1);
+            color: #fff;
         }
 
         .date-display {
@@ -136,14 +139,16 @@
             text-align: center;
             border: 1px solid rgba(108, 0, 255, 0.4);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: none;
         }
         .date-display.today-highlight {
             border-color: #00ffff;
             box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
             color: #fff;
         }
-        .date-display:active { background: rgba(0, 255, 255, 0.15); }
+        .date-display:active { 
+            background: rgba(0, 255, 255, 0.2); 
+        }
 
         .search-date-row {
             display: flex;
@@ -162,7 +167,7 @@
             background: #1a1a2e;
             color: #e0b0ff;
             text-align: center;
-            transition: all 0.15s ease;
+            transition: none;
             outline: none;
             height: 42px;
         }
@@ -178,13 +183,17 @@
             font-size: 0.95rem;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-            transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
             display: flex; align-items: center;
+            -webkit-touch-callout: none;
         }
-        .search-btn:active { transform: scale(0.9); box-shadow: 0 0 35px rgba(0, 255, 255, 0.9); }
+        .search-btn:active { 
+            transform: scale(0.88); 
+            box-shadow: 0 0 40px rgba(0, 255, 255, 1); 
+        }
 
         .today-btn {
             background: rgba(108, 0, 255, 0.3);
@@ -195,13 +204,19 @@
             font-size: 0.95rem;
             cursor: pointer;
             color: #e0b0ff;
-            transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
             display: flex; align-items: center;
+            -webkit-touch-callout: none;
         }
-        .today-btn:active { transform: scale(0.9); background: rgba(0, 255, 255, 0.25); box-shadow: 0 0 25px rgba(0, 255, 255, 0.6); }
+        .today-btn:active { 
+            transform: scale(0.88); 
+            background: rgba(0, 255, 255, 0.3); 
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+            color: #fff;
+        }
 
         .totals-container {
             display: flex;
@@ -238,13 +253,7 @@
             font-weight: 700;
             color: #ffffff;
             text-shadow: 0 0 15px rgba(108, 0, 255, 0.6);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .total-value.changed { animation: valuePop 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        @keyframes valuePop {
-            0% { transform: scale(1); }
-            40% { transform: scale(1.25); color: #00ffff; }
-            100% { transform: scale(1); }
+            transition: none;
         }
 
         .table-wrapper {
@@ -311,24 +320,20 @@
             margin: 2px;
             opacity: 0.3;
             filter: grayscale(30%);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: none;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
+            -webkit-touch-callout: none;
             background: rgba(108, 0, 255, 0.05);
         }
         .heart-cell:active { 
-            transform: scale(0.8); 
-            background: rgba(0, 255, 255, 0.15);
+            transform: scale(0.75); 
+            background: rgba(0, 255, 255, 0.2);
         }
         .heart-cell.active {
             opacity: 1;
-            filter: grayscale(0%) drop-shadow(0 0 12px rgba(108, 0, 255, 0.9));
-            background: rgba(108, 0, 255, 0.1);
-            animation: heartGlow 2s ease-in-out infinite;
-        }
-        @keyframes heartGlow {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(108, 0, 255, 0.8)); }
-            50% { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.9)); }
+            filter: grayscale(0%) drop-shadow(0 0 14px rgba(108, 0, 255, 1));
+            background: rgba(108, 0, 255, 0.12);
         }
 
         input {
@@ -341,7 +346,7 @@
             background: #0f0f1a;
             color: #ffffff;
             padding: 2px 4px;
-            transition: all 0.15s ease;
+            transition: none;
             outline: none;
         }
         input:focus { 
@@ -369,11 +374,15 @@
             padding: 8px 14px;
             font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.12s ease;
+            transition: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
+            -webkit-touch-callout: none;
         }
-        .sound-toggle:active { transform: scale(0.88); }
+        .sound-toggle:active { 
+            transform: scale(0.85); 
+            background: rgba(0, 255, 255, 0.2);
+        }
 
         .sync-indicator {
             position: fixed;
@@ -385,7 +394,7 @@
             border-radius: 20px;
             font-size: 0.8rem;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.15s ease;
             z-index: 1000;
             box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
             pointer-events: none;
@@ -499,8 +508,10 @@ let allData = {};
 let localChanges = false;
 let soundEnabled = true;
 let isSwitching = false;
-let previousTotals = { main: 0, col5: 0, col6: 0 };
 let statsVisible = false;
+
+// Используем touchstart для мгновенной реакции
+document.addEventListener('touchstart', function(){}, {passive: true});
 
 let audioContext = null;
 function getAudioContext() {
@@ -516,10 +527,10 @@ function playActivateSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(880, ctx.currentTime);
-        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.06);
+        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.04);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 function playDeactivateSound() {
@@ -530,10 +541,10 @@ function playDeactivateSound() {
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(440, ctx.currentTime);
-        osc.frequency.setValueAtTime(330, ctx.currentTime + 0.06);
+        osc.frequency.setValueAtTime(330, ctx.currentTime + 0.04);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 function playSyncSound() {
@@ -543,15 +554,15 @@ function playSyncSound() {
         const osc1 = ctx.createOscillator(); const gain1 = ctx.createGain();
         osc1.connect(gain1); gain1.connect(ctx.destination);
         osc1.type = 'triangle';
-        osc1.frequency.setValueAtTime(600, now); osc1.frequency.setValueAtTime(900, now + 0.05); osc1.frequency.setValueAtTime(1200, now + 0.1);
-        gain1.gain.setValueAtTime(0.3, now); gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-        osc1.start(now); osc1.stop(now + 0.15);
+        osc1.frequency.setValueAtTime(600, now); osc1.frequency.setValueAtTime(900, now + 0.04); osc1.frequency.setValueAtTime(1200, now + 0.08);
+        gain1.gain.setValueAtTime(0.3, now); gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        osc1.start(now); osc1.stop(now + 0.12);
         const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain();
         osc2.connect(gain2); gain2.connect(ctx.destination);
         osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(800, now + 0.06); osc2.frequency.setValueAtTime(1200, now + 0.12);
-        gain2.gain.setValueAtTime(0.2, now + 0.06); gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-        osc2.start(now + 0.06); osc2.stop(now + 0.18);
+        osc2.frequency.setValueAtTime(800, now + 0.04); osc2.frequency.setValueAtTime(1200, now + 0.1);
+        gain2.gain.setValueAtTime(0.2, now + 0.04); gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.14);
+        osc2.start(now + 0.04); osc2.stop(now + 0.14);
     } catch(e) {}
 }
 function playNavSound() {
@@ -561,9 +572,9 @@ function playNavSound() {
         const osc = ctx.createOscillator(); const gain = ctx.createGain();
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(500, ctx.currentTime); osc.frequency.setValueAtTime(700, ctx.currentTime + 0.05);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
+        osc.frequency.setValueAtTime(500, ctx.currentTime); osc.frequency.setValueAtTime(700, ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.08);
     } catch(e) {}
 }
 function playSearchSound() {
@@ -573,9 +584,9 @@ function playSearchSound() {
         const osc = ctx.createOscillator(); const gain = ctx.createGain();
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.06); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.04); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 function playTodaySound() {
@@ -585,9 +596,9 @@ function playTodaySound() {
         const osc = ctx.createOscillator(); const gain = ctx.createGain();
         osc.connect(gain); gain.connect(ctx.destination);
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.05); osc.frequency.setValueAtTime(900, ctx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.04); osc.frequency.setValueAtTime(900, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 
@@ -601,7 +612,7 @@ function showSync(message, isError = false) {
     el.textContent = message;
     el.className = 'sync-indicator ' + (isError ? 'error' : '');
     el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 1500);
+    setTimeout(() => el.classList.remove('show'), 1200);
 }
 
 async function loadFromCloud() {
@@ -696,14 +707,14 @@ async function prevDay() {
     isSwitching = true;
     playNavSound();
     await goToDate(shiftDate(currentDateStr, -1));
-    setTimeout(() => isSwitching = false, 120);
+    setTimeout(() => isSwitching = false, 80);
 }
 async function nextDay() {
     if (isSwitching) return;
     isSwitching = true;
     playNavSound();
     await goToDate(shiftDate(currentDateStr, 1));
-    setTimeout(() => isSwitching = false, 120);
+    setTimeout(() => isSwitching = false, 80);
 }
 async function goToday() { playTodaySound(); await goToDate(getToday()); }
 async function searchDate() {
@@ -724,14 +735,10 @@ function updateTotals() {
         else if (col === 6) { c6 += v; main += v * 2; }
         else if (col === 7) { main += v; }
     });
-    const mainEl = document.getElementById('totalMain');
-    const c5El = document.getElementById('totalCol5');
-    const c6El = document.getElementById('totalCol6');
-    if (previousTotals.main !== main) { mainEl.classList.remove('changed'); void mainEl.offsetWidth; mainEl.classList.add('changed'); }
-    if (previousTotals.col5 !== c5) { c5El.classList.remove('changed'); void c5El.offsetWidth; c5El.classList.add('changed'); }
-    if (previousTotals.col6 !== c6) { c6El.classList.remove('changed'); void c6El.offsetWidth; c6El.classList.add('changed'); }
-    mainEl.textContent = main; c5El.textContent = c5; c6El.textContent = c6;
-    previousTotals = { main, col5: c5, col6: c6 };
+    // Мгновенное обновление без анимации
+    document.getElementById('totalMain').textContent = main;
+    document.getElementById('totalCol5').textContent = c5;
+    document.getElementById('totalCol6').textContent = c6;
 }
 
 function updateStats() {
@@ -794,37 +801,39 @@ function renderTable(dateStr) {
     }
     document.getElementById('rowsBody').innerHTML = h;
 
+    // Используем touchstart для мгновенной реакции
     document.querySelectorAll('.heart-cell').forEach(cell => {
-        cell.onclick = () => {
-            const isActive = cell.classList.contains('active');
-            const row = cell.dataset.row;
+        cell.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const isActive = this.classList.contains('active');
+            const row = this.dataset.row;
             const time = getNowTime();
             if (isActive) {
-                cell.classList.remove('active');
-                saveCellLocal(dateStr, row, cell.dataset.col, '0');
+                this.classList.remove('active');
+                saveCellLocal(dateStr, row, this.dataset.col, '0');
                 playDeactivateSound();
             } else {
-                cell.classList.add('active');
-                saveCellLocal(dateStr, row, cell.dataset.col, '1');
+                this.classList.add('active');
+                saveCellLocal(dateStr, row, this.dataset.col, '1');
                 playActivateSound();
             }
             saveRowTime(dateStr, row, time);
             updateRowTimeInTable(row, time);
             updateTotals();
             if (statsVisible) updateStats();
-        };
+        });
     });
 
     document.querySelectorAll('input').forEach(inp => {
-        inp.oninput = () => {
-            const row = inp.dataset.row;
+        inp.addEventListener('input', function() {
+            const row = this.dataset.row;
             const time = getNowTime();
             saveRowTime(dateStr, row, time);
-            saveCellLocal(dateStr, row, inp.dataset.col, inp.value);
+            saveCellLocal(dateStr, row, this.dataset.col, this.value);
             updateRowTimeInTable(row, time);
             updateTotals();
             if (statsVisible) updateStats();
-        };
+        });
     });
 
     updateTotals();
