@@ -6,14 +6,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DOST DIX">
-    <link rel="manifest" href="data:application/json,{'name':'DOST DIX','short_name':'DOST DIX','display':'standalone','start_url':'.','background_color':'#e1ff00','theme_color':'#6c00ff'}">
+    <link rel="manifest" href="data:application/json,{'name':'DOST DIX','short_name':'DOST DIX','display':'standalone','start_url':'.','background_color':'#0a0a0a','theme_color':'#6c00ff'}">
     <title>DOST DIX</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background: #e1ff00; /* ярко-жёлтый фон */
+            background: #0a0a0a;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -106,9 +106,11 @@
             background: rgba(108, 0, 255, 0.3);
             border: none;
             color: #e1ff00;
-            width: 40px; height: 40px;
+            width: 40px; 
+            height: 40px;
+            min-width: 40px;
             border-radius: 50%;
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -118,8 +120,15 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
-            line-height: 1;
+            line-height: 40px;
+            text-align: center;
             padding: 0;
+            position: relative;
+        }
+        .nav-btn span {
+            display: block;
+            line-height: 1;
+            margin-top: -1px;
         }
         .nav-btn:active {
             transform: scale(0.78);
@@ -312,7 +321,7 @@
         tr.row-active td.row-time,
         tr.row-active td.row-number {
             background: rgba(225, 255, 0, 0.2) !important;
-            color: #1a1a2e; /* тёмный для контраста */
+            color: #1a1a2e;
             text-shadow: none;
             font-weight: 600;
         }
@@ -471,9 +480,9 @@
             </div>
         </div>
         <div class="date-navigator">
-            <button class="nav-btn" id="prevDayBtn">←</button>
+            <button class="nav-btn" id="prevDayBtn"><span>←</span></button>
             <span class="date-display" id="currentDateDisplay">---</span>
-            <button class="nav-btn" id="nextDayBtn">→</button>
+            <button class="nav-btn" id="nextDayBtn"><span>→</span></button>
         </div>
         <div class="search-date-row">
             <input type="text" class="search-input" id="searchDateInput" placeholder="дд.мм.гггг" inputmode="numeric" />
@@ -929,21 +938,17 @@ function renderTable(dateStr) {
     });
 
     document.querySelectorAll('input').forEach(inp => {
-        // Убираем blur-форматирование для скорости, форматируем сразу при вводе
         inp.addEventListener('input', function() {
             const row = this.dataset.row;
             const col = this.dataset.col;
             const time = getNowTime();
             let val = this.value;
             
-            // Сразу форматируем число, если это числовая колонка
             if (col === '5' || col === '6' || col === '7') {
                 const formatted = formatNumber(val);
                 if (formatted !== '' && formatted !== val) {
-                    // Обновляем значение в поле без потери курсора (только если изменилось)
                     const cursorPos = this.selectionStart;
                     this.value = formatted;
-                    // Восстанавливаем позицию курсора
                     this.setSelectionRange(cursorPos, cursorPos);
                 }
                 saveCellLocal(dateStr, row, col, formatted !== '' ? formatted : val);
