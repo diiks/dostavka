@@ -99,7 +99,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
             gap: 8px;
         }
 
@@ -139,22 +139,6 @@
             transform: scale(0.85);
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
             background: rgba(108, 0, 255, 0.6);
-        }
-
-        /* Прогресс-бар месяца */
-        .month-progress {
-            height: 3px;
-            background: rgba(108, 0, 255, 0.2);
-            margin: 0 0 8px 0;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .month-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #6c00ff, #00ffff);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .date-navigator {
@@ -272,21 +256,6 @@
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
 
-        .stats-btn {
-            background: rgba(255, 215, 0, 0.2);
-            border: 1px solid rgba(255, 215, 0, 0.4);
-            border-radius: 30px;
-            padding: 10px 16px;
-            font-weight: 600;
-            cursor: pointer;
-            color: #ffd700;
-            font-size: 0.85rem;
-            transition: transform 0.08s ease;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-        }
-        .stats-btn:active { transform: scale(0.9); }
-
         .totals-container {
             display: flex;
             justify-content: space-around;
@@ -358,13 +327,6 @@
             text-align: center;
             vertical-align: middle;
         }
-        th small {
-            display: block;
-            font-weight: 400;
-            font-size: 0.5rem;
-            color: rgba(0,255,255,0.6);
-            margin-top: 1px;
-        }
 
         td {
             border-bottom: 1px solid rgba(108, 0, 255, 0.2);
@@ -402,14 +364,6 @@
             filter: grayscale(0%) drop-shadow(0 0 10px rgba(108, 0, 255, 0.9));
         }
 
-        .time-stamp {
-            font-size: 0.45rem;
-            color: rgba(255,255,255,0.3);
-            display: block;
-            margin-top: -2px;
-            min-height: 8px;
-        }
-
         input {
             width: 100%;
             height: 32px;
@@ -430,16 +384,44 @@
         }
 
         .footer-note {
-            text-align: center;
-            padding: 10px 20px;
+            padding: 8px 15px;
             color: rgba(224, 176, 255, 0.6);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             background: #0f0f1a;
             border-top: 1px solid rgba(108, 0, 255, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
         }
+        
+        .footer-stats {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.65rem;
+            color: #ffd700;
+        }
+        
+        .footer-stats span {
+            white-space: nowrap;
+        }
+
+        .sound-toggle {
+            background: rgba(108, 0, 255, 0.3);
+            border: 1px solid rgba(108, 0, 255, 0.4);
+            color: #e0b0ff;
+            border-radius: 20px;
+            padding: 6px 10px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: transform 0.08s ease;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        .sound-toggle:active { transform: scale(0.85); }
 
         .sync-indicator {
             position: fixed;
@@ -462,39 +444,14 @@
             box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
         }
 
-        .sound-toggle {
-            background: rgba(108, 0, 255, 0.3);
-            border: 1px solid rgba(108, 0, 255, 0.4);
-            color: #e0b0ff;
-            border-radius: 20px;
-            padding: 8px 12px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: transform 0.08s ease;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
+        .time-header {
+            display: block;
+            font-size: 0.45rem;
+            font-weight: 400;
+            color: rgba(0, 255, 255, 0.5);
+            margin-top: 2px;
+            min-height: 12px;
         }
-        .sound-toggle:active { transform: scale(0.85); }
-
-        /* Статистика */
-        .stats-panel {
-            display: none;
-            padding: 12px;
-            background: rgba(15, 15, 26, 0.95);
-            margin: 0 12px 8px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-        .stats-panel.show { display: block; }
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            color: #ffd700;
-            font-size: 0.8rem;
-            padding: 4px 0;
-            border-bottom: 1px solid rgba(255,215,0,0.1);
-        }
-        .stats-row:last-child { border-bottom: none; }
     </style>
 </head>
 <body>
@@ -516,9 +473,6 @@
             <div class="header-title">💲🪙✨DOST DIX✨🪙💲</div>
             <button class="sync-btn-round" id="syncBtn" title="Синхронизировать">💾</button>
         </div>
-        <div class="month-progress">
-            <div class="month-progress-bar" id="monthProgress" style="width: 0%"></div>
-        </div>
         <div class="date-navigator">
             <button class="nav-btn" id="prevDayBtn">←</button>
             <span class="date-display" id="currentDateDisplay">---</span>
@@ -528,13 +482,6 @@
             <input type="text" class="search-input" id="searchDateInput" placeholder="дд.мм.гггг" inputmode="numeric" />
             <button class="search-btn" id="searchDateBtn">🔍</button>
             <button class="today-btn" id="todayBtn">Сегодня</button>
-            <button class="stats-btn" id="statsBtn">📊</button>
-        </div>
-        <div class="stats-panel" id="statsPanel">
-            <div class="stats-row"><span>💰 Общий итог:</span><span id="statTotal">0</span></div>
-            <div class="stats-row"><span>🛣️ Всего KM:</span><span id="statKM">0</span></div>
-            <div class="stats-row"><span>🛍️ Всего КГ:</span><span id="statKG">0</span></div>
-            <div class="stats-row"><span>📅 Дней заполнено:</span><span id="statDays">0</span></div>
         </div>
     </div>
 
@@ -558,20 +505,22 @@
             <thead>
             <tr>
                 <th>№</th>
-                <th>💸1<small>время</small></th>
-                <th>🪙2<small>время</small></th>
-                <th>💲3<small>время</small></th>
-                <th>💰4<small>время</small></th>
-                <th>🚘</th>
-                <th>🗿</th>
-                <th>🫧</th>
+                <th>💸1<span class="time-header" id="timeHeader1"></span></th>
+                <th>🪙2<span class="time-header" id="timeHeader2"></span></th>
+                <th>💲3<span class="time-header" id="timeHeader3"></span></th>
+                <th>💰4<span class="time-header" id="timeHeader4"></span></th>
+                <th>🚘<span class="time-header" id="timeHeader5"></span></th>
+                <th>🗿<span class="time-header" id="timeHeader6"></span></th>
+                <th>🫧<span class="time-header" id="timeHeader7"></span></th>
             </tr>
             </thead>
             <tbody id="rowsBody"></tbody>
         </table>
     </div>
     <div class="footer-note">
-        <span>🔄 Каждые 5 часов</span>
+        <div class="footer-stats" id="footerStats">
+            📊 За месяц: <span id="statTotal">0</span> 💰 | <span id="statKM">0</span> 🛣️ | <span id="statKG">0</span> 🛍️ | дней: <span id="statDays">0</span>
+        </div>
         <button class="sound-toggle" id="soundToggle">🔊</button>
     </div>
 </div>
@@ -593,7 +542,6 @@ function getAudioContext() {
     return audioContext;
 }
 
-// Звуки (без изменений)
 function playActivateSound() {
     if (!soundEnabled) return;
     try {
@@ -724,27 +672,32 @@ async function saveToCloud() {
     }
 }
 
-function saveCellLocal(dateStr, row, col, value, time = null) {
+function saveCellLocal(dateStr, row, col, value) {
     if (!allData[dateStr]) allData[dateStr] = {};
     if (!allData[dateStr][row]) allData[dateStr][row] = {};
     allData[dateStr][row][col] = value;
-    if (time && col >= 1 && col <= 4) {
-        allData[dateStr][row][col + '_time'] = time;
-    }
     localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
     localChanges = true;
+}
+
+// Сохраняем время последнего изменения для колонки
+function saveColumnTime(dateStr, col, time) {
+    if (!allData[dateStr]) allData[dateStr] = {};
+    allData[dateStr]['_colTime' + col] = time;
+    localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+    localChanges = true;
+}
+
+function getColumnTime(dateStr, col) {
+    if (allData[dateStr] && allData[dateStr]['_colTime' + col]) {
+        return allData[dateStr]['_colTime' + col];
+    }
+    return '';
 }
 
 function getCell(dateStr, row, col) {
     if (allData[dateStr] && allData[dateStr][row]) {
         return allData[dateStr][row][col] || '';
-    }
-    return '';
-}
-
-function getCellTime(dateStr, row, col) {
-    if (allData[dateStr] && allData[dateStr][row]) {
-        return allData[dateStr][row][col + '_time'] || '';
     }
     return '';
 }
@@ -767,16 +720,10 @@ function getNowTime() {
     return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
-// Вибрация
-function vibrate() {
-    if (navigator.vibrate) navigator.vibrate(10);
-}
-
 async function prevDay() {
     if (isSwitching) return;
     isSwitching = true;
     playNavSound();
-    vibrate();
     await goToDate(shiftDate(currentDateStr, -1));
     setTimeout(() => isSwitching = false, 120);
 }
@@ -785,14 +732,12 @@ async function nextDay() {
     if (isSwitching) return;
     isSwitching = true;
     playNavSound();
-    vibrate();
     await goToDate(shiftDate(currentDateStr, 1));
     setTimeout(() => isSwitching = false, 120);
 }
 
 async function goToday() {
     playTodaySound();
-    vibrate();
     await goToDate(getToday());
 }
 
@@ -800,7 +745,6 @@ async function searchDate() {
     const v = document.getElementById('searchDateInput').value.trim();
     if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) {
         playSearchSound();
-        vibrate();
         await goToDate(v);
     } else {
         alert('Формат: дд.мм.гггг');
@@ -824,7 +768,6 @@ function updateTotals() {
         else if (col === 7) { main += v; }
     });
 
-    // Анимация изменения
     const mainEl = document.getElementById('totalMain');
     const c5El = document.getElementById('totalCol5');
     const c6El = document.getElementById('totalCol6');
@@ -852,34 +795,6 @@ function updateTotals() {
     previousTotals = { main, col5: c5, col6: c6 };
 }
 
-function updateMonthProgress() {
-    if (!currentDateStr) return;
-    const parts = currentDateStr.split('.');
-    const month = parts[1];
-    const year = parts[2];
-    let filledDays = 0;
-    
-    for (const dateKey in allData) {
-        const dp = dateKey.split('.');
-        if (dp[1] === month && dp[2] === year) {
-            const dayData = allData[dateKey];
-            let hasData = false;
-            for (const row in dayData) {
-                for (const col in dayData[row]) {
-                    const val = dayData[row][col];
-                    if (val && val !== '0' && val !== '') { hasData = true; break; }
-                }
-                if (hasData) break;
-            }
-            if (hasData) filledDays++;
-        }
-    }
-    
-    const totalDays = new Date(+year, +month, 0).getDate();
-    const percent = Math.round((filledDays / totalDays) * 100);
-    document.getElementById('monthProgress').style.width = percent + '%';
-}
-
 function updateStats() {
     if (!currentDateStr) return;
     const parts = currentDateStr.split('.');
@@ -889,15 +804,16 @@ function updateStats() {
     let totalMain = 0, totalKM = 0, totalKG = 0, filledDays = 0;
     
     for (const dateKey in allData) {
+        if (dateKey.startsWith('_')) continue;
         const dp = dateKey.split('.');
-        if (dp[1] === month && dp[2] === year) {
+        if (dp.length === 3 && dp[1] === month && dp[2] === year) {
             const dayData = allData[dateKey];
             let dayMain = 0, dayKM = 0, dayKG = 0;
             let hasData = false;
             
             for (const row in dayData) {
+                if (row.startsWith('_')) continue;
                 for (const col in dayData[row]) {
-                    if (col.includes('_time')) continue;
                     const val = dayData[row][col];
                     if (col === '1' && val === '1') { dayMain += 155; hasData = true; }
                     else if ((col === '2' || col === '3' || col === '4') && val === '1') { dayMain += 85; hasData = true; }
@@ -922,11 +838,20 @@ function updateStats() {
     document.getElementById('statDays').textContent = filledDays;
 }
 
+function updateColumnTimeHeaders() {
+    for (let col = 1; col <= 7; col++) {
+        const time = getColumnTime(currentDateStr, col);
+        const header = document.getElementById('timeHeader' + col);
+        if (header) {
+            header.textContent = time ? time : '';
+        }
+    }
+}
+
 function renderTable(dateStr) {
     document.getElementById('currentDateDisplay').textContent = dateStr;
     document.getElementById('searchDateInput').value = dateStr;
     
-    // Подсветка сегодня
     const display = document.getElementById('currentDateDisplay');
     if (dateStr === getToday()) {
         display.classList.add('today-highlight');
@@ -940,20 +865,16 @@ function renderTable(dateStr) {
         const a2 = getCell(dateStr, i, 2) === '1';
         const a3 = getCell(dateStr, i, 3) === '1';
         const a4 = getCell(dateStr, i, 4) === '1';
-        const t1 = getCellTime(dateStr, i, 1);
-        const t2 = getCellTime(dateStr, i, 2);
-        const t3 = getCellTime(dateStr, i, 3);
-        const t4 = getCellTime(dateStr, i, 4);
         const v5 = getCell(dateStr, i, 5).replace(/"/g,'&quot;');
         const v6 = getCell(dateStr, i, 6).replace(/"/g,'&quot;');
         const v7 = getCell(dateStr, i, 7).replace(/"/g,'&quot;');
 
         h += `<tr>
             <td class="row-number">${i}</td>
-            <td><div class="heart-cell${a1?' active':''}" data-row="${i}" data-col="1">💵<span class="time-stamp">${t1}</span></div></td>
-            <td><div class="heart-cell${a2?' active':''}" data-row="${i}" data-col="2">💷<span class="time-stamp">${t2}</span></div></td>
-            <td><div class="heart-cell${a3?' active':''}" data-row="${i}" data-col="3">💴<span class="time-stamp">${t3}</span></div></td>
-            <td><div class="heart-cell${a4?' active':''}" data-row="${i}" data-col="4">💶<span class="time-stamp">${t4}</span></div></td>
+            <td><div class="heart-cell${a1?' active':''}" data-row="${i}" data-col="1">💵</div></td>
+            <td><div class="heart-cell${a2?' active':''}" data-row="${i}" data-col="2">💷</div></td>
+            <td><div class="heart-cell${a3?' active':''}" data-row="${i}" data-col="3">💴</div></td>
+            <td><div class="heart-cell${a4?' active':''}" data-row="${i}" data-col="4">💶</div></td>
             <td><input type="text" inputmode="decimal" data-row="${i}" data-col="5" value="${v5}" placeholder="0"></td>
             <td><input type="text" inputmode="decimal" data-row="${i}" data-col="6" value="${v6}" placeholder="0"></td>
             <td><input type="text" inputmode="decimal" data-row="${i}" data-col="7" value="${v7}" placeholder="0"></td>
@@ -965,36 +886,38 @@ function renderTable(dateStr) {
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.onclick = () => {
             const isActive = cell.classList.contains('active');
-            vibrate();
+            const col = cell.dataset.col;
             if (isActive) {
                 cell.classList.remove('active');
-                saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '0');
-                cell.querySelector('.time-stamp').textContent = '';
+                saveCellLocal(dateStr, cell.dataset.row, col, '0');
                 playDeactivateSound();
             } else {
                 cell.classList.add('active');
+                saveCellLocal(dateStr, cell.dataset.row, col, '1');
                 const time = getNowTime();
-                saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '1', time);
-                cell.querySelector('.time-stamp').textContent = time;
+                saveColumnTime(dateStr, col, time);
+                updateColumnTimeHeaders();
                 playActivateSound();
             }
             updateTotals();
-            updateMonthProgress();
             updateStats();
         };
     });
 
     document.querySelectorAll('input').forEach(inp => {
         inp.oninput = () => {
-            saveCellLocal(dateStr, inp.dataset.row, inp.dataset.col, inp.value);
+            const col = inp.dataset.col;
+            saveCellLocal(dateStr, inp.dataset.row, col, inp.value);
+            const time = getNowTime();
+            saveColumnTime(dateStr, col, time);
+            updateColumnTimeHeaders();
             updateTotals();
-            updateMonthProgress();
             updateStats();
         };
     });
 
+    updateColumnTimeHeaders();
     updateTotals();
-    updateMonthProgress();
     updateStats();
 }
 
@@ -1005,7 +928,6 @@ async function goToDate(ds) {
 
 async function syncNow() {
     playSyncSound();
-    vibrate();
     showSync('🔄 Синхронизация...');
     await saveToCloud();
     await loadFromCloud();
@@ -1015,7 +937,6 @@ async function syncNow() {
 (async function init() {
     await loadFromCloud();
     
-    // Скрываем сплеш-скрин
     setTimeout(() => {
         document.getElementById('splashScreen').classList.add('hidden');
     }, 1500);
@@ -1036,12 +957,6 @@ async function syncNow() {
     document.getElementById('searchDateBtn').onclick = searchDate;
     document.getElementById('syncBtn').onclick = syncNow;
     document.getElementById('soundToggle').onclick = toggleSound;
-    
-    document.getElementById('statsBtn').onclick = () => {
-        const panel = document.getElementById('statsPanel');
-        panel.classList.toggle('show');
-        if (panel.classList.contains('show')) updateStats();
-    };
     
     document.getElementById('searchDateInput').onkeypress = e => {
         if (e.key === 'Enter') searchDate();
