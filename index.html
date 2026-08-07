@@ -120,6 +120,33 @@
             100% { text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 60px #00ffff, 0 0 100px #6c00ff, 0 0 140px #6c00ff; }
         }
 
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .stats-btn-round {
+            width: 40px; height: 40px; min-width: 40px;
+            border-radius: 50%;
+            background: rgba(108, 0, 255, 0.3);
+            border: 1px solid rgba(108, 0, 255, 0.5);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            line-height: 1;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        .stats-btn-round:active {
+            transform: scale(0.85);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            background: rgba(108, 0, 255, 0.6);
+        }
+
         .sync-btn-round {
             width: 40px; height: 40px; min-width: 40px;
             border-radius: 50%;
@@ -305,7 +332,7 @@
         .table-wrapper {
             padding: 10px 8px 20px;
             background: #0f0f1a;
-            max-height: 380px;
+            max-height: 450px;
             overflow-y: auto;
         }
 
@@ -321,37 +348,46 @@
             background: #0f0f1a;
             font-weight: 600;
             color: #00ffff;
-            padding: 10px 2px;
-            font-size: 0.65rem;
+            padding: 14px 2px;
+            font-size: 0.7rem;
             border-bottom: 2px solid rgba(108, 0, 255, 0.4);
-            text-align: center;
-            vertical-align: middle;
         }
 
         td {
             border-bottom: 1px solid rgba(108, 0, 255, 0.2);
-            height: 38px;
+            height: 42px;
             text-align: center;
             background: #1a1a2e;
-            padding: 1px;
+            padding: 2px;
+        }
+
+        .row-time {
+            font-weight: 400;
+            color: rgba(0, 255, 255, 0.5);
+            background: #0f0f1a;
+            font-size: 0.55rem;
+            width: 40px;
+            text-align: right;
+            padding-right: 6px;
         }
 
         .row-number {
             font-weight: 600;
             color: #6c00ff;
             background: #0f0f1a;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+            width: 25px;
         }
 
         .heart-cell {
             cursor: pointer;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 38px;
+            height: 42px;
             border-radius: 8px;
-            margin: 1px;
+            margin: 2px;
             opacity: 0.25;
             filter: grayscale(30%);
             transition: opacity 0.12s ease, filter 0.12s ease, transform 0.08s ease;
@@ -366,14 +402,14 @@
 
         input {
             width: 100%;
-            height: 32px;
+            height: 36px;
             border: 1px solid rgba(108, 0, 255, 0.3);
-            border-radius: 6px;
+            border-radius: 8px;
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
             background: #0f0f1a;
             color: #ffffff;
-            padding: 1px;
+            padding: 2px;
             transition: border-color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
             outline: none;
         }
@@ -443,15 +479,6 @@
             background: #ff9800;
             box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
         }
-
-        .time-header {
-            display: block;
-            font-size: 0.45rem;
-            font-weight: 400;
-            color: rgba(0, 255, 255, 0.5);
-            margin-top: 2px;
-            min-height: 12px;
-        }
     </style>
 </head>
 <body>
@@ -471,7 +498,10 @@
     <div class="app-header">
         <div class="header-row">
             <div class="header-title">💲🪙✨DOST DIX✨🪙💲</div>
-            <button class="sync-btn-round" id="syncBtn" title="Синхронизировать">💾</button>
+            <div class="header-buttons">
+                <button class="stats-btn-round" id="statsBtn" title="Статистика">📊</button>
+                <button class="sync-btn-round" id="syncBtn" title="Синхронизировать">💾</button>
+            </div>
         </div>
         <div class="date-navigator">
             <button class="nav-btn" id="prevDayBtn">←</button>
@@ -504,14 +534,15 @@
         <table>
             <thead>
             <tr>
+                <th>Время</th>
                 <th>№</th>
-                <th>💸1<span class="time-header" id="timeHeader1"></span></th>
-                <th>🪙2<span class="time-header" id="timeHeader2"></span></th>
-                <th>💲3<span class="time-header" id="timeHeader3"></span></th>
-                <th>💰4<span class="time-header" id="timeHeader4"></span></th>
-                <th>🚘<span class="time-header" id="timeHeader5"></span></th>
-                <th>🗿<span class="time-header" id="timeHeader6"></span></th>
-                <th>🫧<span class="time-header" id="timeHeader7"></span></th>
+                <th>💸1</th>
+                <th>🪙2</th>
+                <th>💲3</th>
+                <th>💰4</th>
+                <th>🚘</th>
+                <th>🗿</th>
+                <th>🫧</th>
             </tr>
             </thead>
             <tbody id="rowsBody"></tbody>
@@ -535,6 +566,7 @@ let localChanges = false;
 let soundEnabled = true;
 let isSwitching = false;
 let previousTotals = { main: 0, col5: 0, col6: 0 };
+let statsVisible = false;
 
 let audioContext = null;
 function getAudioContext() {
@@ -680,17 +712,20 @@ function saveCellLocal(dateStr, row, col, value) {
     localChanges = true;
 }
 
-// Сохраняем время последнего изменения для колонки
-function saveColumnTime(dateStr, col, time) {
+// Сохраняем время начала заполнения строки
+function saveRowTime(dateStr, row, time) {
     if (!allData[dateStr]) allData[dateStr] = {};
-    allData[dateStr]['_colTime' + col] = time;
-    localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
-    localChanges = true;
+    if (!allData[dateStr]['_rowTimes']) allData[dateStr]['_rowTimes'] = {};
+    if (!allData[dateStr]['_rowTimes'][row]) {
+        allData[dateStr]['_rowTimes'][row] = time;
+        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+        localChanges = true;
+    }
 }
 
-function getColumnTime(dateStr, col) {
-    if (allData[dateStr] && allData[dateStr]['_colTime' + col]) {
-        return allData[dateStr]['_colTime' + col];
+function getRowTime(dateStr, row) {
+    if (allData[dateStr] && allData[dateStr]['_rowTimes'] && allData[dateStr]['_rowTimes'][row]) {
+        return allData[dateStr]['_rowTimes'][row];
     }
     return '';
 }
@@ -838,16 +873,6 @@ function updateStats() {
     document.getElementById('statDays').textContent = filledDays;
 }
 
-function updateColumnTimeHeaders() {
-    for (let col = 1; col <= 7; col++) {
-        const time = getColumnTime(currentDateStr, col);
-        const header = document.getElementById('timeHeader' + col);
-        if (header) {
-            header.textContent = time ? time : '';
-        }
-    }
-}
-
 function renderTable(dateStr) {
     document.getElementById('currentDateDisplay').textContent = dateStr;
     document.getElementById('searchDateInput').value = dateStr;
@@ -868,8 +893,10 @@ function renderTable(dateStr) {
         const v5 = getCell(dateStr, i, 5).replace(/"/g,'&quot;');
         const v6 = getCell(dateStr, i, 6).replace(/"/g,'&quot;');
         const v7 = getCell(dateStr, i, 7).replace(/"/g,'&quot;');
+        const rowTime = getRowTime(dateStr, i);
 
         h += `<tr>
+            <td class="row-time">${rowTime}</td>
             <td class="row-number">${i}</td>
             <td><div class="heart-cell${a1?' active':''}" data-row="${i}" data-col="1">💵</div></td>
             <td><div class="heart-cell${a2?' active':''}" data-row="${i}" data-col="2">💷</div></td>
@@ -886,17 +913,19 @@ function renderTable(dateStr) {
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.onclick = () => {
             const isActive = cell.classList.contains('active');
-            const col = cell.dataset.col;
+            const row = cell.dataset.row;
             if (isActive) {
                 cell.classList.remove('active');
-                saveCellLocal(dateStr, cell.dataset.row, col, '0');
+                saveCellLocal(dateStr, row, cell.dataset.col, '0');
                 playDeactivateSound();
             } else {
                 cell.classList.add('active');
-                saveCellLocal(dateStr, cell.dataset.row, col, '1');
                 const time = getNowTime();
-                saveColumnTime(dateStr, col, time);
-                updateColumnTimeHeaders();
+                saveRowTime(dateStr, row, time);
+                saveCellLocal(dateStr, row, cell.dataset.col, '1');
+                // Обновляем время в строке
+                const rowTimeCell = document.querySelector(`tr:nth-child(${row}) .row-time`);
+                if (rowTimeCell) rowTimeCell.textContent = time;
                 playActivateSound();
             }
             updateTotals();
@@ -906,17 +935,17 @@ function renderTable(dateStr) {
 
     document.querySelectorAll('input').forEach(inp => {
         inp.oninput = () => {
-            const col = inp.dataset.col;
-            saveCellLocal(dateStr, inp.dataset.row, col, inp.value);
+            const row = inp.dataset.row;
             const time = getNowTime();
-            saveColumnTime(dateStr, col, time);
-            updateColumnTimeHeaders();
+            saveRowTime(dateStr, row, time);
+            saveCellLocal(dateStr, row, inp.dataset.col, inp.value);
+            const rowTimeCell = document.querySelector(`tr:nth-child(${row}) .row-time`);
+            if (rowTimeCell && !rowTimeCell.textContent) rowTimeCell.textContent = time;
             updateTotals();
             updateStats();
         };
     });
 
-    updateColumnTimeHeaders();
     updateTotals();
     updateStats();
 }
@@ -934,6 +963,17 @@ async function syncNow() {
     if (currentDateStr) renderTable(currentDateStr);
 }
 
+function toggleStats() {
+    const statsEl = document.getElementById('footerStats');
+    statsVisible = !statsVisible;
+    if (statsVisible) {
+        statsEl.style.display = 'flex';
+        updateStats();
+    } else {
+        statsEl.style.display = 'none';
+    }
+}
+
 (async function init() {
     await loadFromCloud();
     
@@ -944,6 +984,10 @@ async function syncNow() {
     const today = getToday();
     currentDateStr = today;
     renderTable(today);
+    
+    // Показываем статистику по умолчанию
+    document.getElementById('footerStats').style.display = 'flex';
+    statsVisible = true;
     
     setInterval(async () => {
         await saveToCloud();
@@ -957,6 +1001,7 @@ async function syncNow() {
     document.getElementById('searchDateBtn').onclick = searchDate;
     document.getElementById('syncBtn').onclick = syncNow;
     document.getElementById('soundToggle').onclick = toggleSound;
+    document.getElementById('statsBtn').onclick = toggleStats;
     
     document.getElementById('searchDateInput').onkeypress = e => {
         if (e.key === 'Enter') searchDate();
