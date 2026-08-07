@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DOST DIX">
     <link rel="manifest" href="data:application/json,{'name':'DOST DIX','short_name':'DOST DIX','display':'standalone','start_url':'.','background_color':'#0a0a0a','theme_color':'#6c00ff'}">
-    <title>DOST DIX</title>
+    <title>DOST DIX v2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -29,16 +32,16 @@
             width: 100%;
             background: #1a1a2e;
             border-radius: 36px;
-            box-shadow: 0 25px 50px rgba(108, 0, 255, 0.3), 0 0 80px rgba(108, 0, 255, 0.1);
+            box-shadow: 0 0 80px rgba(108, 0, 255, 0.4);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(108, 0, 255, 0.3);
+            border: 2px solid rgba(108, 0, 255, 0.5);
             position: relative;
         }
 
         .app-header {
-            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            background: #0f0f1a;
             color: white;
             padding: 22px 15px 18px;
             text-align: center;
@@ -59,7 +62,7 @@
             font-size: 1rem;
             letter-spacing: 1px;
             color: #ffffff;
-            text-shadow: 0 0 10px #6c00ff, 0 0 20px #6c00ff, 0 0 40px #6c00ff, 0 0 80px #00ffff, 0 0 120px #00ffff;
+            text-shadow: 0 0 10px #6c00ff, 0 0 20px #6c00ff, 0 0 40px #6c00ff;
             animation: titleGlow 1.5s ease-in-out infinite alternate;
             white-space: nowrap;
             text-align: left;
@@ -67,8 +70,8 @@
         }
 
         @keyframes titleGlow {
-            0% { text-shadow: 0 0 10px #6c00ff, 0 0 20px #6c00ff, 0 0 40px #6c00ff, 0 0 80px #00ffff; }
-            100% { text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 60px #00ffff, 0 0 100px #6c00ff, 0 0 140px #6c00ff; }
+            0% { text-shadow: 0 0 10px #6c00ff, 0 0 20px #6c00ff, 0 0 40px #6c00ff; }
+            100% { text-shadow: 0 0 15px #e1ff00, 0 0 30px #e1ff00, 0 0 60px #e1ff00; }
         }
 
         .header-buttons { display: flex; gap: 8px; align-items: center; }
@@ -81,7 +84,6 @@
             color: white;
             font-size: 1.3rem;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
             display: flex; align-items: center; justify-content: center;
             line-height: 1;
             -webkit-tap-highlight-color: transparent;
@@ -94,46 +96,41 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            background: rgba(108, 0, 255, 0.15);
+            gap: 12px;
+            background: transparent;
             border-radius: 40px;
             padding: 6px 10px;
             flex-wrap: wrap;
-            border: 1px solid rgba(108, 0, 255, 0.3);
+            border: none;
         }
 
         .nav-btn {
-            background: rgba(108, 0, 255, 0.3);
-            border: none;
+            background: rgba(108, 0, 255, 0.2);
+            border: 1px solid rgba(108, 0, 255, 0.4);
             color: #e1ff00;
-            width: 40px; 
-            height: 40px;
-            min-width: 40px;
+            width: 42px; 
+            height: 42px;
+            min-width: 42px;
             border-radius: 50%;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
-            line-height: 40px;
+            line-height: 42px;
             text-align: center;
             padding: 0;
-            position: relative;
         }
         .nav-btn span {
             display: block;
             line-height: 1;
-            margin-top: -1px;
         }
         .nav-btn:active {
-            transform: scale(0.78);
-            background: rgba(225, 255, 0, 0.5) !important;
-            box-shadow: 0 0 35px rgba(225, 255, 0, 1) !important;
+            background: rgba(225, 255, 0, 0.6) !important;
             color: #000 !important;
         }
 
@@ -146,9 +143,8 @@
             font-size: 1rem;
             min-width: 130px;
             text-align: center;
-            border: 1px solid rgba(225, 255, 0, 0.4);
+            border: 1px solid #e1ff00;
             cursor: pointer;
-            transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
         }
         .date-display.today-highlight {
             border-color: #e1ff00;
@@ -165,7 +161,7 @@
         }
 
         .search-input {
-            border: 1px solid rgba(225, 255, 0, 0.4);
+            border: 1px solid rgba(225, 255, 0, 0.5);
             border-radius: 30px;
             padding: 10px 16px;
             font-size: 0.9rem;
@@ -181,13 +177,12 @@
 
         .search-btn {
             background: linear-gradient(135deg, #6c00ff, #e1ff00);
-            border: none; color: white;
+            border: none; color: #000;
             border-radius: 30px;
             padding: 10px 18px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(225, 255, 0, 0.4);
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
@@ -197,7 +192,7 @@
 
         .today-btn {
             background: rgba(108, 0, 255, 0.3);
-            border: 1px solid rgba(225, 255, 0, 0.4);
+            border: 1px solid #e1ff00;
             border-radius: 30px;
             padding: 10px 16px;
             font-weight: 600;
@@ -215,7 +210,7 @@
             display: flex;
             justify-content: space-around;
             padding: 12px 8px;
-            background: rgba(15, 15, 26, 0.8);
+            background: #0f0f1a;
             margin: 8px 12px 0;
             border-radius: 20px;
             gap: 6px;
@@ -224,10 +219,9 @@
         }
 
         .total-box {
-            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            background: #1a1a2e;
             border-radius: 16px;
             padding: 12px 6px;
-            box-shadow: none;
             flex: 1;
             min-width: 90px;
             text-align: center;
@@ -240,14 +234,12 @@
             color: #e1ff00;
             margin-bottom: 4px;
             font-weight: 600;
-            text-shadow: none;
         }
 
         .total-value {
             font-size: 1.6rem;
             font-weight: 700;
             color: #ffffff;
-            text-shadow: none;
         }
 
         .table-wrapper {
@@ -259,7 +251,6 @@
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
             scroll-behavior: smooth;
-            will-change: scroll-position;
             max-height: none;
         }
 
@@ -270,7 +261,7 @@
             background: transparent;
         }
         .table-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(225, 255, 0, 0.4);
+            background: #e1ff00;
             border-radius: 3px;
         }
 
@@ -280,8 +271,6 @@
             background: #1a1a2e;
             border-radius: 20px;
             table-layout: fixed;
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
         }
 
         thead {
@@ -296,11 +285,10 @@
             color: #e1ff00;
             padding: 14px 2px;
             font-size: 0.7rem;
-            border-bottom: 2px solid rgba(225, 255, 0, 0.4);
+            border-bottom: 2px solid #e1ff00;
             text-align: center;
             position: sticky;
             top: 0;
-            text-shadow: none;
         }
 
         td {
@@ -309,21 +297,20 @@
             text-align: center;
             background: #1a1a2e;
             padding: 2px;
-            transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+            transition: background-color 0.3s ease-out;
         }
 
         /* Подсветка активной строки */
         tr.row-active td {
-            background: rgba(225, 255, 0, 0.12) !important;
-            box-shadow: inset 0 0 30px rgba(225, 255, 0, 0.3), 0 0 15px rgba(225, 255, 0, 0.2);
+            background: rgba(225, 255, 0, 0.15) !important;
+            box-shadow: inset 0 0 30px rgba(225, 255, 0, 0.3);
         }
         
         tr.row-active td.row-time,
         tr.row-active td.row-number {
-            background: rgba(225, 255, 0, 0.2) !important;
+            background: rgba(225, 255, 0, 0.25) !important;
             color: #1a1a2e;
-            text-shadow: none;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .row-time {
@@ -334,9 +321,8 @@
             width: 30px;
             text-align: center;
             padding: 0 1px;
-            opacity: 0.8;
+            opacity: 0.9;
             white-space: nowrap;
-            text-shadow: none;
         }
 
         .row-number {
@@ -345,9 +331,9 @@
             background: #0f0f1a;
             font-size: 0.8rem;
             width: 24px;
-            text-shadow: none;
         }
 
+        /* НЕАКТИВНАЯ кнопка - чистая, без теней */
         .heart-cell {
             cursor: pointer;
             font-size: 1.6rem;
@@ -357,25 +343,30 @@
             height: 42px;
             border-radius: 12px;
             margin: 2px;
-            opacity: 0.3;
-            filter: none;
+            opacity: 0.35;
+            filter: none !important;
+            -webkit-filter: none !important;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-touch-callout: none;
-            background: transparent;
-            transition: opacity 0.12s ease-out, filter 0.12s ease-out, background 0.08s ease-out;
-            box-shadow: none;
+            background: transparent !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+            transition: opacity 0.1s ease-out, background 0.1s ease-out;
         }
+        
+        /* АКТИВНАЯ кнопка - со свечением */
         .heart-cell.active {
             opacity: 1;
-            filter: drop-shadow(0 0 14px rgba(225, 255, 0, 1));
-            background: rgba(225, 255, 0, 0.15);
+            filter: drop-shadow(0 0 10px #e1ff00) !important;
+            -webkit-filter: drop-shadow(0 0 10px #e1ff00) !important;
+            background: rgba(225, 255, 0, 0.2) !important;
         }
 
         input {
             width: 100%;
             height: 38px;
-            border: 1px solid rgba(225, 255, 0, 0.3);
+            border: 1px solid rgba(225, 255, 0, 0.4);
             border-radius: 10px;
             text-align: center;
             font-size: 14px;
@@ -383,12 +374,12 @@
             color: #e1ff00;
             padding: 2px 4px;
             outline: none;
-            box-shadow: none;
+            box-shadow: none !important;
             transition: none;
         }
         input:focus { 
             border-color: #6c00ff; 
-            box-shadow: 0 0 15px rgba(108, 0, 255, 0.6);
+            box-shadow: 0 0 15px rgba(108, 0, 255, 0.6) !important;
             background: #1a1a2e; 
             color: #fff;
         }
@@ -403,12 +394,11 @@
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
-            text-shadow: none;
         }
 
         .sound-toggle {
             background: rgba(108, 0, 255, 0.3);
-            border: 1px solid rgba(225, 255, 0, 0.4);
+            border: 1px solid #e1ff00;
             color: #e1ff00;
             border-radius: 20px;
             padding: 8px 14px;
@@ -431,21 +421,19 @@
             opacity: 0;
             transition: opacity 0.15s ease-out;
             z-index: 1000;
-            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
             pointer-events: none;
         }
         .sync-indicator.show { opacity: 1; }
-        .sync-indicator.error { background: #ff9800; box-shadow: 0 0 20px rgba(255, 152, 0, 0.5); }
+        .sync-indicator.error { background: #ff9800; }
 
         .stats-popup {
             position: absolute;
             top: 72px;
             right: 15px;
             background: #1a1a2e;
-            border: 1px solid rgba(225, 255, 0, 0.5);
+            border: 1px solid #e1ff00;
             border-radius: 16px;
             padding: 12px 16px;
-            box-shadow: 0 0 30px rgba(225, 255, 0, 0.3);
             z-index: 100;
             display: none;
             flex-direction: row;
@@ -454,7 +442,6 @@
             font-size: 0.75rem;
             color: #e1ff00;
             white-space: nowrap;
-            text-shadow: none;
         }
         .stats-popup.show { display: flex; }
         .stats-popup span { display: flex; align-items: center; gap: 5px; }
@@ -462,7 +449,6 @@
             color: #fff;
             font-weight: 700;
             font-size: 0.9rem;
-            text-shadow: none;
         }
     </style>
 </head>
