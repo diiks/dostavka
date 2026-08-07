@@ -106,42 +106,46 @@
         .nav-btn {
             background: rgba(108, 0, 255, 0.3);
             border: none;
-            color: #e0b0ff;
+            color: #e1ff00;
             width: 40px; height: 40px;
             border-radius: 50%;
-            font-size: 1.5rem;
-            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
+            box-shadow: 0 0 15px rgba(225, 255, 0, 0.3);
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
             transition: none;
+            line-height: 1;
+            padding: 0;
         }
         .nav-btn:active {
             transform: scale(0.78);
-            background: rgba(153, 0, 102, 0.5) !important;
-            box-shadow: 0 0 35px rgba(153, 0, 102, 1) !important;
-            color: #fff !important;
+            background: rgba(225, 255, 0, 0.5) !important;
+            box-shadow: 0 0 35px rgba(225, 255, 0, 1) !important;
+            color: #000 !important;
         }
 
         .date-display {
             background: #1a1a2e;
-            color: #e0b0ff;
+            color: #e1ff00;
             font-weight: 600;
             padding: 10px 18px;
             border-radius: 30px;
             font-size: 1rem;
             min-width: 130px;
             text-align: center;
-            border: 1px solid rgba(108, 0, 255, 0.4);
+            border: 1px solid rgba(225, 255, 0, 0.4);
             cursor: pointer;
             transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
         }
         .date-display.today-highlight {
-            border-color: #990066;
-            box-shadow: 0 0 25px rgba(153, 0, 102, 0.6);
+            border-color: #e1ff00;
+            box-shadow: 0 0 25px rgba(225, 255, 0, 0.6);
             color: #fff;
         }
 
@@ -154,30 +158,30 @@
         }
 
         .search-input {
-            border: 1px solid rgba(108, 0, 255, 0.4);
+            border: 1px solid rgba(225, 255, 0, 0.4);
             border-radius: 30px;
             padding: 10px 16px;
             font-size: 0.9rem;
             width: 150px;
             background: #1a1a2e;
-            color: #e0b0ff;
+            color: #e1ff00;
             text-align: center;
             outline: none;
             height: 42px;
             transition: border-color 0.1s ease-out, box-shadow 0.1s ease-out;
         }
-        .search-input::placeholder { color: rgba(224, 176, 255, 0.5); }
-        .search-input:focus { border-color: #990066; box-shadow: 0 0 20px rgba(153, 0, 102, 0.5); }
+        .search-input::placeholder { color: rgba(225, 255, 0, 0.5); }
+        .search-input:focus { border-color: #e1ff00; box-shadow: 0 0 20px rgba(225, 255, 0, 0.5); }
 
         .search-btn {
-            background: linear-gradient(135deg, #6c00ff, #990066);
+            background: linear-gradient(135deg, #6c00ff, #e1ff00);
             border: none; color: white;
             border-radius: 30px;
             padding: 10px 18px;
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(153, 0, 102, 0.4);
+            box-shadow: 0 0 20px rgba(225, 255, 0, 0.4);
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
@@ -188,13 +192,13 @@
 
         .today-btn {
             background: rgba(108, 0, 255, 0.3);
-            border: 1px solid rgba(108, 0, 255, 0.4);
+            border: 1px solid rgba(225, 255, 0, 0.4);
             border-radius: 30px;
             padding: 10px 16px;
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
-            color: #e0b0ff;
+            color: #e1ff00;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
@@ -229,7 +233,7 @@
         .total-label {
             font-size: 0.7rem;
             letter-spacing: 1px;
-            color: #990066;
+            color: #e1ff00;
             margin-bottom: 4px;
             font-weight: 600;
         }
@@ -238,7 +242,7 @@
             font-size: 1.6rem;
             font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(153, 0, 102, 0.6);
+            text-shadow: 0 0 15px rgba(225, 255, 0, 0.6);
         }
 
         .table-wrapper {
@@ -261,7 +265,7 @@
             background: transparent;
         }
         .table-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(153, 0, 102, 0.4);
+            background: rgba(225, 255, 0, 0.4);
             border-radius: 3px;
         }
 
@@ -284,10 +288,10 @@
         th {
             background: #0f0f1a;
             font-weight: 600;
-            color: #990066;
+            color: #e1ff00;
             padding: 14px 2px;
             font-size: 0.7rem;
-            border-bottom: 2px solid rgba(153, 0, 102, 0.4);
+            border-bottom: 2px solid rgba(225, 255, 0, 0.4);
             text-align: center;
             position: sticky;
             top: 0;
@@ -302,22 +306,23 @@
             transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
         }
 
-        /* Подсветка активной строки цветом #990066 */
+        /* Подсветка активной строки */
         tr.row-active td {
-            background: rgba(153, 0, 102, 0.15) !important;
-            box-shadow: inset 0 0 30px rgba(153, 0, 102, 0.2), 0 0 15px rgba(153, 0, 102, 0.15);
+            background: rgba(225, 255, 0, 0.12) !important;
+            box-shadow: inset 0 0 30px rgba(225, 255, 0, 0.3), 0 0 15px rgba(225, 255, 0, 0.2);
         }
         
         tr.row-active td.row-time,
         tr.row-active td.row-number {
-            background: rgba(153, 0, 102, 0.25) !important;
-            color: #990066;
-            text-shadow: 0 0 10px rgba(153, 0, 102, 0.8), 0 0 20px rgba(153, 0, 102, 0.4);
+            background: rgba(225, 255, 0, 0.2) !important;
+            color: #1a1a2e; /* тёмный цвет для контраста */
+            text-shadow: none;
+            font-weight: 600;
         }
 
         .row-time {
             font-weight: 400;
-            color: #990066;
+            color: #e1ff00;
             background: #0f0f1a;
             font-size: 0.65rem;
             width: 30px;
@@ -356,32 +361,33 @@
         }
         .heart-cell.active {
             opacity: 1;
-            filter: grayscale(0%) drop-shadow(0 0 14px rgba(153, 0, 102, 1));
-            background: rgba(153, 0, 102, 0.12);
+            filter: grayscale(0%) drop-shadow(0 0 14px rgba(225, 255, 0, 1));
+            background: rgba(225, 255, 0, 0.15);
         }
 
         input {
             width: 100%;
             height: 38px;
-            border: 1px solid rgba(108, 0, 255, 0.3);
+            border: 1px solid rgba(225, 255, 0, 0.3);
             border-radius: 10px;
             text-align: center;
             font-size: 14px;
             background: #0f0f1a;
-            color: #ffffff;
+            color: #e1ff00;
             padding: 2px 4px;
             outline: none;
             transition: border-color 0.1s ease-out, box-shadow 0.1s ease-out;
         }
         input:focus { 
-            border-color: #990066; 
-            box-shadow: 0 0 20px rgba(153, 0, 102, 0.5), inset 0 0 10px rgba(153, 0, 102, 0.05); 
+            border-color: #e1ff00; 
+            box-shadow: 0 0 20px rgba(225, 255, 0, 0.5), inset 0 0 10px rgba(225, 255, 0, 0.05); 
             background: #1a1a2e; 
+            color: #fff;
         }
 
         .footer-note {
             padding: 10px 15px;
-            color: rgba(224, 176, 255, 0.6);
+            color: rgba(225, 255, 0, 0.6);
             font-size: 0.7rem;
             background: #0f0f1a;
             border-top: 1px solid rgba(108, 0, 255, 0.3);
@@ -393,8 +399,8 @@
 
         .sound-toggle {
             background: rgba(108, 0, 255, 0.3);
-            border: 1px solid rgba(108, 0, 255, 0.4);
-            color: #e0b0ff;
+            border: 1px solid rgba(225, 255, 0, 0.4);
+            color: #e1ff00;
             border-radius: 20px;
             padding: 8px 14px;
             font-size: 0.8rem;
@@ -428,17 +434,17 @@
             top: 72px;
             right: 15px;
             background: #1a1a2e;
-            border: 1px solid rgba(153, 0, 102, 0.5);
+            border: 1px solid rgba(225, 255, 0, 0.5);
             border-radius: 16px;
             padding: 12px 16px;
-            box-shadow: 0 0 30px rgba(153, 0, 102, 0.3);
+            box-shadow: 0 0 30px rgba(225, 255, 0, 0.3);
             z-index: 100;
             display: none;
             flex-direction: row;
             gap: 14px;
             align-items: center;
             font-size: 0.75rem;
-            color: #990066;
+            color: #e1ff00;
             white-space: nowrap;
         }
         .stats-popup.show { display: flex; }
@@ -447,7 +453,7 @@
             color: #fff;
             font-weight: 700;
             font-size: 0.9rem;
-            text-shadow: 0 0 10px rgba(153, 0, 102, 0.6);
+            text-shadow: 0 0 10px rgba(225, 255, 0, 0.6);
         }
     </style>
 </head>
@@ -673,7 +679,6 @@ function formatNumber(value) {
     if (value === '' || value === null || value === undefined) return '';
     const num = parseFloat(String(value).replace(',', '.'));
     if (isNaN(num)) return '';
-    // Округляем до 2 знаков после запятой
     return parseFloat(num.toFixed(2));
 }
 
@@ -681,7 +686,6 @@ function saveCellLocal(dateStr, row, col, value) {
     if (!allData[dateStr]) allData[dateStr] = {};
     if (!allData[dateStr][row]) allData[dateStr][row] = {};
     
-    // Форматируем числовые значения для колонок 5, 6, 7
     if (col === '5' || col === '6' || col === '7') {
         const formatted = formatNumber(value);
         allData[dateStr][row][col] = formatted !== '' ? formatted : value;
@@ -712,7 +716,6 @@ function getCell(dateStr, row, col) {
     if (allData[dateStr] && allData[dateStr][row]) {
         const val = allData[dateStr][row][col];
         if (col === '5' || col === '6' || col === '7') {
-            // Возвращаем отформатированное значение
             return val !== undefined && val !== '' ? val : '';
         }
         return val || '';
@@ -778,7 +781,6 @@ function searchDate() {
     }
 }
 
-// Функция проверки активности строки
 function isRowActive(row) {
     for (let col = 1; col <= 7; col++) {
         const val = getCell(currentDateStr, row, String(col));
@@ -791,7 +793,6 @@ function isRowActive(row) {
     return false;
 }
 
-// Функция обновления подсветки строки
 function updateRowHighlight(row) {
     const tr = document.querySelector(`tr:nth-child(${row})`);
     if (!tr) return;
@@ -823,7 +824,6 @@ function updateTotals() {
             main += v; 
         }
     });
-    // Округляем итоговые значения до 2 знаков
     document.getElementById('totalMain').textContent = parseFloat(main.toFixed(2));
     document.getElementById('totalCol5').textContent = parseFloat(c5.toFixed(2));
     document.getElementById('totalCol6').textContent = parseFloat(c6.toFixed(2));
@@ -852,13 +852,11 @@ function updateStats() {
             }
         }
     }
-    // Округляем статистику до 2 знаков
     document.getElementById('statTotal').textContent = parseFloat(totalMain.toFixed(2));
     document.getElementById('statKM').textContent = parseFloat(totalKM.toFixed(2));
     document.getElementById('statKG').textContent = parseFloat(totalKG.toFixed(2));
 }
 
-// Сохраняем позицию скролла
 let scrollPosition = 0;
 
 function renderTable(dateStr) {
@@ -931,7 +929,6 @@ function renderTable(dateStr) {
     });
 
     document.querySelectorAll('input').forEach(inp => {
-        // Форматируем при потере фокуса
         inp.addEventListener('blur', function() {
             const col = this.dataset.col;
             if (col === '5' || col === '6' || col === '7') {
@@ -947,7 +944,6 @@ function renderTable(dateStr) {
             const col = this.dataset.col;
             const time = getNowTime();
             
-            // Сохраняем сырое значение при вводе
             saveRowTime(dateStr, row, time);
             saveCellLocal(dateStr, row, col, this.value);
             updateRowTimeInTable(row, time);
