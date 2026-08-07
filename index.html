@@ -20,6 +20,8 @@
             align-items: center;
             padding: 20px;
             margin: 0;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: auto;
         }
 
         .app-container {
@@ -41,6 +43,7 @@
             padding: 22px 15px 18px;
             text-align: center;
             border-bottom: 1px solid rgba(108, 0, 255, 0.3);
+            flex-shrink: 0;
         }
 
         .header-row {
@@ -115,7 +118,6 @@
             outline: none;
             -webkit-touch-callout: none;
             transition: none;
-            will-change: transform, box-shadow, background, color;
         }
         .nav-btn:active {
             transform: scale(0.78);
@@ -135,7 +137,7 @@
             text-align: center;
             border: 1px solid rgba(108, 0, 255, 0.4);
             cursor: pointer;
-            transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, background 0.1s ease-out;
+            transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
         }
         .date-display.today-highlight {
             border-color: #00ffff;
@@ -210,6 +212,7 @@
             border-radius: 20px;
             gap: 6px;
             border: 1px solid rgba(108, 0, 255, 0.2);
+            flex-shrink: 0;
         }
 
         .total-box {
@@ -241,8 +244,25 @@
         .table-wrapper {
             padding: 10px 6px 20px;
             background: #0f0f1a;
-            max-height: 420px;
+            flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            scroll-behavior: smooth;
+            will-change: scroll-position;
+            max-height: none;
+        }
+
+        .table-wrapper::-webkit-scrollbar {
+            width: 3px;
+        }
+        .table-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(108, 0, 255, 0.4);
+            border-radius: 3px;
         }
 
         table {
@@ -251,6 +271,14 @@
             background: #1a1a2e;
             border-radius: 20px;
             table-layout: fixed;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         th {
@@ -261,6 +289,8 @@
             font-size: 0.7rem;
             border-bottom: 2px solid rgba(108, 0, 255, 0.4);
             text-align: center;
+            position: sticky;
+            top: 0;
         }
 
         td {
@@ -342,6 +372,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .sound-toggle {
@@ -449,7 +480,7 @@
         </div>
     </div>
 
-    <div class="table-wrapper">
+    <div class="table-wrapper" id="tableWrapper">
         <table>
             <thead>
             <tr>
@@ -755,7 +786,14 @@ function updateStats() {
     document.getElementById('statKG').textContent = totalKG;
 }
 
+// Сохраняем позицию скролла
+let scrollPosition = 0;
+
 function renderTable(dateStr) {
+    // Сохраняем позицию скролла
+    const wrapper = document.getElementById('tableWrapper');
+    if (wrapper) scrollPosition = wrapper.scrollTop;
+    
     document.getElementById('currentDateDisplay').textContent = dateStr;
     document.getElementById('searchDateInput').value = dateStr;
     const display = document.getElementById('currentDateDisplay');
@@ -786,6 +824,13 @@ function renderTable(dateStr) {
         </tr>`;
     }
     document.getElementById('rowsBody').innerHTML = h;
+
+    // Восстанавливаем позицию скролла
+    if (wrapper) {
+        requestAnimationFrame(() => {
+            wrapper.scrollTop = scrollPosition;
+        });
+    }
 
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.addEventListener('touchstart', function(e) {
@@ -845,7 +890,6 @@ function toggleStats() {
     }
 }
 
-// Привязка touchstart ко всем кнопкам
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         const prevBtn = document.getElementById('prevDayBtn');
@@ -866,6 +910,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (soundBtn) soundBtn.addEventListener('touchstart', (e) => { e.preventDefault(); toggleSound(); });
         if (dateDisplay) dateDisplay.addEventListener('touchstart', (e) => { e.preventDefault(); document.getElementById('searchDateInput').focus(); });
     }, 100);
+});
+
+// Предотвращаем конфликт скролла с клавиатурой
+document.addEventListener('focusin', function(e) {
+    if (e.target.tagName === 'INPUT') {
+        setTimeout(() => {
+            e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    }
 });
 
 (async function init() {
