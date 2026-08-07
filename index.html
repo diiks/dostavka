@@ -2,34 +2,77 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DOST DIX">
-    <link rel="manifest" href="data:application/json,{'name':'DOST DIX','short_name':'DOST DIX','display':'standalone','start_url':'.','background_color':'#0a0a0a','theme_color':'#6c00ff'}">
+    <link rel="manifest" href='data:application/json,{"name":"DOST DIX","short_name":"DOST DIX","display":"standalone","start_url":".","background_color":"#0a0a0a","theme_color":"#6c00ff"}'>
     <title>DOST DIX v2</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            width: 100%;
+            min-height: 100%;
+            background: #0a0a0a;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            color-scheme: dark;
+        }
+
+        body,
+        button,
+        input {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        button,
+        input {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        input {
+            font-family: inherit;
+            -webkit-border-radius: 0;
+        }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
             background: #0a0a0a;
+            width: 100%;
+            min-width: 100%;
             min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            margin: 0;
             overscroll-behavior: none;
             -webkit-overflow-scrolling: auto;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         .app-container {
+            width: 520px;
             max-width: 520px;
-            width: 100%;
             background: #1a1a2e;
             border-radius: 36px;
             box-shadow: 0 0 80px rgba(108, 0, 255, 0.4);
@@ -38,6 +81,24 @@
             flex-direction: column;
             border: 2px solid rgba(108, 0, 255, 0.5);
             position: relative;
+            flex-shrink: 0;
+        }
+
+        @media screen and (max-width: 560px) {
+            body {
+                padding: 0;
+                align-items: flex-start;
+            }
+
+            .app-container {
+                width: 100%;
+                max-width: 520px;
+                min-height: 100vh;
+                min-height: 100dvh;
+                border-radius: 0;
+                border-left: 2px solid rgba(108, 0, 255, 0.5);
+                border-right: 2px solid rgba(108, 0, 255, 0.5);
+            }
         }
 
         .app-header {
@@ -74,23 +135,35 @@
             100% { text-shadow: 0 0 15px #e1ff00, 0 0 30px #e1ff00, 0 0 60px #e1ff00; }
         }
 
-        .header-buttons { display: flex; gap: 8px; align-items: center; }
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
 
-        .stats-btn-round, .sync-btn-round {
-            width: 42px; height: 42px; min-width: 42px;
+        .stats-btn-round,
+        .sync-btn-round {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
             border-radius: 50%;
             background: rgba(108, 0, 255, 0.3);
             border: 1px solid rgba(108, 0, 255, 0.5);
             color: white;
             font-size: 1.3rem;
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             line-height: 1;
             -webkit-tap-highlight-color: transparent;
             outline: none;
             -webkit-touch-callout: none;
         }
-        .sync-btn-round { font-size: 1.4rem; }
+
+        .sync-btn-round {
+            font-size: 1.4rem;
+        }
 
         .date-navigator {
             display: flex;
@@ -108,7 +181,7 @@
             background: rgba(108, 0, 255, 0.6);
             border: 1px solid rgba(108, 0, 255, 0.8);
             color: #e1ff00;
-            width: 42px; 
+            width: 42px;
             height: 42px;
             min-width: 42px;
             border-radius: 50%;
@@ -125,10 +198,12 @@
             text-align: center;
             padding: 0;
         }
+
         .nav-btn span {
             display: block;
             line-height: 1;
         }
+
         .nav-btn:active {
             background: rgba(225, 255, 0, 0.6);
             color: #000;
@@ -147,6 +222,7 @@
             cursor: pointer;
             flex-shrink: 0;
         }
+
         .date-display.today-highlight {
             border-color: #e1ff00;
             box-shadow: 0 0 25px rgba(225, 255, 0, 0.6);
@@ -173,12 +249,20 @@
             outline: none;
             height: 42px;
         }
-        .search-input::placeholder { color: rgba(225, 255, 0, 0.5); }
-        .search-input:focus { border-color: #6c00ff; box-shadow: 0 0 20px rgba(108, 0, 255, 0.5); }
+
+        .search-input::placeholder {
+            color: rgba(225, 255, 0, 0.5);
+        }
+
+        .search-input:focus {
+            border-color: #6c00ff;
+            box-shadow: 0 0 20px rgba(108, 0, 255, 0.5);
+        }
 
         .search-btn {
             background: linear-gradient(135deg, #6c00ff, #e1ff00);
-            border: none; color: #000;
+            border: none;
+            color: #000;
             border-radius: 30px;
             padding: 10px 18px;
             font-weight: 700;
@@ -187,7 +271,8 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
-            display: flex; align-items: center;
+            display: flex;
+            align-items: center;
             -webkit-touch-callout: none;
         }
 
@@ -203,7 +288,8 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
             height: 42px;
-            display: flex; align-items: center;
+            display: flex;
+            align-items: center;
             -webkit-touch-callout: none;
         }
 
@@ -258,9 +344,11 @@
         .table-wrapper::-webkit-scrollbar {
             width: 3px;
         }
+
         .table-wrapper::-webkit-scrollbar-track {
             background: transparent;
         }
+
         .table-wrapper::-webkit-scrollbar-thumb {
             background: #e1ff00;
             border-radius: 3px;
@@ -301,12 +389,11 @@
             transition: background-color 0.3s ease-out;
         }
 
-        /* Подсветка активной строки */
         tr.row-active td {
             background: rgba(225, 255, 0, 0.15) !important;
             box-shadow: inset 0 0 30px rgba(225, 255, 0, 0.3);
         }
-        
+
         tr.row-active td.row-time,
         tr.row-active td.row-number {
             background: rgba(225, 255, 0, 0.25) !important;
@@ -334,7 +421,6 @@
             width: 24px;
         }
 
-        /* НЕАКТИВНАЯ кнопка - чистая, без теней */
         .heart-cell {
             cursor: pointer;
             font-size: 1.6rem;
@@ -355,8 +441,7 @@
             text-shadow: none !important;
             transition: opacity 0.1s ease-out, background 0.1s ease-out;
         }
-        
-        /* АКТИВНАЯ кнопка - со свечением */
+
         .heart-cell.active {
             opacity: 1;
             filter: drop-shadow(0 0 10px #e8e473) !important;
@@ -378,10 +463,11 @@
             box-shadow: none !important;
             transition: none;
         }
-        input:focus { 
-            border-color: #6c00ff; 
+
+        input:focus {
+            border-color: #6c00ff;
             box-shadow: 0 0 15px rgba(108, 0, 255, 0.6) !important;
-            background: #1a1a2e; 
+            background: #1a1a2e;
             color: #fff;
         }
 
@@ -412,7 +498,8 @@
 
         .sync-indicator {
             position: fixed;
-            top: 10px; left: 50%;
+            top: 10px;
+            left: 50%;
             transform: translateX(-50%);
             background: #4CAF50;
             color: white;
@@ -424,8 +511,14 @@
             z-index: 1000;
             pointer-events: none;
         }
-        .sync-indicator.show { opacity: 1; }
-        .sync-indicator.error { background: #ff9800; }
+
+        .sync-indicator.show {
+            opacity: 1;
+        }
+
+        .sync-indicator.error {
+            background: #ff9800;
+        }
 
         .stats-popup {
             position: absolute;
@@ -444,8 +537,17 @@
             color: #e1ff00;
             white-space: nowrap;
         }
-        .stats-popup.show { display: flex; }
-        .stats-popup span { display: flex; align-items: center; gap: 5px; }
+
+        .stats-popup.show {
+            display: flex;
+        }
+
+        .stats-popup span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .stats-popup .stat-val {
             color: #fff;
             font-weight: 700;
@@ -523,6 +625,8 @@
 </div>
 
 <script>
+// ВНИМАНИЕ: Для безопасности вынесите эти значения в отдельный конфигурационный файл
+// или используйте серверную часть для проксирования запросов к JSONBin
 const JSONBIN_BIN_ID = '6a750d49da38895dfec37959';
 const JSONBIN_API_KEY = '$2a$10$Aaqly4jYya2FH7JO0vhA9OsX0D1ufyWm1QZCTAQty6OQzyvdDcPfO';
 
@@ -532,96 +636,162 @@ let localChanges = false;
 let soundEnabled = true;
 let isSwitching = false;
 let statsVisible = false;
-
-document.addEventListener('touchstart', function(){}, {passive: false});
+let isSyncing = false;
+let cloudSaveTimer = null;
 
 let audioContext = null;
+
 function getAudioContext() {
-    if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (!audioContext) {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) {
+            console.warn('Web Audio API не поддерживается');
+            return null;
+        }
+    }
     return audioContext;
 }
 
 function playActivateSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(880, ctx.currentTime);
         osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.04);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
+
 function playDeactivateSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(440, ctx.currentTime);
         osc.frequency.setValueAtTime(330, ctx.currentTime + 0.04);
         gain.gain.setValueAtTime(0.3, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
+
 function playSyncSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext(); const now = ctx.currentTime;
-        const osc1 = ctx.createOscillator(); const gain1 = ctx.createGain();
-        osc1.connect(gain1); gain1.connect(ctx.destination);
+        const now = ctx.currentTime;
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
         osc1.type = 'triangle';
-        osc1.frequency.setValueAtTime(600, now); osc1.frequency.setValueAtTime(900, now + 0.04); osc1.frequency.setValueAtTime(1200, now + 0.08);
-        gain1.gain.setValueAtTime(0.3, now); gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-        osc1.start(now); osc1.stop(now + 0.12);
-        const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain();
-        osc2.connect(gain2); gain2.connect(ctx.destination);
+        osc1.frequency.setValueAtTime(600, now);
+        osc1.frequency.setValueAtTime(900, now + 0.04);
+        osc1.frequency.setValueAtTime(1200, now + 0.08);
+        gain1.gain.setValueAtTime(0.3, now);
+        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        osc1.start(now);
+        osc1.stop(now + 0.12);
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
         osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(800, now + 0.04); osc2.frequency.setValueAtTime(1200, now + 0.1);
-        gain2.gain.setValueAtTime(0.2, now + 0.04); gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.14);
-        osc2.start(now + 0.04); osc2.stop(now + 0.14);
-    } catch(e) {}
+        osc2.frequency.setValueAtTime(800, now + 0.04);
+        osc2.frequency.setValueAtTime(1200, now + 0.1);
+        gain2.gain.setValueAtTime(0.2, now + 0.04);
+        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.14);
+        osc2.start(now + 0.04);
+        osc2.stop(now + 0.14);
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
+
 function playNavSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(500, ctx.currentTime); osc.frequency.setValueAtTime(700, ctx.currentTime + 0.03);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.08);
-    } catch(e) {}
+        osc.frequency.setValueAtTime(500, ctx.currentTime);
+        osc.frequency.setValueAtTime(700, ctx.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.08);
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
+
 function playSearchSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(400, ctx.currentTime); osc.frequency.setValueAtTime(800, ctx.currentTime + 0.04); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
+        osc.frequency.setValueAtTime(400, ctx.currentTime);
+        osc.frequency.setValueAtTime(800, ctx.currentTime + 0.04);
+        osc.frequency.setValueAtTime(600, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
+
 function playTodaySound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.setValueAtTime(600, ctx.currentTime + 0.04); osc.frequency.setValueAtTime(900, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
+        osc.frequency.setValueAtTime(300, ctx.currentTime);
+        osc.frequency.setValueAtTime(600, ctx.currentTime + 0.04);
+        osc.frequency.setValueAtTime(900, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
 
 function toggleSound() {
@@ -631,6 +801,7 @@ function toggleSound() {
 
 function showSync(message, isError = false) {
     const el = document.getElementById('syncStatus');
+    if (!el) return;
     el.textContent = message;
     el.className = 'sync-indicator ' + (isError ? 'error' : '');
     el.classList.add('show');
@@ -642,53 +813,104 @@ async function loadFromCloud() {
         const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
             headers: { 'X-Master-Key': JSONBIN_API_KEY }
         });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
         const result = await response.json();
         allData = result.record || {};
         localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
         localChanges = false;
         return allData;
     } catch (e) {
+        console.warn('Ошибка загрузки из облака, используем локальные данные:', e.message);
         const local = localStorage.getItem('deliveryCloudData');
-        if (local) allData = JSON.parse(local);
+        if (local) {
+            try {
+                allData = JSON.parse(local);
+            } catch(parseError) {
+                console.error('Ошибка парсинга локальных данных:', parseError);
+                allData = {};
+            }
+        }
         return allData;
     }
 }
 
 async function saveToCloud() {
-    if (!localChanges) return;
+    if (!localChanges) return true;
+
     try {
-        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+        const dataToSave = JSON.parse(JSON.stringify(allData));
+
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
-            body: JSON.stringify(allData)
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': JSONBIN_API_KEY
+            },
+            body: JSON.stringify(dataToSave)
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
         localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
         localChanges = false;
         showSync('☁️ Синхронизировано');
+        return true;
+
     } catch (e) {
+        console.error('Ошибка сохранения:', e);
         localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
         showSync('📱 Офлайн — сохранено локально', true);
+        throw e;
     }
 }
 
+function scheduleCloudSave() {
+    clearTimeout(cloudSaveTimer);
+
+    cloudSaveTimer = setTimeout(async () => {
+        if (!localChanges || isSyncing) return;
+
+        try {
+            await saveToCloud();
+        } catch (e) {
+            console.error('Автосохранение:', e);
+        }
+    }, 1500);
+}
+
 function formatNumber(value) {
-    if (value === '' || value === null || value === undefined) return '';
-    const num = parseFloat(String(value).replace(',', '.'));
-    if (isNaN(num)) return '';
-    return parseFloat(num.toFixed(2));
+    if (value === null || value === undefined) return '';
+
+    let str = String(value)
+        .replace(',', '.')
+        .replace(/[^\d.]/g, '');
+
+    const firstDot = str.indexOf('.');
+
+    if (firstDot !== -1) {
+        str =
+            str.substring(0, firstDot + 1) +
+            str.substring(firstDot + 1).replace(/\./g, '');
+    }
+
+    if (firstDot !== -1) {
+        const parts = str.split('.');
+        str = parts[0] + '.' + parts[1].substring(0, 2);
+    }
+
+    return str;
 }
 
 function saveCellLocal(dateStr, row, col, value) {
     if (!allData[dateStr]) allData[dateStr] = {};
     if (!allData[dateStr][row]) allData[dateStr][row] = {};
-    
-    if (col === '5' || col === '6' || col === '7') {
-        const formatted = formatNumber(value);
-        allData[dateStr][row][col] = formatted !== '' ? formatted : value;
-    } else {
-        allData[dateStr][row][col] = value;
-    }
-    
+
+    allData[dateStr][row][col] = value;
+
     localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
     localChanges = true;
 }
@@ -723,7 +945,9 @@ function formatDate(date) {
     return `${String(date.getDate()).padStart(2,'0')}.${String(date.getMonth()+1).padStart(2,'0')}.${date.getFullYear()}`;
 }
 
-function getToday() { return formatDate(new Date()); }
+function getToday() {
+    return formatDate(new Date());
+}
 
 function shiftDate(ds, off) {
     const p = ds.split('.');
@@ -768,13 +992,31 @@ function goToday() {
 
 function searchDate() {
     const v = document.getElementById('searchDateInput').value.trim();
-    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) { 
-        playSearchSound(); 
-        currentDateStr = v;
-        renderTable(currentDateStr);
-    } else { 
-        alert('Формат: дд.мм.гггг'); 
+
+    if (!/^\d{2}\.\d{2}\.\d{4}$/.test(v)) {
+        alert('Формат: дд.мм.гггг');
+        return;
     }
+
+    const parts = v.split('.');
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const year = parseInt(parts[2], 10);
+
+    const date = new Date(year, month - 1, day);
+
+    if (
+        date.getFullYear() !== year ||
+        date.getMonth() !== month - 1 ||
+        date.getDate() !== day
+    ) {
+        alert('Такой даты не существует');
+        return;
+    }
+
+    playSearchSound();
+    currentDateStr = v;
+    renderTable(currentDateStr);
 }
 
 function isRowActive(row) {
@@ -792,7 +1034,7 @@ function isRowActive(row) {
 function updateRowHighlight(row) {
     const tr = document.querySelector(`tr:nth-child(${row})`);
     if (!tr) return;
-    
+
     if (isRowActive(row)) {
         tr.classList.add('row-active');
     } else {
@@ -808,16 +1050,16 @@ function updateTotals() {
     document.querySelectorAll('input[data-col]').forEach(inp => {
         const col = +inp.dataset.col;
         const v = parseFloat(inp.value.replace(',','.')) || 0;
-        if (col === 5) { 
-            c5 += v; 
-            main += v * 13; 
+        if (col === 5) {
+            c5 += v;
+            main += v * 13;
         }
-        else if (col === 6) { 
-            c6 += v; 
-            main += v * 2; 
+        else if (col === 6) {
+            c6 += v;
+            main += v * 2;
         }
-        else if (col === 7) { 
-            main += v; 
+        else if (col === 7) {
+            main += v;
         }
     });
     document.getElementById('totalMain').textContent = parseFloat(main.toFixed(2));
@@ -828,7 +1070,8 @@ function updateTotals() {
 function updateStats() {
     if (!currentDateStr) return;
     const parts = currentDateStr.split('.');
-    const month = parts[1]; const year = parts[2];
+    const month = parts[1];
+    const year = parts[2];
     let totalMain = 0, totalKM = 0, totalKG = 0;
     for (const dateKey in allData) {
         if (dateKey.startsWith('_')) continue;
@@ -858,13 +1101,16 @@ let scrollPosition = 0;
 function renderTable(dateStr) {
     const wrapper = document.getElementById('tableWrapper');
     if (wrapper) scrollPosition = wrapper.scrollTop;
-    
+
     document.getElementById('currentDateDisplay').textContent = dateStr;
     document.getElementById('searchDateInput').value = dateStr;
     const display = document.getElementById('currentDateDisplay');
-    if (dateStr === getToday()) { display.classList.add('today-highlight'); }
-    else { display.classList.remove('today-highlight'); }
-    
+    if (dateStr === getToday()) {
+        display.classList.add('today-highlight');
+    } else {
+        display.classList.remove('today-highlight');
+    }
+
     let h = '';
     for (let i = 1; i <= 100; i++) {
         const a1 = getCell(dateStr, i, 1) === '1';
@@ -875,10 +1121,10 @@ function renderTable(dateStr) {
         const v6 = getCell(dateStr, i, 6);
         const v7 = getCell(dateStr, i, 7);
         const rowTime = getRowTime(dateStr, i);
-        
-        const rowActive = (a1 || a2 || a3 || a4 || 
-                          (v5 && v5 !== '0') || 
-                          (v6 && v6 !== '0') || 
+
+        const rowActive = (a1 || a2 || a3 || a4 ||
+                          (v5 && v5 !== '0') ||
+                          (v6 && v6 !== '0') ||
                           (v7 && v7 !== '0'));
 
         h += `<tr class="${rowActive ? 'row-active' : ''}">
@@ -902,7 +1148,7 @@ function renderTable(dateStr) {
     }
 
     document.querySelectorAll('.heart-cell').forEach(cell => {
-        cell.addEventListener('touchstart', function(e) {
+        cell.addEventListener('click', function(e) {
             e.preventDefault();
             const isActive = this.classList.contains('active');
             const row = this.dataset.row;
@@ -921,6 +1167,7 @@ function renderTable(dateStr) {
             updateRowHighlight(row);
             updateTotals();
             if (statsVisible) updateStats();
+            scheduleCloudSave();
         });
     });
 
@@ -929,25 +1176,35 @@ function renderTable(dateStr) {
             const row = this.dataset.row;
             const col = this.dataset.col;
             const time = getNowTime();
-            let val = this.value;
-            
+
             if (col === '5' || col === '6' || col === '7') {
-                const formatted = formatNumber(val);
-                if (formatted !== '' && formatted !== val) {
-                    const cursorPos = this.selectionStart;
+                const oldValue = this.value;
+                const cursorPos = this.selectionStart;
+                const formatted = formatNumber(oldValue);
+
+                if (formatted !== oldValue) {
                     this.value = formatted;
-                    this.setSelectionRange(cursorPos, cursorPos);
+                    const newCursorPos = Math.min(cursorPos, formatted.length);
+                    try {
+                        this.setSelectionRange(newCursorPos, newCursorPos);
+                    } catch (e) {}
                 }
-                saveCellLocal(dateStr, row, col, formatted !== '' ? formatted : val);
+
+                saveCellLocal(dateStr, row, col, this.value);
             } else {
-                saveCellLocal(dateStr, row, col, val);
+                saveCellLocal(dateStr, row, col, this.value);
             }
-            
+
             saveRowTime(dateStr, row, time);
             updateRowTimeInTable(row, time);
             updateRowHighlight(row);
             updateTotals();
-            if (statsVisible) updateStats();
+
+            if (statsVisible) {
+                updateStats();
+            }
+
+            scheduleCloudSave();
         });
     });
 
@@ -955,13 +1212,61 @@ function renderTable(dateStr) {
     if (statsVisible) updateStats();
 }
 
-function syncNow() {
+async function syncNow() {
+    if (isSyncing) return;
+
+    isSyncing = true;
     playSyncSound();
     showSync('🔄 Синхронизация...');
-    saveToCloud();
-    loadFromCloud().then(() => {
-        if (currentDateStr) renderTable(currentDateStr);
-    });
+
+    try {
+        // Если есть локальные изменения — сначала отправляем их
+        if (localChanges) {
+            await saveToCloud();
+        }
+
+        // Затем загружаем актуальные данные из облака
+        const response = await fetch(
+            `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`,
+            {
+                headers: {
+                    'X-Master-Key': JSONBIN_API_KEY
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        allData = result.record || {};
+
+        localStorage.setItem(
+            'deliveryCloudData',
+            JSON.stringify(allData)
+        );
+
+        localChanges = false;
+
+        renderTable(currentDateStr);
+
+        showSync('☁️ Синхронизировано');
+
+    } catch (e) {
+        console.error('Ошибка синхронизации:', e);
+
+        localStorage.setItem(
+            'deliveryCloudData',
+            JSON.stringify(allData)
+        );
+
+        showSync('📱 Сохранено локально', true);
+
+    } finally {
+        isSyncing = false;
+    }
 }
 
 function toggleStats() {
@@ -985,15 +1290,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const statsBtn = document.getElementById('statsBtn');
         const soundBtn = document.getElementById('soundToggle');
         const dateDisplay = document.getElementById('currentDateDisplay');
-        
-        if (prevBtn) prevBtn.addEventListener('touchstart', (e) => { e.preventDefault(); prevDay(); });
-        if (nextBtn) nextBtn.addEventListener('touchstart', (e) => { e.preventDefault(); nextDay(); });
-        if (todayBtn) todayBtn.addEventListener('touchstart', (e) => { e.preventDefault(); goToday(); });
-        if (searchBtn) searchBtn.addEventListener('touchstart', (e) => { e.preventDefault(); searchDate(); });
-        if (syncBtn) syncBtn.addEventListener('touchstart', (e) => { e.preventDefault(); syncNow(); });
-        if (statsBtn) statsBtn.addEventListener('touchstart', (e) => { e.preventDefault(); toggleStats(); });
-        if (soundBtn) soundBtn.addEventListener('touchstart', (e) => { e.preventDefault(); toggleSound(); });
-        if (dateDisplay) dateDisplay.addEventListener('touchstart', (e) => { e.preventDefault(); document.getElementById('searchDateInput').focus(); });
+
+        if (prevBtn) prevBtn.addEventListener('click', prevDay);
+        if (nextBtn) nextBtn.addEventListener('click', nextDay);
+        if (todayBtn) todayBtn.addEventListener('click', goToday);
+        if (searchBtn) searchBtn.addEventListener('click', searchDate);
+        if (syncBtn) syncBtn.addEventListener('click', syncNow);
+        if (statsBtn) statsBtn.addEventListener('click', toggleStats);
+        if (soundBtn) soundBtn.addEventListener('click', toggleSound);
+        if (dateDisplay) dateDisplay.addEventListener('click', () => {
+            const searchInput = document.getElementById('searchDateInput');
+            if (searchInput) searchInput.focus();
+        });
     }, 100);
 });
 
@@ -1006,29 +1314,92 @@ document.addEventListener('focusin', function(e) {
 });
 
 (async function init() {
-    await loadFromCloud();
-    
-    const today = getToday();
-    currentDateStr = today;
-    renderTable(today);
-    
-    setInterval(async () => {
-        await saveToCloud();
-        await loadFromCloud();
-        if (currentDateStr) renderTable(currentDateStr);
-    }, 18000000);
-    
-    document.getElementById('searchDateInput').onkeypress = e => { if (e.key === 'Enter') searchDate(); };
-    
-    window.addEventListener('beforeunload', () => { saveToCloud(); });
-    window.addEventListener('online', async () => {
-        showSync('🌐 Онлайн — синхронизируем...');
-        await saveToCloud();
-        await loadFromCloud();
-        if (currentDateStr) renderTable(currentDateStr);
-    });
-    window.addEventListener('offline', () => { showSync('📱 Офлайн-режим', true); });
+    try {
+        // Сначала проверяем локальные изменения
+        const localData = localStorage.getItem('deliveryCloudData');
+        if (localData) {
+            try {
+                allData = JSON.parse(localData);
+            } catch(e) {
+                console.warn('Ошибка парсинга локальных данных');
+            }
+        }
+
+        // Затем пытаемся загрузить из облака
+        try {
+            const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': JSONBIN_API_KEY }
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                const cloudData = result.record || {};
+                
+                // Если есть локальные изменения, которые не синхронизированы
+                if (localChanges || Object.keys(allData).length > Object.keys(cloudData).length) {
+                    // Сохраняем локальные данные, они важнее
+                    localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+                    scheduleCloudSave();
+                } else {
+                    // Иначе используем облачные данные
+                    allData = cloudData;
+                    localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+                    localChanges = false;
+                }
+            }
+        } catch(e) {
+            console.warn('Облако недоступно при запуске, используем локальные данные');
+        }
+
+        const today = getToday();
+        currentDateStr = today;
+        renderTable(today);
+
+        setInterval(async () => {
+            if (isSyncing) return;
+            try {
+                await syncNow();
+            } catch (e) {
+                console.error('Автоматическая синхронизация:', e);
+            }
+        }, 18000000);
+
+        const searchInput = document.getElementById('searchDateInput');
+        if (searchInput) {
+            searchInput.onkeypress = e => {
+                if (e.key === 'Enter') searchDate();
+            };
+        }
+
+    } catch(e) {
+        console.error('Ошибка инициализации:', e);
+        alert('Ошибка загрузки приложения. Пожалуйста, обновите страницу.');
+    }
 })();
+
+// Сохраняем данные перед закрытием
+window.addEventListener('beforeunload', () => {
+    try {
+        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+    } catch(e) {
+        console.error('Ошибка сохранения перед закрытием:', e);
+    }
+});
+
+// Обработка восстановления соединения
+window.addEventListener('online', async () => {
+    showSync('🌐 Онлайн — синхронизируем...');
+    try {
+        await syncNow();
+    } catch (e) {
+        console.error('Ошибка синхронизации при восстановлении соединения:', e);
+    }
+});
+
+// Обработка потери соединения
+window.addEventListener('offline', () => {
+    showSync('📱 Офлайн-режим', true);
+});
 </script>
 </body>
 </html>
