@@ -312,6 +312,16 @@
             background: #ff9800;
             box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
         }
+
+        .sound-toggle {
+            background: rgba(108, 0, 255, 0.3);
+            border: 1px solid rgba(108, 0, 255, 0.4);
+            color: #e0b0ff;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -367,7 +377,10 @@
     </div>
     <div class="footer-note">
         <span>🔄 Каждые 5 мин</span>
-        <button class="sync-now-btn" onclick="syncNow()">Синхр. сейчас</button>
+        <div style="display:flex;gap:8px;">
+            <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔊</button>
+            <button class="sync-now-btn" onclick="syncNow()">Синхр. сейчас</button>
+        </div>
     </div>
 </div>
 
@@ -378,6 +391,110 @@ const JSONBIN_API_KEY = '$2a$10$Aaqly4jYya2FH7JO0vhA9OsX0D1ufyWm1QZCTAQty6OQzyvd
 let currentDateStr = '';
 let allData = {};
 let localChanges = false;
+let soundEnabled = true;
+
+let audioContext = null;
+
+function getAudioContext() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioContext;
+}
+
+// Звук падающей монетки в копилку
+function playCoinSound() {
+    if (!soundEnabled) return;
+    try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        
+        // Первый удар — звон монетки
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(1800, now);
+        osc1.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+        osc1.frequency.exponentialRampToValueAtTime(800, now + 0.2);
+        
+        gain1.gain.setValueAtTime(0.4, now);
+        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        
+        osc1.start(now);
+        osc1.stop(now + 0.25);
+        
+        // Второй удар — отзвук
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(2400, now + 0.05);
+        osc2.frequency.exponentialRampToValueAtTime(600, now + 0.3);
+        
+        gain2.gain.setValueAtTime(0.2, now + 0.05);
+        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+        
+        osc2.start(now + 0.05);
+        osc2.stop(now + 0.35);
+        
+        // Третий — тихий звон (эхо)
+        const osc3 = ctx.createOscillator();
+        const gain3 = ctx.createGain();
+        osc3.connect(gain3);
+        gain3.connect(ctx.destination);
+        
+        osc3.type = 'sine';
+        osc3.frequency.setValueAtTime(3000, now + 0.1);
+        osc3.frequency.exponentialRampToValueAtTime(1000, now + 0.4);
+        
+        gain3.gain.setValueAtTime(0.1, now + 0.1);
+        gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+        
+        osc3.start(now + 0.1);
+        osc3.stop(now + 0.45);
+        
+    } catch(e) {
+        // Без звука если ошибка
+    }
+}
+
+// Тихий звук забора монетки
+function playRemoveCoinSound() {
+    if (!soundEnabled) return;
+    try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(200, now + 0.15);
+        
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        
+        osc.start(now);
+        osc.stop(now + 0.2);
+        
+    } catch(e) {
+        // Без звука
+    }
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('soundToggle');
+    btn.textContent = soundEnabled ? '🔊' : '🔇';
+}
 
 function showSync(message, isError = false) {
     const el = document.getElementById('syncStatus');
@@ -514,9 +631,20 @@ function renderTable(dateStr) {
 
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.onclick = () => {
-            cell.classList.toggle('active');
-            saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, 
-                     cell.classList.contains('active') ? '1' : '0');
+            const isActive = cell.classList.contains('active');
+            
+            if (isActive) {
+                // Деактивация
+                cell.classList.remove('active');
+                saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '0');
+                playRemoveCoinSound();
+            } else {
+                // Активация
+                cell.classList.add('active');
+                saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '1');
+                playCoinSound();
+            }
+            
             updateTotals();
         };
     });
@@ -552,7 +680,6 @@ async function syncNow() {
     currentDateStr = today;
     renderTable(today);
     
-    // Автосинхронизация раз в 5 минут (300 000 мс)
     setInterval(async () => {
         await saveToCloud();
         await loadFromCloud();
