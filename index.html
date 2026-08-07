@@ -136,7 +136,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.1s ease, background 0.1s ease;
+            transition: transform 0.08s ease, background 0.08s ease, box-shadow 0.08s ease;
             font-weight: bold;
             box-shadow: 0 0 15px rgba(108, 0, 255, 0.3);
             -webkit-tap-highlight-color: transparent;
@@ -144,8 +144,9 @@
         }
 
         .nav-btn:active {
-            transform: scale(0.9);
-            background: rgba(108, 0, 255, 0.6);
+            transform: scale(0.85);
+            background: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
         }
 
         .date-display {
@@ -159,6 +160,11 @@
             text-align: center;
             border: 1px solid rgba(108, 0, 255, 0.4);
             cursor: pointer;
+            transition: background 0.08s ease;
+        }
+
+        .date-display:active {
+            background: rgba(0, 255, 255, 0.1);
         }
 
         .search-date-row {
@@ -177,10 +183,17 @@
             background: #1a1a2e;
             color: #e0b0ff;
             text-align: center;
+            transition: border-color 0.1s ease, box-shadow 0.1s ease;
+            outline: none;
         }
 
         .search-input::placeholder {
             color: rgba(224, 176, 255, 0.5);
+        }
+
+        .search-input:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
         }
 
         .search-btn {
@@ -192,13 +205,14 @@
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-            transition: transform 0.1s ease;
+            transition: transform 0.08s ease, box-shadow 0.08s ease;
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
 
         .search-btn:active {
-            transform: scale(0.93);
+            transform: scale(0.9);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
         }
 
         .today-btn {
@@ -209,13 +223,15 @@
             font-weight: 600;
             cursor: pointer;
             color: #e0b0ff;
-            transition: transform 0.1s ease;
+            transition: transform 0.08s ease, background 0.08s ease, box-shadow 0.08s ease;
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
 
         .today-btn:active {
-            transform: scale(0.93);
+            transform: scale(0.9);
+            background: rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
 
         .totals-container {
@@ -305,13 +321,13 @@
             margin: 2px;
             opacity: 0.25;
             filter: grayscale(30%);
-            transition: opacity 0.15s ease, filter 0.15s ease, transform 0.1s ease;
+            transition: opacity 0.12s ease, filter 0.12s ease, transform 0.08s ease;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
 
         .heart-cell:active {
-            transform: scale(0.85);
+            transform: scale(0.82);
         }
 
         .heart-cell.active {
@@ -329,13 +345,14 @@
             background: #0f0f1a;
             color: #ffffff;
             padding: 2px;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            transition: border-color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
             outline: none;
         }
 
         input:focus {
             border-color: #00ffff;
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            background: #1a1a2e;
         }
 
         .footer-note {
@@ -385,13 +402,13 @@
             padding: 8px 12px;
             font-size: 0.75rem;
             cursor: pointer;
-            transition: transform 0.1s ease;
+            transition: transform 0.08s ease;
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
 
         .sound-toggle:active {
-            transform: scale(0.9);
+            transform: scale(0.85);
         }
     </style>
 </head>
@@ -403,7 +420,7 @@
     <div class="app-header">
         <div class="header-row">
             <div class="header-title">💲🪙✨DOST DIX✨🪙💲</div>
-            <button class="sync-btn-round" onclick="syncNow()" title="Синхронизировать">💾</button>
+            <button class="sync-btn-round" id="syncBtn" title="Синхронизировать">💾</button>
         </div>
         <div class="date-navigator">
             <button class="nav-btn" id="prevDayBtn">←</button>
@@ -451,7 +468,7 @@
     </div>
     <div class="footer-note">
         <span>🔄 Каждые 5 часов</span>
-        <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔊</button>
+        <button class="sound-toggle" id="soundToggle">🔊</button>
     </div>
 </div>
 
@@ -463,6 +480,7 @@ let currentDateStr = '';
 let allData = {};
 let localChanges = false;
 let soundEnabled = true;
+let isSwitching = false;
 
 let audioContext = null;
 
@@ -477,21 +495,17 @@ function playActivateSound() {
     if (!soundEnabled) return;
     try {
         const ctx = getAudioContext();
-        const oscillator = ctx.createOscillator();
-        const gainNode = ctx.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(ctx.destination);
-        
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(880, ctx.currentTime);
-        oscillator.frequency.setValueAtTime(1100, ctx.currentTime + 0.08);
-        
-        gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-        
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.2);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.06);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.15);
     } catch(e) {}
 }
 
@@ -499,21 +513,17 @@ function playDeactivateSound() {
     if (!soundEnabled) return;
     try {
         const ctx = getAudioContext();
-        const oscillator = ctx.createOscillator();
-        const gainNode = ctx.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(ctx.destination);
-        
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(440, ctx.currentTime);
-        oscillator.frequency.setValueAtTime(330, ctx.currentTime + 0.08);
-        
-        gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-        
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.2);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, ctx.currentTime);
+        osc.frequency.setValueAtTime(330, ctx.currentTime + 0.06);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.15);
     } catch(e) {}
 }
 
@@ -527,33 +537,82 @@ function playSyncSound() {
         const gain1 = ctx.createGain();
         osc1.connect(gain1);
         gain1.connect(ctx.destination);
-        
         osc1.type = 'triangle';
         osc1.frequency.setValueAtTime(600, now);
-        osc1.frequency.setValueAtTime(900, now + 0.06);
-        osc1.frequency.setValueAtTime(1200, now + 0.12);
-        
+        osc1.frequency.setValueAtTime(900, now + 0.05);
+        osc1.frequency.setValueAtTime(1200, now + 0.1);
         gain1.gain.setValueAtTime(0.3, now);
-        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-        
+        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
         osc1.start(now);
-        osc1.stop(now + 0.18);
+        osc1.stop(now + 0.15);
         
         const osc2 = ctx.createOscillator();
         const gain2 = ctx.createGain();
         osc2.connect(gain2);
         gain2.connect(ctx.destination);
-        
         osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(800, now + 0.08);
-        osc2.frequency.setValueAtTime(1200, now + 0.15);
-        
-        gain2.gain.setValueAtTime(0.2, now + 0.08);
-        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
-        
-        osc2.start(now + 0.08);
-        osc2.stop(now + 0.22);
-        
+        osc2.frequency.setValueAtTime(800, now + 0.06);
+        osc2.frequency.setValueAtTime(1200, now + 0.12);
+        gain2.gain.setValueAtTime(0.2, now + 0.06);
+        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        osc2.start(now + 0.06);
+        osc2.stop(now + 0.18);
+    } catch(e) {}
+}
+
+function playNavSound() {
+    if (!soundEnabled) return;
+    try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(500, ctx.currentTime);
+        osc.frequency.setValueAtTime(700, ctx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.12);
+    } catch(e) {}
+}
+
+function playSearchSound() {
+    if (!soundEnabled) return;
+    try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(400, ctx.currentTime);
+        osc.frequency.setValueAtTime(800, ctx.currentTime + 0.06);
+        osc.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.15);
+    } catch(e) {}
+}
+
+function playTodaySound() {
+    if (!soundEnabled) return;
+    try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, ctx.currentTime);
+        osc.frequency.setValueAtTime(600, ctx.currentTime + 0.05);
+        osc.frequency.setValueAtTime(900, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.15);
     } catch(e) {}
 }
 
@@ -568,7 +627,7 @@ function showSync(message, isError = false) {
     el.textContent = message;
     el.className = 'sync-indicator ' + (isError ? 'error' : '');
     el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 1800);
+    setTimeout(() => el.classList.remove('show'), 1500);
 }
 
 async function loadFromCloud() {
@@ -636,14 +695,35 @@ function shiftDate(ds, off) {
     return formatDate(d);
 }
 
-function prevDay() { goToDate(shiftDate(currentDateStr, -1)); }
-function nextDay() { goToDate(shiftDate(currentDateStr, 1)); }
-function goToday() { goToDate(getToday()); }
+async function prevDay() {
+    if (isSwitching) return;
+    isSwitching = true;
+    playNavSound();
+    await goToDate(shiftDate(currentDateStr, -1));
+    setTimeout(() => isSwitching = false, 150);
+}
 
-function searchDate() {
+async function nextDay() {
+    if (isSwitching) return;
+    isSwitching = true;
+    playNavSound();
+    await goToDate(shiftDate(currentDateStr, 1));
+    setTimeout(() => isSwitching = false, 150);
+}
+
+async function goToday() {
+    playTodaySound();
+    await goToDate(getToday());
+}
+
+async function searchDate() {
     const v = document.getElementById('searchDateInput').value.trim();
-    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) goToDate(v);
-    else alert('Формат: дд.мм.гггг');
+    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) {
+        playSearchSound();
+        await goToDate(v);
+    } else {
+        alert('Формат: дд.мм.гггг');
+    }
 }
 
 function updateTotals() {
@@ -699,7 +779,6 @@ function renderTable(dateStr) {
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.onclick = () => {
             const isActive = cell.classList.contains('active');
-            
             if (isActive) {
                 cell.classList.remove('active');
                 saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '0');
@@ -709,7 +788,6 @@ function renderTable(dateStr) {
                 saveCellLocal(dateStr, cell.dataset.row, cell.dataset.col, '1');
                 playActivateSound();
             }
-            
             updateTotals();
         };
     });
@@ -725,9 +803,7 @@ function renderTable(dateStr) {
 }
 
 async function goToDate(ds) {
-    await saveToCloud();
     currentDateStr = ds;
-    await loadFromCloud();
     renderTable(ds);
 }
 
@@ -756,6 +832,9 @@ async function syncNow() {
     document.getElementById('nextDayBtn').onclick = nextDay;
     document.getElementById('todayBtn').onclick = goToday;
     document.getElementById('searchDateBtn').onclick = searchDate;
+    document.getElementById('syncBtn').onclick = syncNow;
+    document.getElementById('soundToggle').onclick = toggleSound;
+    
     document.getElementById('searchDateInput').onkeypress = e => {
         if (e.key === 'Enter') searchDate();
     };
