@@ -378,7 +378,6 @@
         .sync-indicator.show { opacity: 1; }
         .sync-indicator.error { background: #ff9800; box-shadow: 0 0 20px rgba(255, 152, 0, 0.5); }
 
-        /* Окно статистики */
         .stats-popup {
             position: absolute;
             top: 70px;
@@ -433,7 +432,6 @@
             <button class="search-btn" id="searchDateBtn">🔍</button>
             <button class="today-btn" id="todayBtn">Сегодня</button>
         </div>
-        <!-- Окно статистики -->
         <div class="stats-popup" id="statsPopup">
             <span>💰 <span class="stat-val" id="statTotal">0</span></span>
             <span>🛣️ <span class="stat-val" id="statKM">0</span></span>
@@ -639,11 +637,9 @@ function saveCellLocal(dateStr, row, col, value) {
 function saveRowTime(dateStr, row, time) {
     if (!allData[dateStr]) allData[dateStr] = {};
     if (!allData[dateStr]['_rowTimes']) allData[dateStr]['_rowTimes'] = {};
-    if (!allData[dateStr]['_rowTimes'][row]) {
-        allData[dateStr]['_rowTimes'][row] = time;
-        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
-        localChanges = true;
-    }
+    allData[dateStr]['_rowTimes'][row] = time;
+    localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+    localChanges = true;
 }
 
 function getRowTime(dateStr, row) {
@@ -676,6 +672,12 @@ function shiftDate(ds, off) {
 function getNowTime() {
     const d = new Date();
     return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+// Обновление времени в строке таблицы
+function updateRowTimeInTable(row, time) {
+    const timeCell = document.querySelector(`tr:nth-child(${row}) .row-time`);
+    if (timeCell) timeCell.textContent = time;
 }
 
 async function prevDay() {
@@ -781,35 +783,36 @@ function renderTable(dateStr) {
     }
     document.getElementById('rowsBody').innerHTML = h;
 
+    // Обработчики для сердечек
     document.querySelectorAll('.heart-cell').forEach(cell => {
         cell.onclick = () => {
             const isActive = cell.classList.contains('active');
             const row = cell.dataset.row;
+            const time = getNowTime();
             if (isActive) {
                 cell.classList.remove('active');
                 saveCellLocal(dateStr, row, cell.dataset.col, '0');
                 playDeactivateSound();
             } else {
                 cell.classList.add('active');
-                const time = getNowTime();
-                saveRowTime(dateStr, row, time);
                 saveCellLocal(dateStr, row, cell.dataset.col, '1');
-                document.querySelector(`tr:nth-child(${row}) .row-time`).textContent = time;
                 playActivateSound();
             }
+            saveRowTime(dateStr, row, time);
+            updateRowTimeInTable(row, time);
             updateTotals();
             if (statsVisible) updateStats();
         };
     });
 
+    // Обработчики для полей ввода (колонки 5,6,7)
     document.querySelectorAll('input').forEach(inp => {
         inp.oninput = () => {
             const row = inp.dataset.row;
             const time = getNowTime();
             saveRowTime(dateStr, row, time);
             saveCellLocal(dateStr, row, inp.dataset.col, inp.value);
-            const timeCell = document.querySelector(`tr:nth-child(${row}) .row-time`);
-            if (!timeCell.textContent.trim()) timeCell.textContent = time;
+            updateRowTimeInTable(row, time);
             updateTotals();
             if (statsVisible) updateStats();
         };
