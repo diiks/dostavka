@@ -411,7 +411,7 @@
             <button class="nav-btn" id="nextDayBtn">→</button>
         </div>
         <div class="search-date-row">
-            <input type="text" class="search-input" id="searchDateInput" placeholder="дд.мм.гггг" />
+            <input type="text" class="search-input" id="searchDateInput" placeholder="дд.мм.гггг" inputmode="numeric" />
             <button class="search-btn" id="searchDateBtn">🔍</button>
             <button class="today-btn" id="todayBtn">Сегодня</button>
         </div>
@@ -688,9 +688,9 @@ function renderTable(dateStr) {
             <td><div class="heart-cell${a2?' active':''}" data-row="${i}" data-col="2">💷</div></td>
             <td><div class="heart-cell${a3?' active':''}" data-row="${i}" data-col="3">💴</div></td>
             <td><div class="heart-cell${a4?' active':''}" data-row="${i}" data-col="4">💶</div></td>
-            <td><input data-row="${i}" data-col="5" value="${v5}" placeholder="0"></td>
-            <td><input data-row="${i}" data-col="6" value="${v6}" placeholder="0"></td>
-            <td><input data-row="${i}" data-col="7" value="${v7}" placeholder="0"></td>
+            <td><input type="text" inputmode="decimal" data-row="${i}" data-col="5" value="${v5}" placeholder="0"></td>
+            <td><input type="text" inputmode="decimal" data-row="${i}" data-col="6" value="${v6}" placeholder="0"></td>
+            <td><input type="text" inputmode="decimal" data-row="${i}" data-col="7" value="${v7}" placeholder="0"></td>
         </tr>`;
     }
 
