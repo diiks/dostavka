@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ДОСТАВКА">
-    <link rel="manifest" href="data:application/json,{'name':'ДОСТАВКА','short_name':'ДОСТАВКА','display':'standalone','start_url':'.','background_color':'#0a0a0a','theme_color':'#6c00ff'}">
-    <title>ДОСТАВКА</title>
+    <meta name="apple-mobile-web-app-title" content="DOST DIX">
+    <link rel="manifest" href="data:application/json,{'name':'DOST DIX','short_name':'DOST DIX','display':'standalone','start_url':'.','background_color':'#0a0a0a','theme_color':'#6c00ff'}">
+    <title>DOST DIX</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -46,28 +46,50 @@
         .header-row {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             margin-bottom: 16px;
-            position: relative;
+            padding: 0 5px;
         }
 
-        .app-header h2 {
-            font-weight: 600;
-            font-size: 1.9rem;
-            letter-spacing: -0.3px;
+        .header-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
             color: #ffffff;
-            text-shadow: 0 0 20px rgba(108, 0, 255, 0.5);
-            margin: 0 auto;
-            padding-left: 50px;
+            text-shadow: 
+                0 0 10px #6c00ff,
+                0 0 20px #6c00ff,
+                0 0 40px #6c00ff,
+                0 0 80px #00ffff,
+                0 0 120px #00ffff;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+            flex: 1;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        @keyframes titleGlow {
+            0% {
+                text-shadow: 
+                    0 0 10px #6c00ff,
+                    0 0 20px #6c00ff,
+                    0 0 40px #6c00ff,
+                    0 0 80px #00ffff;
+            }
+            100% {
+                text-shadow: 
+                    0 0 15px #00ffff,
+                    0 0 30px #00ffff,
+                    0 0 60px #00ffff,
+                    0 0 100px #6c00ff,
+                    0 0 140px #6c00ff;
+            }
         }
 
         .sync-btn-round {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
             width: 44px;
             height: 44px;
+            min-width: 44px;
             border-radius: 50%;
             background: rgba(108, 0, 255, 0.3);
             border: 1px solid rgba(108, 0, 255, 0.5);
@@ -83,13 +105,18 @@
         }
 
         .sync-btn-round:active {
-            transform: translateY(-50%) scale(0.9);
+            transform: scale(0.9);
             box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
         }
 
         .sync-btn-round:hover {
             background: rgba(108, 0, 255, 0.5);
             box-shadow: 0 0 25px rgba(108, 0, 255, 0.6);
+        }
+
+        .header-spacer {
+            width: 44px;
+            min-width: 44px;
         }
 
         .date-navigator {
@@ -360,7 +387,8 @@
 <div class="app-container">
     <div class="app-header">
         <div class="header-row">
-            <h2>💲💲💲</h2>
+            <div class="header-spacer"></div>
+            <div class="header-title">💲🪙✨DOST DIX✨🪙💲</div>
             <button class="sync-btn-round" onclick="syncNow()" title="Синхронизировать">💾</button>
         </div>
         <div class="date-navigator">
@@ -431,7 +459,6 @@ function getAudioContext() {
     return audioContext;
 }
 
-// Звук активации (приятный "дзинь")
 function playActivateSound() {
     if (!soundEnabled) return;
     try {
@@ -454,7 +481,6 @@ function playActivateSound() {
     } catch(e) {}
 }
 
-// Звук деактивации (низкий "тук")
 function playDeactivateSound() {
     if (!soundEnabled) return;
     try {
@@ -477,7 +503,6 @@ function playDeactivateSound() {
     } catch(e) {}
 }
 
-// Новый звук для кнопки синхронизации
 function playSyncSound() {
     if (!soundEnabled) return;
     try {
@@ -707,7 +732,6 @@ async function syncNow() {
     currentDateStr = today;
     renderTable(today);
     
-    // Автосинхронизация каждые 5 часов (18 000 000 мс)
     setInterval(async () => {
         await saveToCloud();
         await loadFromCloud();
