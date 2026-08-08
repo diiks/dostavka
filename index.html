@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DOST DIX">
-    <link rel="manifest" href="data:application/json,{'name':'DOST DIX','short_name':'DOST DIX','display':'standalone','start_url':'.','background_color':'#0a0a0a','theme_color':'#6c00ff'}">
+    <link rel="manifest" href='data:application/json,{"name":"DOST DIX","short_name":"DOST DIX","display":"standalone","start_url":".","background_color":"#0a0a0a","theme_color":"#6c00ff"}'>
     <title>DOST DIX v2</title>
     <style>
         * {
@@ -209,6 +209,9 @@
             color: #000;
         }
 
+        /* ===============================
+           СЕГОДНЯШНЯЯ ДАТА
+           =============================== */
         .date-display {
             background: #1a1a2e;
             color: #e1ff00;
@@ -225,7 +228,7 @@
 
         .date-display.today-highlight {
             border-color: #e1ff00;
-            box-shadow: 0 0 25px rgba(225, 255, 0, 0.6);
+            box-shadow: none !important;
             color: #fff;
         }
 
@@ -389,16 +392,28 @@
             transition: background-color 0.3s ease-out;
         }
 
-        tr.row-active td {
-            background: rgba(225, 255, 0, 0.15) !important;
-            box-shadow: inset 0 0 30px rgba(225, 255, 0, 0.3);
+        /* ===============================
+           АКТИВНАЯ СТРОКА — как на фото
+           =============================== */
+        tr.row-active {
+            background: transparent !important;
         }
 
-        tr.row-active td.row-time,
-        tr.row-active td.row-number {
-            background: rgba(225, 255, 0, 0.25) !important;
-            color: #1a1a2e;
-            font-weight: 700;
+        tr.row-active td {
+            background: rgba(50, 55, 50, 0.28) !important;
+            box-shadow: none !important;
+        }
+
+        tr.row-active .row-time,
+        tr.row-active .row-number {
+            background: rgba(45, 50, 45, 0.35) !important;
+            color: #e8e8e8 !important;
+            font-weight: 600;
+        }
+
+        tr.row-active input {
+            background: #0f0f1a !important;
+            color: #e1ff00 !important;
         }
 
         .row-time {
@@ -442,6 +457,9 @@
             transition: opacity 0.1s ease-out, background 0.1s ease-out;
         }
 
+        /* ===============================
+           АКТИВНАЯ КУПЮРА
+           =============================== */
         .heart-cell.active {
             opacity: 1;
             filter: drop-shadow(0 0 10px #e8e473) !important;
@@ -625,6 +643,8 @@
 </div>
 
 <script>
+// ВНИМАНИЕ: Для безопасности вынесите эти значения в отдельный конфигурационный файл
+// или используйте серверную часть для проксирования запросов к JSONBin
 const JSONBIN_BIN_ID = '6a750d49da38895dfec37959';
 const JSONBIN_API_KEY = '$2a$10$Aaqly4jYya2FH7JO0vhA9OsX0D1ufyWm1QZCTAQty6OQzyvdDcPfO';
 
@@ -640,14 +660,22 @@ let cloudSaveTimer = null;
 let audioContext = null;
 
 function getAudioContext() {
-    if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (!audioContext) {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) {
+            console.warn('Web Audio API не поддерживается');
+            return null;
+        }
+    }
     return audioContext;
 }
 
 function playActivateSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.connect(gain);
@@ -659,13 +687,16 @@ function playActivateSound() {
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
 
 function playDeactivateSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.connect(gain);
@@ -677,13 +708,16 @@ function playDeactivateSound() {
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
 
 function playSyncSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
         const now = ctx.currentTime;
         const osc1 = ctx.createOscillator();
         const gain1 = ctx.createGain();
@@ -708,13 +742,16 @@ function playSyncSound() {
         gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.14);
         osc2.start(now + 0.04);
         osc2.stop(now + 0.14);
-    } catch(e) {}
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
 
 function playNavSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.connect(gain);
@@ -726,13 +763,16 @@ function playNavSound() {
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.08);
-    } catch(e) {}
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
 
 function playSearchSound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.connect(gain);
@@ -745,13 +785,16 @@ function playSearchSound() {
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
 
 function playTodaySound() {
     if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     try {
-        const ctx = getAudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.connect(gain);
@@ -764,7 +807,9 @@ function playTodaySound() {
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.1);
-    } catch(e) {}
+    } catch(e) {
+        console.warn('Ошибка воспроизведения звука:', e);
+    }
 }
 
 function toggleSound() {
@@ -774,6 +819,7 @@ function toggleSound() {
 
 function showSync(message, isError = false) {
     const el = document.getElementById('syncStatus');
+    if (!el) return;
     el.textContent = message;
     el.className = 'sync-indicator ' + (isError ? 'error' : '');
     el.classList.add('show');
@@ -785,14 +831,25 @@ async function loadFromCloud() {
         const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
             headers: { 'X-Master-Key': JSONBIN_API_KEY }
         });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
         const result = await response.json();
         allData = result.record || {};
         localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
         localChanges = false;
         return allData;
     } catch (e) {
+        console.warn('Ошибка загрузки из облака, используем локальные данные:', e.message);
         const local = localStorage.getItem('deliveryCloudData');
-        if (local) allData = JSON.parse(local);
+        if (local) {
+            try {
+                allData = JSON.parse(local);
+            } catch(parseError) {
+                console.error('Ошибка парсинга локальных данных:', parseError);
+                allData = {};
+            }
+        }
         return allData;
     }
 }
@@ -953,13 +1010,31 @@ function goToday() {
 
 function searchDate() {
     const v = document.getElementById('searchDateInput').value.trim();
-    if (v && /^\d{2}\.\d{2}\.\d{4}$/.test(v)) {
-        playSearchSound();
-        currentDateStr = v;
-        renderTable(currentDateStr);
-    } else {
+
+    if (!/^\d{2}\.\d{2}\.\d{4}$/.test(v)) {
         alert('Формат: дд.мм.гггг');
+        return;
     }
+
+    const parts = v.split('.');
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const year = parseInt(parts[2], 10);
+
+    const date = new Date(year, month - 1, day);
+
+    if (
+        date.getFullYear() !== year ||
+        date.getMonth() !== month - 1 ||
+        date.getDate() !== day
+    ) {
+        alert('Такой даты не существует');
+        return;
+    }
+
+    playSearchSound();
+    currentDateStr = v;
+    renderTable(currentDateStr);
 }
 
 function isRowActive(row) {
@@ -1163,12 +1238,48 @@ async function syncNow() {
     showSync('🔄 Синхронизация...');
 
     try {
-        await saveToCloud();
+        if (localChanges) {
+            await saveToCloud();
+        }
+
+        const response = await fetch(
+            `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`,
+            {
+                headers: {
+                    'X-Master-Key': JSONBIN_API_KEY
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        allData = result.record || {};
+
+        localStorage.setItem(
+            'deliveryCloudData',
+            JSON.stringify(allData)
+        );
+
+        localChanges = false;
+
+        renderTable(currentDateStr);
+
         showSync('☁️ Синхронизировано');
+
     } catch (e) {
         console.error('Ошибка синхронизации:', e);
-        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+
+        localStorage.setItem(
+            'deliveryCloudData',
+            JSON.stringify(allData)
+        );
+
         showSync('📱 Сохранено локально', true);
+
     } finally {
         isSyncing = false;
     }
@@ -1203,7 +1314,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (syncBtn) syncBtn.addEventListener('click', syncNow);
         if (statsBtn) statsBtn.addEventListener('click', toggleStats);
         if (soundBtn) soundBtn.addEventListener('click', toggleSound);
-        if (dateDisplay) dateDisplay.addEventListener('click', () => document.getElementById('searchDateInput').focus());
+        if (dateDisplay) dateDisplay.addEventListener('click', () => {
+            const searchInput = document.getElementById('searchDateInput');
+            if (searchInput) searchInput.focus();
+        });
     }, 100);
 });
 
@@ -1216,42 +1330,84 @@ document.addEventListener('focusin', function(e) {
 });
 
 (async function init() {
-    await loadFromCloud();
-
-    const today = getToday();
-    currentDateStr = today;
-    renderTable(today);
-
-    setInterval(async () => {
-        if (isSyncing) return;
-        try {
-            await syncNow();
-        } catch (e) {
-            console.error('Автоматическая синхронизация:', e);
+    try {
+        const localData = localStorage.getItem('deliveryCloudData');
+        if (localData) {
+            try {
+                allData = JSON.parse(localData);
+            } catch(e) {
+                console.warn('Ошибка парсинга локальных данных');
+            }
         }
-    }, 18000000);
 
-    document.getElementById('searchDateInput').onkeypress = e => {
-        if (e.key === 'Enter') searchDate();
-    };
-
-    window.addEventListener('beforeunload', () => {
-        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
-    });
-
-    window.addEventListener('online', async () => {
-        showSync('🌐 Онлайн — синхронизируем...');
         try {
-            await syncNow();
-        } catch (e) {
-            console.error('Online sync:', e);
+            const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': JSONBIN_API_KEY }
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                const cloudData = result.record || {};
+                
+                if (localChanges || Object.keys(allData).length > Object.keys(cloudData).length) {
+                    localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+                    scheduleCloudSave();
+                } else {
+                    allData = cloudData;
+                    localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+                    localChanges = false;
+                }
+            }
+        } catch(e) {
+            console.warn('Облако недоступно при запуске, используем локальные данные');
         }
-    });
 
-    window.addEventListener('offline', () => {
-        showSync('📱 Офлайн-режим', true);
-    });
+        const today = getToday();
+        currentDateStr = today;
+        renderTable(today);
+
+        setInterval(async () => {
+            if (isSyncing) return;
+            try {
+                await syncNow();
+            } catch (e) {
+                console.error('Автоматическая синхронизация:', e);
+            }
+        }, 18000000);
+
+        const searchInput = document.getElementById('searchDateInput');
+        if (searchInput) {
+            searchInput.onkeypress = e => {
+                if (e.key === 'Enter') searchDate();
+            };
+        }
+
+    } catch(e) {
+        console.error('Ошибка инициализации:', e);
+        alert('Ошибка загрузки приложения. Пожалуйста, обновите страницу.');
+    }
 })();
+
+window.addEventListener('beforeunload', () => {
+    try {
+        localStorage.setItem('deliveryCloudData', JSON.stringify(allData));
+    } catch(e) {
+        console.error('Ошибка сохранения перед закрытием:', e);
+    }
+});
+
+window.addEventListener('online', async () => {
+    showSync('🌐 Онлайн — синхронизируем...');
+    try {
+        await syncNow();
+    } catch (e) {
+        console.error('Ошибка синхронизации при восстановлении соединения:', e);
+    }
+});
+
+window.addEventListener('offline', () => {
+    showSync('📱 Офлайн-режим', true);
+});
 </script>
 </body>
 </html>
